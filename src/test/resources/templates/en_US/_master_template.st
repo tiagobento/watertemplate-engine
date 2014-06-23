@@ -1,0 +1,2 @@
+master_template_content
+~content~

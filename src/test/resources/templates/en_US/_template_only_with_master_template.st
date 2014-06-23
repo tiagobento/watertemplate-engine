@@ -1,0 +1,1 @@
+template_only_with_master_template_content

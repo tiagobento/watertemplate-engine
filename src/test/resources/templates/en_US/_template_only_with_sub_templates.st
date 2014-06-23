@@ -1,0 +1,2 @@
+template_only_with_sub_templates_content
+~sub_template~

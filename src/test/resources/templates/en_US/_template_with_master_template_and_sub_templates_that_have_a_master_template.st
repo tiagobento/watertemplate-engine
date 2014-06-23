@@ -1,0 +1,2 @@
+template_that_have_sub_templates_that_have_a_master_template_content
+~sub_template~
