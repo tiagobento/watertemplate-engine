@@ -1,11 +1,10 @@
-Highlight Template Engine
+Template Engine
 ===
 
 This is the Main Template Engine used to build HTML pages.
 It assumes that your template files are all stored in `classpath:templates/*` and that they are organized by locale.
-This module works perfectly great with [Highlight i18n plugin](https://github.com/tiagobento/highlight/tree/master/web/i18n/).
 
-If no Locale is provided, it will use `Locale.US`.
+Default locale is `Locale.US`.
 
 e.g.:
 
@@ -21,12 +20,16 @@ All you need to know
 
 Template.java
 ---
-Make your template classes override `getTemplateFileURI`, `getSubTemplates` (optional) and `getMasterTemplate` (optional) to build your templates.
+Make your template classes override `getTemplateFileURI`, `getSubTemplates` (optional) and `getMasterTemplate` (optional) to build your templates. Use `this.args` to input values to be used in your templates.
 
 e.g.:
 
 ```java
 public class MainPage extends Template {
+
+    public MainPage() {
+        this.args.put("title", "Home | Welcome");
+    }
 
     @Override
     protected Map<String, Template> getSubTemplates() {
@@ -43,7 +46,7 @@ public class MainPage extends Template {
 }
 ```
 
-On your `/main/main.html` file, you should have `~header~` and `~footer~` written somewhere.
+On your `/main/main.html` file, you should have `~title~`, `~header~` and `~footer~` written somewhere.
 
 e.g.:
 
@@ -52,7 +55,7 @@ e.g.:
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>MainPage</title>
+    <title>~title~</title>
 </head>
 <body>
   ~header~
@@ -62,9 +65,9 @@ e.g.:
 </html>
 ```
 
-**Note:** ~content~ is where the content of Templates that uses this Template as MasterTemplate goes.
+The `String build(Locale)` method defined on `Template.java` is used to recursively build your template with its master/sub templates.
 
-If you want to put some data on your Template, you can use the `protected final Map<String, Object> args` to provide data during the build of your Template.
+**Note:** ~content~ is where the content of Templates that uses this Template as MasterTemplate goes.
 
 ResourceURI.java
 ---
