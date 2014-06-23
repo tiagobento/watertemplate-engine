@@ -1,7 +1,7 @@
 Template Engine
 ===
 
-This is the Main Template Engine used to build HTML pages.
+Use to build HTML pages.
 It assumes that your template files are all stored in `classpath:templates/*` and that they are organized by locale.
 
 Default locale is `Locale.US`.

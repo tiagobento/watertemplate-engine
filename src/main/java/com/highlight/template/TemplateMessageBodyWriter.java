@@ -1,7 +1,5 @@
 package com.highlight.template;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
@@ -17,8 +15,6 @@ import java.lang.reflect.Type;
 
 @Provider
 public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateMessageBodyWriter.class);
 
     @Context
     private HttpServletRequest request;
@@ -37,7 +33,7 @@ public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
     public void writeTo(Template template, Class<?> aClass, Type type, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> stringObjectMultivaluedMap, OutputStream outputStream) throws IOException, WebApplicationException {
         long start = System.currentTimeMillis();
         String build = template.build(request.getLocale());
-        LOGGER.info("Rendered {} in {}ms", template.getClass().getSimpleName(), System.currentTimeMillis() - start);
+        //LOGGER.info("Rendered {} in {}ms", template.getClass().getSimpleName(), System.currentTimeMillis() - start);
         outputStream.write(build.getBytes());
         outputStream.flush();
     }
