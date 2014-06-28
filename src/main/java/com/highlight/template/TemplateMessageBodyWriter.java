@@ -31,9 +31,7 @@ public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
 
     @Override
     public void writeTo(Template template, Class<?> aClass, Type type, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> stringObjectMultivaluedMap, OutputStream outputStream) throws IOException, WebApplicationException {
-        long start = System.currentTimeMillis();
         String build = template.build(request.getLocale());
-        //LOGGER.info("Rendered {} in {}ms", template.getClass().getSimpleName(), System.currentTimeMillis() - start);
         outputStream.write(build.getBytes());
         outputStream.flush();
     }

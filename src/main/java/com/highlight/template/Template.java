@@ -1,22 +1,19 @@
 package com.highlight.template;
 
 import org.apache.commons.io.FileUtils;
-import org.stringtemplate.v4.AttributeRenderer;
 import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public abstract class Template {
 
-    private static final Locale DEFAULT_LOCALE = Locale.US;
+    static final Locale DEFAULT_LOCALE = Locale.US;
 
     /* Please use me */
     protected final Map<String, Object> args = new HashMap<>();
@@ -36,45 +33,64 @@ public abstract class Template {
 
     //
 
-    public final String build() {
+    final String build() {
         return build(DEFAULT_LOCALE);
     }
 
-    public final String build(final Locale locale) {
+    final String build(final Locale locale) {
         try {
-            final String renderedSelf = renderSelfAndSubTemplates(locale);
-            return renderMasterTemplateIfNecessary(renderedSelf);
+            if (StaticTemplatesCache.contains(getClass(), locale)) {
+                return StaticTemplatesCache.get(getClass(), locale);
+            } else {
+                return fullyRenderSelfAndCacheIfNecessary(locale);
+            }
         } catch (Exception e) {
             throw new TemplateException(e);
         }
     }
 
-    private String renderMasterTemplateIfNecessary(final String renderedThis) {
+    private String fullyRenderSelfAndCacheIfNecessary(final Locale locale) throws IOException {
+        final String selfWithSubTemplates = renderSelfWithSubTemplates(locale);
+        final String fullyRenderedSelf = renderMasterTemplateIfNecessary(selfWithSubTemplates, locale);
+
+        StaticTemplatesCache.cacheIfNecessary(getClass(), locale, fullyRenderedSelf);
+
+        return fullyRenderedSelf;
+    }
+
+    private String renderMasterTemplateIfNecessary(final String partiallyRenderedSelf, final Locale locale) {
         final Template masterTemplate = getMasterTemplate();
         if (masterTemplate != null) {
-            masterTemplate.args.put("content", renderedThis);
-            return masterTemplate.build();
+            masterTemplate.args.put("content", partiallyRenderedSelf);
+            return masterTemplate.build(locale);
         } else {
-            return renderedThis;
+            return partiallyRenderedSelf;
         }
     }
 
-    private String renderSelfAndSubTemplates(final Locale locale) throws IOException {
-        for (Map.Entry<String, Template> entry : getSubTemplates().entrySet())
-            args.put(entry.getKey(), entry.getValue().build(locale));
-
-        final ST st = createStringTemplateRenderer(locale);
-
-        for (Map.Entry<String, Object> entry : args.entrySet())
-            st.add(entry.getKey(), entry.getValue());
-
-        return st.render(locale);
+    private String renderSelfWithSubTemplates(final Locale locale) throws IOException {
+        renderSubTemplates(locale);
+        return renderSelf(locale);
     }
 
-    private ST createStringTemplateRenderer(final Locale locale) throws IOException {
-        final ST st = new ST(getTemplateAsString(locale), '~', '~');
-        st.groupThatCreatedThisInstance.registerRenderer(Date.class, new DateAttributeRenderer());
-        return st;
+    private void renderSubTemplates(Locale locale) {
+        for (final Map.Entry<String, Template> subTemplateEntry : getSubTemplates().entrySet())
+            args.put(subTemplateEntry.getKey(), subTemplateEntry.getValue().build(locale));
+    }
+
+    private String renderSelf(Locale locale) throws IOException {
+        final ST st = createST(locale);
+
+        for (final Map.Entry<String, Object> argsEntry : args.entrySet())
+            st.add(argsEntry.getKey(), argsEntry.getValue());
+
+        return st.render();
+    }
+
+    //
+
+    private ST createST(final Locale locale) throws IOException {
+        return new ST(getTemplateAsString(locale), '~', '~');
     }
 
     private String getTemplateAsString(final Locale locale) throws IOException {
@@ -89,13 +105,6 @@ public abstract class Template {
             throw new FileNotFoundException(templatePath);
         }
     }
-
-    private static class DateAttributeRenderer implements AttributeRenderer {
-        @Override
-        public String toString(Object o, String s, Locale locale) {
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-            return dateFormat.format((Date) o);
-        }
-
-    }
 }
+
+
