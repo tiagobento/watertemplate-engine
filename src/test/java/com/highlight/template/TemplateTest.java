@@ -124,7 +124,7 @@ public class TemplateTest {
             }
 
             TemplateWithListArgs() {
-                args.put("items", Arrays.asList(new int[]{1, 2}));
+                add("items", Arrays.asList(new int[]{1, 2}));
             }
         }
 

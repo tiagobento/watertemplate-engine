@@ -16,7 +16,7 @@ public abstract class Template {
     static final Locale DEFAULT_LOCALE = Locale.US;
 
     /* Please use me */
-    protected final Map<String, Object> args = new HashMap<>();
+    private final Map<String, Object> args = new HashMap<>();
 
     /* Please override me */
     protected Map<String, Template> getSubTemplates() {
@@ -47,6 +47,10 @@ public abstract class Template {
         } catch (Exception e) {
             throw new TemplateException(e);
         }
+    }
+
+    protected void add(final String key, final Object value) {
+        this.args.put(key, value);
     }
 
     private String fullyRenderSelfAndCacheIfNecessary(final Locale locale) throws IOException {
