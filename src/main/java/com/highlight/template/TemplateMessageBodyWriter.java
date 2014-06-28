@@ -31,7 +31,7 @@ public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
 
     @Override
     public void writeTo(Template template, Class<?> aClass, Type type, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> stringObjectMultivaluedMap, OutputStream outputStream) throws IOException, WebApplicationException {
-        String build = template.build(request.getLocale());
+        final String build = template.render(request.getLocale());
         outputStream.write(build.getBytes());
         outputStream.flush();
     }

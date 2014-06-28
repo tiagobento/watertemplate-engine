@@ -1,7 +1,7 @@
 package com.highlight.template;
 
+import com.highlight.template.renderer.STRenderer;
 import org.apache.commons.io.FileUtils;
-import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,11 +33,11 @@ public abstract class Template {
 
     //
 
-    final String build() {
-        return build(DEFAULT_LOCALE);
+    final String render() {
+        return render(DEFAULT_LOCALE);
     }
 
-    final String build(final Locale locale) {
+    final String render(final Locale locale) {
         try {
             if (StaticTemplatesCache.contains(getClass(), locale)) {
                 return StaticTemplatesCache.get(getClass(), locale);
@@ -54,8 +54,8 @@ public abstract class Template {
     }
 
     private String fullyRenderSelfAndCacheIfNecessary(final Locale locale) throws IOException {
-        final String selfWithSubTemplates = renderSelfWithSubTemplates(locale);
-        final String fullyRenderedSelf = renderMasterTemplateIfNecessary(selfWithSubTemplates, locale);
+        final String renderedSelfWithRenderedSubTemplates = renderSelfWithSubTemplates(locale);
+        final String fullyRenderedSelf = renderMasterTemplateIfNecessary(renderedSelfWithRenderedSubTemplates, locale);
 
         StaticTemplatesCache.cacheIfNecessary(getClass(), locale, fullyRenderedSelf);
 
@@ -65,8 +65,8 @@ public abstract class Template {
     private String renderMasterTemplateIfNecessary(final String partiallyRenderedSelf, final Locale locale) {
         final Template masterTemplate = getMasterTemplate();
         if (masterTemplate != null) {
-            masterTemplate.args.put("content", partiallyRenderedSelf);
-            return masterTemplate.build(locale);
+            masterTemplate.add("content", partiallyRenderedSelf);
+            return masterTemplate.render(locale);
         } else {
             return partiallyRenderedSelf;
         }
@@ -77,25 +77,17 @@ public abstract class Template {
         return renderSelf(locale);
     }
 
-    private void renderSubTemplates(Locale locale) {
+    private void renderSubTemplates(final Locale locale) {
         for (final Map.Entry<String, Template> subTemplateEntry : getSubTemplates().entrySet())
-            args.put(subTemplateEntry.getKey(), subTemplateEntry.getValue().build(locale));
+            add(subTemplateEntry.getKey(), subTemplateEntry.getValue().render(locale));
     }
 
-    private String renderSelf(Locale locale) throws IOException {
-        final ST st = createST(locale);
-
-        for (final Map.Entry<String, Object> argsEntry : args.entrySet())
-            st.add(argsEntry.getKey(), argsEntry.getValue());
-
-        return st.render();
+    private String renderSelf(final Locale locale) throws IOException {
+        final String templateAsString = getTemplateAsString(locale);
+        return new STRenderer(templateAsString, args).render();
     }
 
     //
-
-    private ST createST(final Locale locale) throws IOException {
-        return new ST(getTemplateAsString(locale), '~', '~');
-    }
 
     private String getTemplateAsString(final Locale locale) throws IOException {
         final String templatePath = "templates" + File.separator + locale + File.separator + getTemplateFileURI();

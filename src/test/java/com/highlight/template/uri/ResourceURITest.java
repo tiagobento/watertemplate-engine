@@ -1,5 +1,6 @@
-package com.highlight.template;
+package com.highlight.template.uri;
 
+import com.highlight.template.TemplateException;
 import org.junit.Assert;
 import org.junit.Test;
 

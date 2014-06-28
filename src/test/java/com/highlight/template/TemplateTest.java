@@ -22,7 +22,7 @@ public class TemplateTest {
             }
         }
 
-        String rendered = new TemplateOnlyWithMasterTemplate().build();
+        String rendered = new TemplateOnlyWithMasterTemplate().render();
         Assert.assertEquals("master_template_content\n" + "template_only_with_master_template_content", rendered);
     }
 
@@ -40,7 +40,7 @@ public class TemplateTest {
             }
         }
 
-        String rendered = new TemplateOnlyWithSubTemplates().build();
+        String rendered = new TemplateOnlyWithSubTemplates().render();
         Assert.assertEquals("template_only_with_sub_templates_content\n" + "sub_template_content", rendered);
     }
 
@@ -62,7 +62,7 @@ public class TemplateTest {
             }
         }
 
-        String rendered = new TemplateWithSubTemplatesAndMasterTemplate().build();
+        String rendered = new TemplateWithSubTemplatesAndMasterTemplate().render();
         Assert.assertEquals("master_template_content\n" +
             "template_with_sub_templates_and_master_template_content\n" +
             "sub_template_content", rendered);
@@ -98,7 +98,7 @@ public class TemplateTest {
             }
         }
 
-        String rendered = new TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate().build();
+        String rendered = new TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate().render();
         Assert.assertEquals("" +
                 "master_template_content\n" +
                 "template_that_have_sub_templates_that_have_a_master_template_content\n" +
@@ -113,7 +113,7 @@ public class TemplateTest {
             protected String getTemplateFileURI() {
                 return "_invalid.st";
             }
-        }.build();
+        }.render();
     }
 
     @Test
@@ -128,12 +128,12 @@ public class TemplateTest {
             }
         }
 
-        String rendered = new TemplateWithListArgs().build();
+        String rendered = new TemplateWithListArgs().render();
         Assert.assertEquals("12\n", rendered);
     }
 
     @Test
     public void templateWithNonexistentLocale() {
-        Assert.assertEquals("sub_template_content", new Fixture.SubTemplate().build(Locale.FRANCE));
+        Assert.assertEquals("sub_template_content", new Fixture.SubTemplate().render(Locale.FRANCE));
     }
 }

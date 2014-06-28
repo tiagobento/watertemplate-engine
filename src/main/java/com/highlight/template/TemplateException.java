@@ -1,6 +1,6 @@
 package com.highlight.template;
 
-class TemplateException extends RuntimeException {
+public class TemplateException extends RuntimeException {
     public TemplateException(Exception e) {
         super(e);
     }

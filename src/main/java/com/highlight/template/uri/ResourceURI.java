@@ -1,4 +1,6 @@
-package com.highlight.template;
+package com.highlight.template.uri;
+
+import com.highlight.template.TemplateException;
 
 public abstract class ResourceURI {
 

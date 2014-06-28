@@ -12,7 +12,7 @@ final class StaticTemplatesCache {
     }
 
     static void cacheIfNecessary(final Class<? extends Template> clazz, final Locale locale, final String fullyRenderedSelf) {
-        if (StaticTemplatesCache.shouldHave(clazz)) {
+        if (shouldHave(clazz)) {
             CACHED_TEMPLATES.put(toKey(clazz, locale), fullyRenderedSelf);
         }
     }

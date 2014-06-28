@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class StaticTemplatesCacheTest {
 
-    public static final Locale LOCALE = Template.DEFAULT_LOCALE;
+    private static final Locale LOCALE = Template.DEFAULT_LOCALE;
 
     @StaticTemplate
     public static class StaticTestTemplate extends Fixture.SubTemplate {
@@ -22,7 +22,8 @@ public class StaticTemplatesCacheTest {
     @Test
     public void testCachedTemplate() {
         Template testTemplate = new StaticTestTemplate();
-        StaticTemplatesCache.cacheIfNecessary(StaticTestTemplate.class, LOCALE, testTemplate.build());
+        StaticTemplatesCache.cacheIfNecessary(StaticTestTemplate.class, LOCALE, testTemplate.render());
+
         Assert.assertTrue(StaticTemplatesCache.contains(StaticTestTemplate.class, LOCALE));
         Assert.assertNotNull(StaticTemplatesCache.get(StaticTestTemplate.class, LOCALE));
     }
