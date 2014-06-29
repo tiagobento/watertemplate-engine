@@ -1,0 +1,12 @@
+#ECLIPSE
+**/target/*
+**/.project
+**/.classpath
+**/.settings/*
+
+#MAC
+**.DS_Store
+
+#INTELLIJ
+.idea
+**.iml
