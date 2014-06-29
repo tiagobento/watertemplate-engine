@@ -3,7 +3,6 @@ package org.watertemplate;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -11,7 +10,7 @@ import java.util.Map;
 public class TemplateRendererTest {
 
     @Test
-    public void templateOnlyWithMasterTemplate() throws IOException {
+    public void templateOnlyWithMasterTemplate() {
         class TemplateOnlyWithMasterTemplate extends Template {
             protected String getTemplateFileURI() {
                 return "_template_only_with_master_template.st";
@@ -27,7 +26,7 @@ public class TemplateRendererTest {
     }
 
     @Test
-    public void templateOnlyWithSubTemplates() throws IOException {
+    public void templateOnlyWithSubTemplates() {
         class TemplateOnlyWithSubTemplates extends Template {
             protected String getTemplateFileURI() {
                 return "_template_only_with_sub_templates.st";
@@ -45,7 +44,7 @@ public class TemplateRendererTest {
     }
 
     @Test
-    public void templateWithSubTemplatesAndMasterTemplate() throws IOException {
+    public void templateWithSubTemplatesAndMasterTemplate() {
         class TemplateWithSubTemplatesAndMasterTemplate extends Template {
             protected String getTemplateFileURI() {
                 return "_template_with_sub_templates_and_master_template.st";
@@ -69,7 +68,7 @@ public class TemplateRendererTest {
     }
 
     @Test
-    public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() throws IOException {
+    public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
         class SubTemplateMasterTemplate extends Template {
             protected String getTemplateFileURI() {
                 return "_sub_template_master_template.st";
@@ -108,7 +107,7 @@ public class TemplateRendererTest {
     }
 
     @Test(expected = Exception.class)
-    public void templateWithInvalidTemplatePath() throws IOException {
+    public void templateWithInvalidTemplatePath() {
         render(new Template() {
             protected String getTemplateFileURI() {
                 return "_invalid.st";
@@ -117,7 +116,7 @@ public class TemplateRendererTest {
     }
 
     @Test
-    public void templateWithListArgs() throws IOException {
+    public void templateWithListArgs() {
         class TemplateWithListArgs extends Template {
             protected String getTemplateFileURI() {
                 return "_template_with_list_args.st";
@@ -133,15 +132,15 @@ public class TemplateRendererTest {
     }
 
     @Test
-    public void templateWithNonexistentLocale() throws IOException {
+    public void templateWithNonexistentLocale() {
         Assert.assertEquals("sub_template_content", render(new Fixture.SubTemplate(), Locale.FRANCE));
     }
 
-    private String render(final Template template) throws IOException {
+    private String render(final Template template) {
         return render(template, TemplateRenderer.DEFAULT_LOCALE);
     }
 
-    private String render(final Template template, final Locale locale) throws IOException {
+    private String render(final Template template, final Locale locale) {
         return new TemplateRenderer(template, locale).render();
     }
 }
