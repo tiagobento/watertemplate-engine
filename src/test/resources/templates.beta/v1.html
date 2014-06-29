@@ -1,11 +1,24 @@
-<h1>~title~</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>~title~</title>
+</head>
+<body>
+    <h1>~title~</h1>
 
-~if mustDisplayMenu:
-    <ul id="menu">
-        ~for item in items:
-            <li>
-                <a href="~item.url~"> ~item.label~ </a>
-            </li>
-        ~
-    </ul>
-~
+    ~if mustDisplayMenu:
+        <ul id="menu">
+            ~for item in items:
+                <li>
+                    <a href="~item.url~"> ~item.label~ </a>
+                </li>
+            ~else~
+                <span>No items in this menu.</span>
+            ~
+        </ul>
+    ~else~
+        <span>Menu unavailable.</span>
+    ~
+</body>
+</html>
