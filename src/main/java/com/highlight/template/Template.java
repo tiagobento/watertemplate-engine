@@ -1,6 +1,5 @@
 package com.highlight.template;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -37,7 +36,7 @@ public abstract class Template {
         }
     }
 
-    private String fromCacheOrNewRendering(final Locale locale) throws IOException {
+    private String fromCacheOrNewRendering(final Locale locale) {
         if (StaticTemplatesCache.contains(getClass(), locale)) {
             return StaticTemplatesCache.get(getClass(), locale);
         } else {
