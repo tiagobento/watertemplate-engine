@@ -47,7 +47,7 @@ public abstract class Template {
         }
     }
 
-    protected void add(final String key, final Object value) {
+    protected final void add(final String key, final Object value) {
         this.args.put(key, value);
     }
 }

@@ -5,7 +5,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
@@ -22,7 +21,7 @@ class TemplateRenderer {
         this.locale = locale;
     }
 
-    public String render() throws IOException {
+    public String render() {
         final String renderedTemplateWithRenderedSubTemplates = renderTemplateWithSubTemplates();
         return renderMasterTemplateIfNecessary(renderedTemplateWithRenderedSubTemplates);
     }
@@ -38,7 +37,7 @@ class TemplateRenderer {
         return masterTemplate.render(locale);
     }
 
-    private String renderTemplateWithSubTemplates() throws IOException {
+    private String renderTemplateWithSubTemplates() {
         renderSubTemplatesAddingThemAsTemplateArguments();
         return renderTemplate();
     }
@@ -51,26 +50,30 @@ class TemplateRenderer {
             );
     }
 
-    private String renderTemplate() throws IOException {
+    private String renderTemplate() {
         return new STParser(getTemplateAsString(), template.args).parse();
     }
 
     //
 
-    private String getTemplateAsString() throws IOException {
+    private String getTemplateAsString() {
         return getTemplateAsString(locale);
     }
 
-    private String getTemplateAsString(final Locale locale) throws IOException {
+    private String getTemplateAsString(final Locale locale) {
         final String templatePath = "templates" + File.separator + locale + File.separator + template.getTemplateFileURI();
         final URL resource = getClass().getClassLoader().getResource(templatePath);
 
-        if (resource != null) {
-            return FileUtils.readFileToString(new File(resource.getFile()));
-        } else if (!locale.equals(DEFAULT_LOCALE)) {
-            return getTemplateAsString(DEFAULT_LOCALE);
-        } else {
-            throw new FileNotFoundException(templatePath);
+        try {
+            if (resource != null) {
+                return FileUtils.readFileToString(new File(resource.getFile()));
+            } else if (!locale.equals(DEFAULT_LOCALE)) {
+                return getTemplateAsString(DEFAULT_LOCALE);
+            } else {
+                throw new FileNotFoundException(templatePath);
+            }
+        } catch (Exception e) {
+            throw new TemplateException(e);
         }
     }
 }

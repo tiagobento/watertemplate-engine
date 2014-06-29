@@ -108,7 +108,7 @@ public class TemplateRendererTest {
         );
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = Exception.class)
     public void templateWithInvalidTemplatePath() throws IOException {
         render(new Template() {
             protected String getTemplateFileURI() {
