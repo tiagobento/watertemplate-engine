@@ -1,4 +1,4 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -38,12 +38,12 @@ public abstract class Template {
 
     private String fromCacheOrNewRendering(final Locale locale) {
         if (StaticTemplatesCache.contains(getClass(), locale)) {
-            return StaticTemplatesCache.get(getClass(), locale);
-        } else {
-            final String rendered = new TemplateRenderer(this, locale).render();
-            StaticTemplatesCache.cacheIfNecessary(getClass(), locale, rendered);
-            return rendered;
+//            return StaticTemplatesCache.get(getClass(), locale);
         }
+
+        final String rendered = new TemplateRenderer(this, locale).render();
+        StaticTemplatesCache.cacheIfNecessary(getClass(), locale, rendered);
+        return rendered;
     }
 
     protected final void add(final String key, final Object value) {

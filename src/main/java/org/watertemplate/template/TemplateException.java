@@ -1,4 +1,4 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 public class TemplateException extends RuntimeException {
     public TemplateException(Exception e) {

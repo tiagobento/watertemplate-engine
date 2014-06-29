@@ -1,6 +1,6 @@
-package com.highlight.template.uri;
+package org.watertemplate.template.uri;
 
-import com.highlight.template.TemplateException;
+import org.watertemplate.template.TemplateException;
 
 public abstract class ResourceURI {
 

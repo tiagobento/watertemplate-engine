@@ -1,4 +1,4 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 
 import java.lang.annotation.Retention;

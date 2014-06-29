@@ -1,4 +1,4 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 
 import javax.servlet.http.HttpServletRequest;

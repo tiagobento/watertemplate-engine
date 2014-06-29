@@ -1,4 +1,4 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 import org.junit.Assert;
 import org.junit.Test;

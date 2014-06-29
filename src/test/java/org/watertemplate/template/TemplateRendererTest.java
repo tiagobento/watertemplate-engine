@@ -1,9 +1,8 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;

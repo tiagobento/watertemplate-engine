@@ -1,6 +1,6 @@
-package com.highlight.template;
+package org.watertemplate.template;
 
-import com.highlight.template.parser.STParser;
+import org.watertemplate.template.parser.STParser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

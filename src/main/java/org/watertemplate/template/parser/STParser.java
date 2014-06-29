@@ -1,4 +1,4 @@
-package com.highlight.template.parser;
+package org.watertemplate.template.parser;
 
 import org.stringtemplate.v4.ST;
 
