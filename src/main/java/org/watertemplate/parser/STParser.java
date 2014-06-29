@@ -1,7 +1,11 @@
 package org.watertemplate.parser;
 
+import org.apache.commons.io.FileUtils;
 import org.stringtemplate.v4.ST;
+import org.watertemplate.TemplateException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -10,9 +14,13 @@ public final class STParser implements Parser {
 
     private final ST st;
 
-    public STParser(final String templateAsString, final Map<String, Object> args) {
-        this.st = new ST(templateAsString, DELIMITER, DELIMITER);
-        this.addAllArguments(args);
+    public STParser(final String templateFileURI, final Map<String, Object> args) {
+        try {
+            this.st = new ST(FileUtils.readFileToString(new File(templateFileURI)), DELIMITER, DELIMITER);
+            this.addAllArguments(args);
+        } catch (Exception e) {
+            throw new TemplateException(e);
+        }
     }
 
     private void addAllArguments(final Map<String, Object> args) {

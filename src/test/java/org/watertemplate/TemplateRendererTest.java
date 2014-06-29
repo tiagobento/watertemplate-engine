@@ -12,7 +12,7 @@ public class TemplateRendererTest {
     @Test
     public void templateOnlyWithMasterTemplate() {
         class TemplateOnlyWithMasterTemplate extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_template_only_with_master_template.st";
             }
 
@@ -28,7 +28,7 @@ public class TemplateRendererTest {
     @Test
     public void templateOnlyWithSubTemplates() {
         class TemplateOnlyWithSubTemplates extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_template_only_with_sub_templates.st";
             }
 
@@ -46,7 +46,7 @@ public class TemplateRendererTest {
     @Test
     public void templateWithSubTemplatesAndMasterTemplate() {
         class TemplateWithSubTemplatesAndMasterTemplate extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_template_with_sub_templates_and_master_template.st";
             }
 
@@ -70,7 +70,7 @@ public class TemplateRendererTest {
     @Test
     public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
         class SubTemplateMasterTemplate extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_sub_template_master_template.st";
             }
         }
@@ -82,7 +82,7 @@ public class TemplateRendererTest {
         }
 
         class TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_template_with_master_template_and_sub_templates_that_have_a_master_template.st";
             }
 
@@ -106,10 +106,10 @@ public class TemplateRendererTest {
         );
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = TemplateException.class)
     public void templateWithInvalidTemplatePath() {
         render(new Template() {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_invalid.st";
             }
         });
@@ -118,7 +118,7 @@ public class TemplateRendererTest {
     @Test
     public void templateWithListArgs() {
         class TemplateWithListArgs extends Template {
-            protected String getTemplateFileURI() {
+            protected String getTemplateFilePath() {
                 return "_template_with_list_args.st";
             }
 

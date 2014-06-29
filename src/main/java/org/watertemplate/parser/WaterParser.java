@@ -7,11 +7,11 @@ import java.util.Map;
 public class WaterParser implements Parser {
 
     private final Map<String, Object> arguments;
-    private final String filePath;
+    private final String templateFileURI;
 
-    public WaterParser(final String filePath, final Map<String, Object> arguments) {
+    public WaterParser(final String templateFileURI, final Map<String, Object> arguments) {
         this.arguments = arguments;
-        this.filePath = filePath;
+        this.templateFileURI = templateFileURI;
     }
 
     @Override

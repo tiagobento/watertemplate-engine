@@ -20,7 +20,7 @@ All you need to know
 
 Template.java
 ---
-Make your template classes override `getTemplateFileURI`, `getSubTemplates` (optional) and `getMasterTemplate` (optional) to build your templates. Use `this.args` to input values to be used in your templates.
+Make your template classes override `getTemplateFilePath`, `getSubTemplates` (optional) and `getMasterTemplate` (optional) to build your templates. Use `this.args` to input values to be used in your templates.
 
 e.g.:
 
@@ -40,7 +40,7 @@ public class MainPage extends Template {
     }
 
     @Override
-    public String getTemplateFileURI() {
+    public String getTemplateFilePath() {
         return "/main/main.html";
     }
 }
@@ -65,7 +65,7 @@ e.g.:
 </html>
 ```
 
-The `String build(Locale)` method defined on `Template.java` is used to recursively build your template with its master/sub templates.
+The `String render(Locale)` method defined on `Template.java` is used to recursively build your template with its master/sub templates.
 
 **Note:** ~content~ is where the content of Templates that uses this Template as MasterTemplate goes.
 
@@ -86,7 +86,7 @@ public class FooPage extends Template {
     protected Template getMasterTemplate() { ... }
     
     @Override
-    public String getTemplateFileURI() { ... }
+    public String getTemplateFilePath() { ... }
     
     public static class URI extends ResourceURI {
         public static final String RAW = "/foo/{id}";

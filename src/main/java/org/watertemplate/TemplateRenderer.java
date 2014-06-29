@@ -1,6 +1,5 @@
 package org.watertemplate;
 
-import org.apache.commons.io.FileUtils;
 import org.watertemplate.parser.STParser;
 
 import java.io.File;
@@ -51,29 +50,25 @@ class TemplateRenderer {
     }
 
     private String renderTemplate() {
-        return new STParser(getTemplateAsString(), template.arguments.map).parse();
+        return new STParser(getTemplateFileURI(), template.arguments.map).parse();
     }
 
     //
 
-    private String getTemplateAsString() {
-        return getTemplateAsString(locale);
+    private String getTemplateFileURI() {
+        return getTemplateFileURI(locale);
     }
 
-    private String getTemplateAsString(final Locale locale) {
-        final String templatePath = "templates" + File.separator + locale + File.separator + template.getTemplateFileURI();
-        final URL resource = getClass().getClassLoader().getResource(templatePath);
+    private String getTemplateFileURI(final Locale locale) {
+        final String templateFileURI = "templates" + File.separator + locale + File.separator + template.getTemplateFilePath();
+        final URL resource = getClass().getClassLoader().getResource(templateFileURI);
 
-        try {
-            if (resource != null) {
-                return FileUtils.readFileToString(new File(resource.getFile()));
-            } else if (!locale.equals(DEFAULT_LOCALE)) {
-                return getTemplateAsString(DEFAULT_LOCALE);
-            } else {
-                throw new FileNotFoundException(templatePath);
-            }
-        } catch (Exception e) {
-            throw new TemplateException(e);
+        if (resource != null) {
+            return resource.getFile();
+        } else if (!locale.equals(DEFAULT_LOCALE)) {
+            return getTemplateFileURI(DEFAULT_LOCALE);
+        } else {
+            throw new TemplateException(new FileNotFoundException(templateFileURI));
         }
     }
 }

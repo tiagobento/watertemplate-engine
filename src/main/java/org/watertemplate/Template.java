@@ -20,7 +20,7 @@ public abstract class Template {
     }
 
     /* Implement me (you have no choice) */
-    protected abstract String getTemplateFileURI();
+    protected abstract String getTemplateFilePath();
 
     //
 
