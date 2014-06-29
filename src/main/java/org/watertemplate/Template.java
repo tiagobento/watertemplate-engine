@@ -7,7 +7,7 @@ import java.util.Map;
 public abstract class Template {
 
     /* Please use me */
-    final Map<String, Object> args = new HashMap<>();
+    final TemplateArguments arguments = new TemplateArguments();
 
     /* Please override me */
     protected Map<String, Template> getSubTemplates() {
@@ -38,7 +38,7 @@ public abstract class Template {
 
     private String fromCacheOrNewRendering(final Locale locale) {
         if (StaticTemplatesCache.contains(getClass(), locale)) {
-//            return StaticTemplatesCache.get(getClass(), locale);
+            return StaticTemplatesCache.get(getClass(), locale);
         }
 
         final String rendered = new TemplateRenderer(this, locale).render();
@@ -47,7 +47,7 @@ public abstract class Template {
     }
 
     protected final void add(final String key, final Object value) {
-        this.args.put(key, value);
+        this.arguments.add(key, value);
     }
 }
 

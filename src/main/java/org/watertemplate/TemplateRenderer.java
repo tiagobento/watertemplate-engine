@@ -51,7 +51,7 @@ class TemplateRenderer {
     }
 
     private String renderTemplate() {
-        return new STParser(getTemplateAsString(), template.args).parse();
+        return new STParser(getTemplateAsString(), template.arguments.map).parse();
     }
 
     //
