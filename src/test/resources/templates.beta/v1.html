@@ -1,0 +1,11 @@
+<h1>~title~</h1>
+
+~if mustDisplayMenu:
+    <ul id="menu">
+        ~for item in items:
+            <li>
+                <a href="~item.url~"> ~item.label~ </a>
+            </li>
+        ~
+    </ul>
+~
