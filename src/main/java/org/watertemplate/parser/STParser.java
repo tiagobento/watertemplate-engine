@@ -1,4 +1,4 @@
-package org.watertemplate.template.parser;
+package org.watertemplate.parser;
 
 import org.stringtemplate.v4.ST;
 

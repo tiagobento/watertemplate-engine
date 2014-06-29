@@ -1,7 +1,7 @@
-package org.watertemplate.template;
+package org.watertemplate;
 
-import org.watertemplate.template.parser.STParser;
 import org.apache.commons.io.FileUtils;
+import org.watertemplate.parser.STParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;

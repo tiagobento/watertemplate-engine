@@ -1,4 +1,4 @@
-package org.watertemplate.template;
+package org.watertemplate;
 
 
 import java.lang.annotation.Retention;

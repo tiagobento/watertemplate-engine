@@ -1,4 +1,4 @@
-package org.watertemplate.template;
+package org.watertemplate;
 
 public class Fixture {
     public static class MasterTemplate extends Template {
@@ -13,7 +13,7 @@ public class Fixture {
         }
     }
 
-    @org.watertemplate.template.StaticTemplate
+    @org.watertemplate.StaticTemplate
     public static class StaticTemplate extends Fixture.SubTemplate {
     }
 }

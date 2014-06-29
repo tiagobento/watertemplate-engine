@@ -1,4 +1,4 @@
-package org.watertemplate.template;
+package org.watertemplate;
 
 import org.junit.Assert;
 import org.junit.Test;

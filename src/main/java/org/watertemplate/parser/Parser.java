@@ -1,4 +1,4 @@
-package org.watertemplate.template.parser;
+package org.watertemplate.parser;
 
 public interface Parser {
     public String parse();

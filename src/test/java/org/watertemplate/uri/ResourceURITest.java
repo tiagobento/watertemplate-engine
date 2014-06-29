@@ -1,8 +1,8 @@
-package org.watertemplate.template.uri;
+package org.watertemplate.uri;
 
-import org.watertemplate.template.TemplateException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.TemplateException;
 
 public class ResourceURITest {
 
