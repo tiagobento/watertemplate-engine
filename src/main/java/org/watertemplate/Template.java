@@ -7,7 +7,7 @@ import java.util.Map;
 public abstract class Template {
 
     /* Please use me */
-    final TemplateArguments arguments = new TemplateArguments();
+    final TemplateMap arguments = new TemplateMap();
 
     /* Please override me */
     protected Map<String, Template> getSubTemplates() {
@@ -48,6 +48,10 @@ public abstract class Template {
 
     protected final void add(final String key, final Object value) {
         this.arguments.add(key, value);
+    }
+
+    protected final <T> void  add(final String key, final Iterable<T> iterable, final TemplateMap.CollectionMapper<T> mapper) {
+        this.arguments.add(key, iterable, mapper);
     }
 }
 
