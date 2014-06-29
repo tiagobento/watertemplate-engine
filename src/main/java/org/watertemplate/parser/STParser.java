@@ -11,7 +11,7 @@ public final class STParser implements Parser {
     private final ST st;
 
     public STParser(final String templateAsString, final Map<String, Object> args) {
-        this.st = new ST(templateAsString, '~', '~');
+        this.st = new ST(templateAsString, DELIMITER, DELIMITER);
         this.addAllArguments(args);
     }
 
