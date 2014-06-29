@@ -12,5 +12,9 @@ public class Fixture {
             return "_sub_template.st";
         }
     }
+
+    @com.highlight.template.StaticTemplate
+    public static class StaticTemplate extends Fixture.SubTemplate {
+    }
 }
 
