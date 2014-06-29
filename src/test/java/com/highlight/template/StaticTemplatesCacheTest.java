@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class StaticTemplatesCacheTest {
 
-    private static final Locale LOCALE = Template.DEFAULT_LOCALE;
+    private static final Locale LOCALE = TemplateRenderer.DEFAULT_LOCALE;
 
     @StaticTemplate
     public static class StaticTestTemplate extends Fixture.SubTemplate {

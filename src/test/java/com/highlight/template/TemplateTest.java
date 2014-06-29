@@ -3,7 +3,6 @@ package com.highlight.template;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -124,12 +123,12 @@ public class TemplateTest {
             }
 
             TemplateWithListArgs() {
-                add("items", Arrays.asList(new int[]{1, 2}));
+                add("items", new int[]{1, 2});
             }
         }
 
         String rendered = new TemplateWithListArgs().render();
-        Assert.assertEquals("12\n", rendered);
+        Assert.assertEquals("1\n2\n", rendered);
     }
 
     @Test

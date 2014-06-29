@@ -1,16 +1,16 @@
-package com.highlight.template.renderer;
+package com.highlight.template.parser;
 
 import org.stringtemplate.v4.ST;
 
 import java.util.Map;
 
 
-/* Temporary renderer */
-public final class STRenderer implements Renderer {
+/* Temporary parser */
+public final class STParser implements Parser {
 
     private final ST st;
 
-    public STRenderer(final String templateAsString, final Map<String, Object> args) {
+    public STParser(final String templateAsString, final Map<String, Object> args) {
         this.st = new ST(templateAsString, '~', '~');
         this.addAllArguments(args);
     }
@@ -21,7 +21,7 @@ public final class STRenderer implements Renderer {
     }
 
     @Override
-    public String render() {
+    public String parse() {
         return this.st.render();
     }
 }
