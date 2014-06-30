@@ -3,6 +3,7 @@ package org.watertemplate;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public abstract class Template {
 
@@ -50,7 +51,7 @@ public abstract class Template {
         this.arguments.add(key, value);
     }
 
-    protected final <T> void  add(final String key, final Iterable<T> iterable, final TemplateMap.CollectionMapper<T> mapper) {
+    protected final <T> void  add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap> mapper) {
         this.arguments.add(key, iterable, mapper);
     }
 }

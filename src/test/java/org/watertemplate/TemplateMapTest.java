@@ -22,23 +22,15 @@ public class TemplateMapTest {
         Collection<String> strings = Arrays.asList("foo", "bar");
         TemplateMap templateMap = new TemplateMap();
 
-        templateMap.add("strings", strings, new TemplateMap.CollectionMapper<String>() {
-            @Override
-            public void map(final String string, final TemplateMap map) {
-                map.add("lower", string.toLowerCase());
-                map.add("upper", string.toUpperCase());
-                map.add("size", string.length());
-                map.add("chars", getChars(string), new TemplateMap.CollectionMapper<Character>() {
-                    @Override
-                    public void map(final Character character, final TemplateMap map) {
-                        map.add("asciiCode", (int) character);
-                    }
-                });
-            }
+        templateMap.add("strings", strings, (string, stringsMap) -> {
+            stringsMap.add("lower", string.toLowerCase());
+            stringsMap.add("upper", string.toUpperCase());
+            stringsMap.add("size", string.length());
+            stringsMap.add("chars", getChars(string), (character, charsMap) -> charsMap.add("asciiCode", (int) character));
         });
 
         Assert.assertEquals(1, templateMap.map.size());
-        Assert.assertTrue(templateMap.map.get("strings") instanceof TemplateMap.Collection);
+        Assert.assertTrue(templateMap.map.get("strings") instanceof TemplateMap.TemplateCollection);
     }
 
     private Collection<Character> getChars(final String string) {

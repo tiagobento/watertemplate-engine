@@ -2,6 +2,7 @@ package org.watertemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 class TemplateMap {
     final Map<String, Object> map = new HashMap<>();
@@ -10,29 +11,23 @@ class TemplateMap {
         this.map.put(key, value);
     }
 
-    final <T> void add(final String key, final Iterable<T> iterable, final CollectionMapper<T> mapper) {
-        add(key, new Collection<T>(iterable, mapper));
+    final <T> void add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap> mapper) {
+        add(key, new TemplateCollection<T>(iterable, mapper));
     }
 
-    //
-
-    abstract static class CollectionMapper<T> {
-        public abstract void map(final T object, final TemplateMap map);
-
-        final TemplateMap map(final T object) {
-            TemplateMap map = new TemplateMap();
-            map(object, map);
-            return map;
-        }
-    }
-
-    static class Collection<T> {
+    static class TemplateCollection<T> {
         private final Iterable<T> iterable;
-        private final CollectionMapper<T> mapper;
+        private final BiConsumer<T, TemplateMap> mapper;
 
-        Collection(final Iterable<T> iterable, final CollectionMapper<T> mapper) {
+        TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, TemplateMap> mapper) {
             this.iterable = iterable;
             this.mapper = mapper;
+        }
+
+        TemplateMap map(T object) {
+            TemplateMap map = new TemplateMap();
+            mapper.accept(object, map);
+            return map;
         }
     }
 }
