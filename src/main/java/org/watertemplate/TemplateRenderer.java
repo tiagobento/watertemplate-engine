@@ -60,7 +60,7 @@ class TemplateRenderer {
     }
 
     private String getTemplateFileURI(final Locale locale) {
-        final String templateFileURI = "templates" + File.separator + locale + File.separator + template.getTemplateFilePath();
+        final String templateFileURI = "templates" + File.separator + locale + File.separator + template.getFilePath();
         final URL resource = getClass().getClassLoader().getResource(templateFileURI);
 
         if (resource != null) {

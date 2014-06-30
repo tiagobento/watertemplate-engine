@@ -18,7 +18,7 @@ public abstract class Template {
     }
 
     /* Implement me (you have no choice) */
-    protected abstract String getTemplateFilePath();
+    protected abstract String getFilePath();
 
     //
 
@@ -44,10 +44,10 @@ public abstract class Template {
         return rendered;
     }
 
-    protected final Map<String, Template> getSubTemplates() {
-        TemplateMap.SubTemplates map = new TemplateMap.SubTemplates();
-        addSubTemplates(map);
-        return map.map;
+    final Map<String, Template> getSubTemplates() {
+        TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
+        addSubTemplates(subTemplates);
+        return subTemplates.map;
     }
 
     protected final void add(final String key, final Object value) {

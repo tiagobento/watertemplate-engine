@@ -21,7 +21,7 @@ Context isolation:
 ---
 Because each template Java class has only one template file, it's reasonable that every
 argument you add to your template through the `add` method lives only during the rendering
-of the file you specified in `getTemplateFilePath` method of your template class.
+of the file you specified in `getFilePath` method of your template class.
 That means that neither master nor sub templates can access arguments you've added in your template Java class.
 
 _NO_ reflection:
@@ -46,7 +46,7 @@ public class LayoutTemplate extends Template {
     }
 
     @Override
-    public String getTemplateFilePath() {
+    public String getFilePath() {
         return "/layout/main.html";
     }
 }
@@ -71,7 +71,7 @@ public class ProfilePage extends Template {
     }
 
     @Override
-    public String getTemplateFilePath() {
+    public String getFilePath() {
         return "/profile/profile.html";
     }
 }
