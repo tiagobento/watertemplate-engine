@@ -21,3 +21,50 @@ _NO_ reflection:
 Every reflection solution kills ALL tools of your IDE. Renaming, finding usages, moving etc.
 Because your interface with your template files is only the `add` method, specified in `Template.java`, 
 you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
+
+Easy to read and learn:
+---
+```java
+public class LayoutTemplate extends Template {
+
+    public LayoutTemplate() {
+        add("title", "Profile | Water Template Engine");
+    }
+
+    @Override
+    protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
+        subTemplates.add("header", new HeaderPartial());
+        subTemplates.add("footer", new FooterPartial());
+    }
+
+    @Override
+    public String getTemplateFilePath() {
+        return "/layout/main.html";
+    }
+}
+
+public class ProfilePage extends Template {
+
+    private User user;
+
+    public ProfilePage(User user) {
+        this.user = user;
+    }
+    
+    @Override
+    protected Template getMasterTemplate() {
+        return new LayoutTemplate();
+    }
+
+    @Override
+    protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
+        subTemplates.add("userInfo", new UserInfoPartial(user));
+        subTemplates.add("posts", new PostsPartial(user.getPosts()));
+    }
+
+    @Override
+    public String getTemplateFilePath() {
+        return "/profile/profile.html";
+    }
+}
+```

@@ -1,6 +1,5 @@
 package org.watertemplate;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -8,12 +7,10 @@ import java.util.function.BiConsumer;
 public abstract class Template {
 
     /* Please use me */
-    final TemplateMap arguments = new TemplateMap();
+    final TemplateMap.Arguments arguments = new TemplateMap.Arguments();
 
     /* Please override me */
-    protected Map<String, Template> getSubTemplates() {
-        return new HashMap<>();
-    }
+    protected void addSubTemplates(final TemplateMap.SubTemplates map) {}
 
     /* Please override me */
     protected Template getMasterTemplate() {
@@ -47,11 +44,17 @@ public abstract class Template {
         return rendered;
     }
 
+    protected final Map<String, Template> getSubTemplates() {
+        TemplateMap.SubTemplates map = new TemplateMap.SubTemplates();
+        addSubTemplates(map);
+        return map.map;
+    }
+
     protected final void add(final String key, final Object value) {
         this.arguments.add(key, value);
     }
 
-    protected final <T> void  add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap> mapper) {
+    protected final <T> void  add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
         this.arguments.add(key, iterable, mapper);
     }
 }

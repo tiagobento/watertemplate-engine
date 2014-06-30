@@ -3,19 +3,19 @@ package org.watertemplate;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 public class TemplateRendererTest {
 
     @Test
     public void templateOnlyWithMasterTemplate() {
         class TemplateOnlyWithMasterTemplate extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_template_only_with_master_template.st";
             }
 
+            @Override
             protected Template getMasterTemplate() {
                 return new Fixture.MasterTemplate();
             }
@@ -28,14 +28,14 @@ public class TemplateRendererTest {
     @Test
     public void templateOnlyWithSubTemplates() {
         class TemplateOnlyWithSubTemplates extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_template_only_with_sub_templates.st";
             }
 
-            protected Map<String, Template> getSubTemplates() {
-                HashMap<String, Template> subTemplates = new HashMap<>();
-                subTemplates.put("sub_template", new Fixture.SubTemplate());
-                return subTemplates;
+            @Override
+            protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
+                subTemplates.add("sub_template", new Fixture.SubTemplate());
             }
         }
 
@@ -46,18 +46,19 @@ public class TemplateRendererTest {
     @Test
     public void templateWithSubTemplatesAndMasterTemplate() {
         class TemplateWithSubTemplatesAndMasterTemplate extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_template_with_sub_templates_and_master_template.st";
             }
 
+            @Override
             protected Template getMasterTemplate() {
                 return new Fixture.MasterTemplate();
             }
 
-            protected Map<String, Template> getSubTemplates() {
-                HashMap<String, Template> subTemplates = new HashMap<>();
-                subTemplates.put("sub_template", new Fixture.SubTemplate());
-                return subTemplates;
+            @Override
+            protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
+                subTemplates.add("sub_template", new Fixture.SubTemplate());
             }
         }
 
@@ -70,30 +71,33 @@ public class TemplateRendererTest {
     @Test
     public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
         class SubTemplateMasterTemplate extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_sub_template_master_template.st";
             }
         }
 
         class SubTemplateWithMasterTemplate extends Fixture.SubTemplate {
+            @Override
             protected Template getMasterTemplate() {
                 return new SubTemplateMasterTemplate();
             }
         }
 
         class TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_template_with_master_template_and_sub_templates_that_have_a_master_template.st";
             }
 
+            @Override
             protected Template getMasterTemplate() {
                 return new Fixture.MasterTemplate();
             }
 
-            protected Map<String, Template> getSubTemplates() {
-                HashMap<String, Template> subTemplates = new HashMap<>();
-                subTemplates.put("sub_template", new SubTemplateWithMasterTemplate());
-                return subTemplates;
+            @Override
+            protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
+                subTemplates.add("sub_template", new SubTemplateWithMasterTemplate());
             }
         }
 
@@ -109,6 +113,7 @@ public class TemplateRendererTest {
     @Test(expected = TemplateException.class)
     public void templateWithInvalidTemplatePath() {
         render(new Template() {
+            @Override
             protected String getTemplateFilePath() {
                 return "_invalid.st";
             }
@@ -118,6 +123,7 @@ public class TemplateRendererTest {
     @Test
     public void templateWithListArgs() {
         class TemplateWithListArgs extends Template {
+            @Override
             protected String getTemplateFilePath() {
                 return "_template_with_list_args.st";
             }
