@@ -1,6 +1,12 @@
+Water Template Engine
+===
+
+Water Template Engine is an open-source modern Java template engine that simplifies the way you interact with templates.
+With no external dependencies, it is very lightweight and robust.
+
 _NO_ configuration:
 --
-No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template.java`
+No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
 gives you full power to build your templates. **Take a look at the source code!**
 
 1 to 1 complexity:
@@ -19,7 +25,7 @@ That means that neither master nor sub templates can access arguments you've add
 _NO_ reflection:
 --
 Every reflection solution kills ALL tools of your IDE. Renaming, finding usages, moving etc.
-Because your interface with your template files is only the `add` method, specified in `Template.java`, 
+Because your interface with your template files is only the `add` method, specified in `Template`, 
 you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
 
 Easy to read and learn:
