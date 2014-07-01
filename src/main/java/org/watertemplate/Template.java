@@ -10,9 +10,6 @@ public abstract class Template {
     final TemplateMap.Arguments arguments = new TemplateMap.Arguments();
 
     /* Please override me */
-    protected void addSubTemplates(final TemplateMap.SubTemplates map) {}
-
-    /* Please override me */
     protected Template getMasterTemplate() {
         return null;
     }
@@ -20,7 +17,9 @@ public abstract class Template {
     /* Implement me (you have no choice) */
     protected abstract String getFilePath();
 
-    //
+    /* Please override me */
+    protected void addSubTemplates(final TemplateMap.SubTemplates map) {
+    }
 
     final String render() {
         return render(TemplateRenderer.DEFAULT_LOCALE);
@@ -54,7 +53,7 @@ public abstract class Template {
         this.arguments.add(key, value);
     }
 
-    protected final <T> void  add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+    protected final <T> void add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
         this.arguments.add(key, iterable, mapper);
     }
 }

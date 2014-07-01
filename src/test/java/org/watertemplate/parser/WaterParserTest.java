@@ -8,9 +8,8 @@ import java.util.HashMap;
 public class WaterParserTest {
 
     @Test
-    public void instantiation() {
-        Parser parser = new WaterParser("templates/foo.html", new HashMap<String, Object>());
-
-        Assert.assertNotNull(parser);
+    public void parse() {
+        Parser parser = new WaterParser("beta/v1.html", new HashMap<>());
+        Assert.assertNull(parser.parse(Parser.DEFAULT_LOCALE));
     }
 }

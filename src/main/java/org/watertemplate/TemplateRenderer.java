@@ -2,9 +2,6 @@ package org.watertemplate;
 
 import org.watertemplate.parser.STParser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 
@@ -50,25 +47,6 @@ class TemplateRenderer {
     }
 
     private String renderTemplate() {
-        return new STParser(getTemplateFileURI(), template.arguments.map).parse();
-    }
-
-    //
-
-    private String getTemplateFileURI() {
-        return getTemplateFileURI(locale);
-    }
-
-    private String getTemplateFileURI(final Locale locale) {
-        final String templateFileURI = "templates" + File.separator + locale + File.separator + template.getFilePath();
-        final URL resource = getClass().getClassLoader().getResource(templateFileURI);
-
-        if (resource != null) {
-            return resource.getFile();
-        } else if (!locale.equals(DEFAULT_LOCALE)) {
-            return getTemplateFileURI(DEFAULT_LOCALE);
-        } else {
-            throw new TemplateException(new FileNotFoundException(templateFileURI));
-        }
+        return new STParser(template.getFilePath(), template.arguments.map).parse(locale);
     }
 }
