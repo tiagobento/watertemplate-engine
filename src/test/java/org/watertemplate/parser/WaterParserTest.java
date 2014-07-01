@@ -10,6 +10,6 @@ public class WaterParserTest {
     @Test
     public void parse() {
         Parser parser = new WaterParser("beta/v1.html", new HashMap<>());
-        Assert.assertNull(parser.parse(Parser.DEFAULT_LOCALE));
+        Assert.assertNotNull(parser.parse(Parser.DEFAULT_LOCALE));
     }
 }

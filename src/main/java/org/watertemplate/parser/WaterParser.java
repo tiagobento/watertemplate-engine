@@ -1,6 +1,7 @@
 package org.watertemplate.parser;
 
 import org.watertemplate.TemplateException;
+import org.watertemplate.parser.reader.TemplateReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,8 +21,11 @@ public class WaterParser implements Parser {
 
     @Override
     public String parse(final Locale locale) {
-        final File file = getTemplateFile(locale);
-        return null;
+        final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
+
+        final StringBuilder stringBuilder = new StringBuilder();
+        reader.readExecuting(stringBuilder::append);
+        return stringBuilder.toString();
     }
 
     private File getTemplateFile(final Locale locale) {
@@ -38,5 +42,4 @@ public class WaterParser implements Parser {
 
         throw new TemplateException(new FileNotFoundException(templateFilePath));
     }
-
 }

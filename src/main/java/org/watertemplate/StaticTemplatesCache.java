@@ -25,8 +25,6 @@ final class StaticTemplatesCache {
         return CACHED_TEMPLATES.containsKey(toKey(clazz, locale));
     }
 
-    //
-
     private static boolean shouldHave(final Class<? extends Template> clazz) {
         return clazz.getAnnotation(StaticTemplate.class) != null;
     }
