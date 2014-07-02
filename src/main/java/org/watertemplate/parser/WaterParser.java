@@ -21,11 +21,10 @@ public class WaterParser implements Parser {
 
     @Override
     public String parse(final Locale locale) {
+        final WaterAnalyzer analyzer = new WaterAnalyzer();
         final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
-
-        final StringBuilder stringBuilder = new StringBuilder();
-        reader.readExecuting(stringBuilder::append);
-        return stringBuilder.toString();
+        reader.readExecuting(analyzer::analyze);
+        return analyzer.getResultString();
     }
 
     private File getTemplateFile(final Locale locale) {
@@ -41,5 +40,22 @@ public class WaterParser implements Parser {
         }
 
         throw new TemplateException(new FileNotFoundException(templateFilePath));
+    }
+
+    private class WaterAnalyzer {
+        private final StringBuilder resultStringBuilder;
+
+        private WaterAnalyzer() {
+            resultStringBuilder = new StringBuilder();
+        }
+
+        public void analyze(final Character character) {
+            resultStringBuilder.append(character);
+
+        }
+
+        public String getResultString() {
+            return resultStringBuilder.toString();
+        }
     }
 }

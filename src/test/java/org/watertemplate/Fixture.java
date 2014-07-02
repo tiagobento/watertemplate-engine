@@ -3,13 +3,13 @@ package org.watertemplate;
 public class Fixture {
     public static class MasterTemplate extends Template {
         protected String getFilePath() {
-            return "_master_template.st";
+            return "_master_template.html";
         }
     }
 
     public static class SubTemplate extends Template {
         protected String getFilePath() {
-            return "_sub_template.st";
+            return "_sub_template.html";
         }
     }
 

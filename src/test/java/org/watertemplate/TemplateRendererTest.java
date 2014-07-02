@@ -12,7 +12,7 @@ public class TemplateRendererTest {
         class TemplateOnlyWithMasterTemplate extends Template {
             @Override
             protected String getFilePath() {
-                return "_template_only_with_master_template.st";
+                return "_template_only_with_master_template.html";
             }
 
             @Override
@@ -30,7 +30,7 @@ public class TemplateRendererTest {
         class TemplateOnlyWithSubTemplates extends Template {
             @Override
             protected String getFilePath() {
-                return "_template_only_with_sub_templates.st";
+                return "_template_only_with_sub_templates.html";
             }
 
             @Override
@@ -48,7 +48,7 @@ public class TemplateRendererTest {
         class TemplateWithSubTemplatesAndMasterTemplate extends Template {
             @Override
             protected String getFilePath() {
-                return "_template_with_sub_templates_and_master_template.st";
+                return "_template_with_sub_templates_and_master_template.html";
             }
 
             @Override
@@ -73,7 +73,7 @@ public class TemplateRendererTest {
         class SubTemplateMasterTemplate extends Template {
             @Override
             protected String getFilePath() {
-                return "_sub_template_master_template.st";
+                return "_sub_template_master_template.html";
             }
         }
 
@@ -87,7 +87,7 @@ public class TemplateRendererTest {
         class TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate extends Template {
             @Override
             protected String getFilePath() {
-                return "_template_with_master_template_and_sub_templates_that_have_a_master_template.st";
+                return "_template_with_master_template_and_sub_templates_that_have_a_master_template.html";
             }
 
             @Override
@@ -125,7 +125,7 @@ public class TemplateRendererTest {
         class TemplateWithListArgs extends Template {
             @Override
             protected String getFilePath() {
-                return "_template_with_list_args.st";
+                return "_template_with_list_args.html";
             }
 
             TemplateWithListArgs() {

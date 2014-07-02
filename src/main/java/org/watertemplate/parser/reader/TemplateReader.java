@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.util.function.Consumer;
 
 public class TemplateReader {
-    public static final int BUFFER_SIZE = 8192;
+    private static final int BUFFER_SIZE = 8192;
 
     private final File templateFile;
 
