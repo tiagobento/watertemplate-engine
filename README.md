@@ -9,7 +9,7 @@ With no external dependencies, it is very lightweight and robust.
 _NO_ configuration:
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
-gives you full power to build your templates. **Take a look at the source code!**
+gives you full power to build your templates. **Take a look at [examples](#java-api-and-template-syntax) and the source code!**
 
 1 to 1 complexity:
 ---
