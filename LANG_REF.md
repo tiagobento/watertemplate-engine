@@ -1,8 +1,13 @@
+Argument keys
+--
+
+An argument key is a **alphanumeric (underscore allowed)** identifier for the arguments you put in your template.
+
 Argument accessor
 --
 
 - When replacing `~[argumentKey]~` for the actual object, `toString()` method is called.
-- Dot notation is only allowed within for loops.
+- Dot notation is only allowed within for loops to access mapped properties.
 
 ```
 ~[argumentKey]~
