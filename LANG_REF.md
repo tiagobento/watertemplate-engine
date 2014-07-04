@@ -8,10 +8,6 @@ Argument accessor
 ~[argumentKey]~
 ```
 
-
-
-
-
 If
 --
 
@@ -20,16 +16,11 @@ If
 
 ```
 ~if [argumentKey]:
-// if statements
+    // if statements
 ~else:
-// else statements
+    // else statements
 ~end~
 ```
-
-
-
-
-
 
 For
 --
@@ -40,9 +31,9 @@ For
 
 ```
 ~for x in [argumentKey]:
-// for statements
+    // for statements
 ~else:
-// else statements
+    // else statements
 ~end~
 ```
 
@@ -56,15 +47,15 @@ If within for
 Hence during a for loop you can access `x` mapped properties, they can be used as if conditions aswell.
 ```
 ~for x in [argumentKey]:
-// for statements
-
-~if [x.aBoolean]:
-// if statements
-~end~
-
-// more for statements
+    // for statements
+  
+    ~if [x.aBoolean]:
+        // if statements
+    ~end~
+  
+    // more for statements
 ~else:
-// else statements
+    // else statements
 ~end~
 ```
 
