@@ -11,7 +11,7 @@ With no external dependencies, it is very lightweight and robust.
 _NO_ configuration:
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
-gives you full power to build your templates. **Take a look at [examples](#java-api-and-template-syntax) and the source code!**
+gives you full power to build your templates. **Take a look at the [examples](#java-api-and-template-syntax) and the source code!**
 
 1 to 1 complexity:
 ---
@@ -28,7 +28,7 @@ That means that neither master nor sub templates can access arguments you've add
 
 _NO_ reflection:
 --
-Every reflection solution kills ALL tools of your IDE. Renaming, finding usages, moving etc.
+Every reflection solution kills most of refactoring tools on IDEs. Renaming, finding usages, moving etc.
 Because your interface with your template files is only the `add` method, specified in `Template`, 
 you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
 
