@@ -1,8 +1,8 @@
-package org.watertemplate.parser;
+package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateException;
-import org.watertemplate.parser.consumer.WaterConsumer;
-import org.watertemplate.parser.reader.TemplateReader;
+import org.watertemplate.interpreter.lexer.WaterLexer;
+import org.watertemplate.interpreter.reader.TemplateReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,23 +10,24 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 
-public class WaterParser implements Parser {
+public class WaterInterpreter implements Interpreter {
 
     private final Map<String, Object> arguments;
     private final String templateFilePath;
 
-    public WaterParser(final String templateFilePath, final Map<String, Object> arguments) {
+    public WaterInterpreter(final String templateFilePath, final Map<String, Object> arguments) {
         this.templateFilePath = templateFilePath;
         this.arguments = arguments;
     }
 
     @Override
-    public String parse(final Locale locale) {
-        final WaterConsumer consumer = new WaterConsumer(arguments);
-        final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
+    public String interpret(final Locale locale) {
+        final WaterLexer lexer = new WaterLexer(arguments);
 
-        reader.readExecuting(consumer::accept);
-        return consumer.getResultString();
+        final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
+        reader.readExecuting(lexer::lex);
+
+        return lexer.getResultString();
     }
 
     private File getTemplateFile(final Locale locale) {

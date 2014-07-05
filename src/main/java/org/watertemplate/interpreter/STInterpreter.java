@@ -1,4 +1,4 @@
-package org.watertemplate.parser;
+package org.watertemplate.interpreter;
 
 import org.apache.commons.io.FileUtils;
 import org.stringtemplate.v4.ST;
@@ -11,22 +11,22 @@ import java.util.Locale;
 import java.util.Map;
 
 
-/* Temporary parser */
-public final class STParser implements Parser {
+/* Temporary interpreter */
+public final class STInterpreter implements Interpreter {
 
     private final Map<String, Object> arguments;
     private final String templateFilePath;
 
-    public STParser(final String templateFilePath, final Map<String, Object> arguments) {
+    public STInterpreter(final String templateFilePath, final Map<String, Object> arguments) {
         this.templateFilePath = templateFilePath;
         this.arguments = arguments;
     }
 
     @Override
-    public String parse(final Locale locale) {
+    public String interpret(final Locale locale) {
         try {
             File templateFile = getTemplateFile(locale);
-            ST st = new ST(FileUtils.readFileToString(templateFile), DELIMITER, DELIMITER);
+            ST st = new ST(FileUtils.readFileToString(templateFile), GENERAL_DELIMITER, GENERAL_DELIMITER);
             this.addAllArguments(st, arguments);
             return st.render();
         } catch (Exception e) {

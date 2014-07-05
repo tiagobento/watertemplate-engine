@@ -1,4 +1,4 @@
-package org.watertemplate.parser.reader;
+package org.watertemplate.interpreter.reader;
 
 import org.watertemplate.TemplateException;
 

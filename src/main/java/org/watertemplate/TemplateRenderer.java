@@ -1,6 +1,6 @@
 package org.watertemplate;
 
-import org.watertemplate.parser.STParser;
+import org.watertemplate.interpreter.STInterpreter;
 
 import java.util.Locale;
 import java.util.Map;
@@ -47,6 +47,6 @@ class TemplateRenderer {
     }
 
     private String renderTemplate() {
-        return new STParser(template.getFilePath(), template.arguments.map).parse(locale);
+        return new STInterpreter(template.getFilePath(), template.arguments.map).interpret(locale);
     }
 }
