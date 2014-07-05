@@ -27,20 +27,10 @@ public abstract class Template {
 
     final String render(final Locale locale) {
         try {
-            return fromCacheOrNewRendering(locale);
+            return new TemplateRenderer(this, locale).render();
         } catch (Exception e) {
             throw new TemplateException(e);
         }
-    }
-
-    private String fromCacheOrNewRendering(final Locale locale) {
-        if (StaticTemplatesCache.contains(getClass(), locale)) {
-            return StaticTemplatesCache.get(getClass(), locale);
-        }
-
-        final String rendered = new TemplateRenderer(this, locale).render();
-        StaticTemplatesCache.cacheIfNecessary(getClass(), locale, rendered);
-        return rendered;
     }
 
     final Map<String, Template> getSubTemplates() {

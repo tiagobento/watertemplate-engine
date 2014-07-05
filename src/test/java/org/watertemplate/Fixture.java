@@ -12,9 +12,5 @@ public class Fixture {
             return "subTemplate.html";
         }
     }
-
-    @org.watertemplate.StaticTemplate
-    public static class StaticTemplate extends Fixture.SubTemplate {
-    }
 }
 

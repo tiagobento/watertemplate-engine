@@ -2,6 +2,7 @@ package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateException;
 import org.watertemplate.interpreter.lexer.WaterLexer;
+import org.watertemplate.interpreter.parser.WaterParser;
 import org.watertemplate.interpreter.reader.TemplateReader;
 
 import java.io.File;
@@ -22,10 +23,13 @@ public class WaterInterpreter implements Interpreter {
 
     @Override
     public String interpret(final Locale locale) {
-        final WaterLexer lexer = new WaterLexer(arguments);
+        final WaterLexer lexer = new WaterLexer();
 
         final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
         reader.readExecuting(lexer::lex);
+
+        final WaterParser parser = new WaterParser(lexer.getTokens());
+        parser.parse();
 
         return lexer.getResultString();
     }
