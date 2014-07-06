@@ -1,13 +1,13 @@
 package org.watertemplate.example.app;
 
-import org.watertemplate.example.main.MainTemplate;
+import org.watertemplate.example.main.ExampleMainTemplate;
 
 public class Main {
 
     public static void main(String[] args) {
-        MainTemplate main = new MainTemplate();
+        ExampleMainTemplate exampleMainTemplate = new ExampleMainTemplate();
 
         // WaterInterpreter not implemented yet
-        // System.out.println(main.render());
+        // System.out.println(exampleMainTemplate.render());
     }
 }

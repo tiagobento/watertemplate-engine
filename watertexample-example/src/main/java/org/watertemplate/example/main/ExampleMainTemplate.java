@@ -4,9 +4,9 @@ import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.example.main.menu.MenuPartial;
 
-public class MainTemplate extends Template {
+public class ExampleMainTemplate extends Template {
 
-    public MainTemplate() {
+    public ExampleMainTemplate() {
         add("title", "Example application using Water Templates");
     }
 
