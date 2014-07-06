@@ -11,7 +11,7 @@ With no external dependencies, it is very lightweight and robust.
 _NO_ configuration:
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
-gives you full power to build your templates. **Take a look at the [examples](blob/master/watertexample-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
+gives you full power to build your templates. **Take a look at the [examples](watertexample-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
 
 1 to 1 complexity:
 ---
@@ -34,4 +34,4 @@ you can trust that **any refactor you make in your Java code will not propagate 
 
 Java API and template syntax:
 --
-[Template syntax] (blob/master/watertemplate-engine/src/test/resources/templates/en_US/beta/allCommands.html)
+[Template syntax] (watertemplate-engine/src/test/resources/templates/en_US/beta/allCommands.html)
