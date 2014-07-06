@@ -34,4 +34,4 @@ you can trust that **any refactor you make in your Java code will not propagate 
 
 Java API and template syntax:
 --
-[Template syntax] (https://github.com/tiagobento/watertemplate-engine/blob/watertemplate-engine/master/src/test/resources/templates/en_US/beta/allCommands.html)
+[Template syntax] (https://github.com/tiagobento/watertemplate-engine/blob/master/watertemplate-engine/src/test/resources/templates/en_US/beta/allCommands.html)
