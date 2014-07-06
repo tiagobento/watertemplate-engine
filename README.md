@@ -6,8 +6,69 @@ With no external dependencies, it is very lightweight and robust.
 
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
+Imagine a template:
+```html
+<h1>Months of ~year~</h2>
+<ul>
+    ~for month in months:
+        <li>
+            <span> ~month.lowerName~ </span>
+            <span> with ~month.daysCount~ days </span>
+        </li>
+    ~
+</ul>
+``` 
+Represent it in a Java class:
+```java
+class MonthsGrid extends Template {
 
+    MonthsGrid() {
+        add("year", Year.now());
+        addCollection("months", Arrays.asList(Month.values()), (month, monthMap) -> {
+            monthMap.add("lowerName", month.name().toLowerCase());
+            monthMap.add("daysCount", month.length(Year.now().isLeap()));
+        });
+    }
 
+    @Override
+    protected String getFilePath() {
+        return "templates/monthsGrid.html";
+    }
+}
+```
+Render it:
+```java
+public static void main(String[] args) {
+    MonthsGrid monthGrid = new MonthsGrid();
+    monthGrid.render();
+}
+```
+See the result:
+```html
+<h1>Months of 2014</h2>
+<ul>
+    <li>
+        <span> january </span>
+        <span> with 31 days </span>
+    </li>
+    <li>
+        <span> february </span>
+        <span> with 28 days </span>
+    </li>
+    <li>
+        <span> march </span>
+        <span> with 31 days </span>
+    </li>
+    <li>
+        <span> april </span>
+        <span> with 30 days </span>
+    </li>
+    
+    ... and so on
+    
+</ul>
+```
+    
 _NO_ configuration:
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
