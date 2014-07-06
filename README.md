@@ -6,7 +6,7 @@ With no external dependencies, it is very lightweight and robust.
 
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
-Imagine a template:
+#### Imagine a template:
 ```html
 <h1>Months of ~year~</h2>
 <ul>
@@ -18,7 +18,8 @@ Imagine a template:
     ~
 </ul>
 ``` 
-Represent it in a Java class:
+
+#### Represent it in a Java class:
 ```java
 class MonthsGrid extends Template {
 
@@ -36,14 +37,16 @@ class MonthsGrid extends Template {
     }
 }
 ```
-Render it:
+
+#### Render it:
 ```java
 public static void main(String[] args) {
     MonthsGrid monthGrid = new MonthsGrid();
     monthGrid.render();
 }
 ```
-See the result:
+
+#### See the result:
 ```html
 <h1>Months of 2014</h2>
 <ul>
@@ -92,7 +95,3 @@ _NO_ reflection:
 Every reflection solution kills most of refactoring tools on IDEs. Renaming, finding usages, moving etc.
 Because your interface with your template files is only the `add` method, specified in `Template`, 
 you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
-
-Java API and template syntax:
---
-[Template syntax] (watertemplate-engine/src/test/resources/templates/en_US/beta/allCommands.html)
