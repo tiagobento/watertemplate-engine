@@ -38,9 +38,9 @@ class TemplateRenderer {
     }
 
     private void renderSubTemplatesAddingThemAsTemplateArguments() {
-        template.getSubTemplates().entrySet().parallelStream().forEach((subTemplate) -> {
-            template.add(subTemplate.getKey(), subTemplate.getValue().render(locale));
-        });
+        template.getSubTemplates().entrySet().parallelStream().forEach(
+            (subTemplate) -> template.add(subTemplate.getKey(), subTemplate.getValue().render(locale))
+        );
     }
 
     private String renderTemplate() {

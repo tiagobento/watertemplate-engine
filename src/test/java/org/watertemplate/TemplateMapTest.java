@@ -18,15 +18,35 @@ public class TemplateMapTest {
     }
 
     @Test
+    public void addMappedObject() {
+        String key = "string";
+        String value = "aString";
+
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        arguments.addMappedObject(key, value, (string, stringMap) -> {
+            stringMap.add("lower", string.toLowerCase());
+            stringMap.add("upper", string.toUpperCase());
+        });
+
+        Assert.assertEquals(1, arguments.map.size());
+        Assert.assertEquals(value, arguments.get(key));
+        Assert.assertTrue(arguments.map.get(key) instanceof TemplateMap.TemplateObject);
+    }
+
+
+    @Test
     public void addCollection() {
         Collection<String> strings = Arrays.asList("foo", "bar");
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
 
-        arguments.add("strings", strings, (string, stringsMap) -> {
-            stringsMap.add("lower", string.toLowerCase());
-            stringsMap.add("upper", string.toUpperCase());
-            stringsMap.add("size", string.length());
-            stringsMap.add("chars", getChars(string), (character, charsMap) -> charsMap.add("asciiCode", (int) character));
+        arguments.addCollection("strings", strings, (string, stringMap) -> {
+            stringMap.add("lower", string.toLowerCase());
+            stringMap.add("upper", string.toUpperCase());
+            stringMap.add("size", string.length());
+
+            stringMap.addCollection("chars", getChars(string), (character, charsMap) ->
+                    charsMap.add("asciiCode", (int) character)
+            );
         });
 
         Assert.assertEquals(1, arguments.map.size());

@@ -2,7 +2,7 @@ package org.watertemplate.interpreter;
 
 import org.apache.commons.io.FileUtils;
 import org.stringtemplate.v4.ST;
-import org.watertemplate.TemplateException;
+import org.watertemplate.exception.TemplateException;
 
 import java.io.File;
 import java.io.FileNotFoundException;

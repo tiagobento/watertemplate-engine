@@ -1,5 +1,7 @@
 package org.watertemplate;
 
+import org.watertemplate.exception.TemplateException;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -43,8 +45,12 @@ public abstract class Template {
         this.arguments.add(key, value);
     }
 
-    protected final <T> void add(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
-        this.arguments.add(key, iterable, mapper);
+    protected final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        this.arguments.addMappedObject(key, object, mapper);
+    }
+
+    protected final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        this.arguments.addCollection(key, iterable, mapper);
     }
 }
 

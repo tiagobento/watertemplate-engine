@@ -1,4 +1,4 @@
-package org.watertemplate;
+package org.watertemplate.exception;
 
 public class TemplateException extends RuntimeException {
     public TemplateException(Exception e) {

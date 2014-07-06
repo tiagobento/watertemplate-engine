@@ -2,7 +2,7 @@ package org.watertemplate.uri;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.watertemplate.TemplateException;
+import org.watertemplate.exception.TemplateException;
 
 public class ResourceURITest {
 

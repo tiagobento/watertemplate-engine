@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter;
 
-import org.watertemplate.TemplateException;
+import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.lexer.WaterLexer;
 import org.watertemplate.interpreter.parser.WaterParser;
 import org.watertemplate.interpreter.reader.TemplateReader;

@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.reader;
 
-import org.watertemplate.TemplateException;
+import org.watertemplate.exception.TemplateException;
 
 import java.io.BufferedReader;
 import java.io.File;

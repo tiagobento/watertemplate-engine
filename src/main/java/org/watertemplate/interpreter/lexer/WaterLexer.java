@@ -25,7 +25,9 @@ public class WaterLexer {
                 break;
             case Interpreter.GENERAL_DELIMITER:
             case Interpreter.COMMAND_DELIMITER:
-                if (!currentToken.trim().isEmpty()) { addToken(); }
+                if (!currentToken.trim().isEmpty()) {
+                    addToken();
+                }
 
                 tokens.add(character.toString());
                 currentToken = "";

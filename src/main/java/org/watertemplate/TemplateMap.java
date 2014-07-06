@@ -11,21 +11,12 @@ public class TemplateMap<T> {
         this.map.put(key, value);
     }
 
-    static class Arguments extends TemplateMap<Object> {
-        final <T> void add(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateCollection<T>(iterable, mapper));
-        }
-    }
+    //
 
-    public static class SubTemplates extends TemplateMap<Template> {
-    }
-
-    static class TemplateCollection<T> {
-        private final Iterable<T> iterable;
+    private static abstract class Mappable<T> {
         private final BiConsumer<T, Arguments> mapper;
 
-        TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
-            this.iterable = iterable;
+        Mappable(final BiConsumer<T, Arguments> mapper) {
             this.mapper = mapper;
         }
 
@@ -34,5 +25,52 @@ public class TemplateMap<T> {
             mapper.accept(object, arguments);
             return arguments.map;
         }
+    }
+
+    static class TemplateObject<T> extends Mappable<T> {
+        private final T object;
+
+        TemplateObject(final T object, final BiConsumer<T, Arguments> mapper) {
+            super(mapper);
+            this.object = object;
+        }
+
+        @Override
+        public String toString() {
+            return object.toString();
+        }
+    }
+
+    static class TemplateCollection<T> extends Mappable<T> {
+        private final Iterable<T> iterable;
+
+        TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+            super(mapper);
+            this.iterable = iterable;
+        }
+
+        @Override
+        public String toString() {
+            return iterable.toString();
+        }
+    }
+
+    //
+
+    public static class Arguments extends TemplateMap<Object> {
+        public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+            add(key, new TemplateCollection<T>(iterable, mapper));
+        }
+
+        public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
+            add(key, new TemplateObject<T>(object, mapper));
+        }
+
+        public final String get(final String key) {
+            return "" + map.get(key);
+        }
+    }
+
+    public static class SubTemplates extends TemplateMap<Template> {
     }
 }

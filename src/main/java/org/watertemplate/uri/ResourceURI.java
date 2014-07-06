@@ -1,6 +1,6 @@
 package org.watertemplate.uri;
 
-import org.watertemplate.TemplateException;
+import org.watertemplate.exception.TemplateException;
 
 public abstract class ResourceURI {
 

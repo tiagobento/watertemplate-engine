@@ -2,6 +2,7 @@ package org.watertemplate;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.exception.TemplateException;
 
 import java.util.Locale;
 
@@ -111,29 +112,29 @@ public class TemplateRendererTest {
     }
 
     @Test(expected = TemplateException.class)
-    public void templateWithInvalidTemplatePath() {
+    public void templateWithInvalidFilePath() {
         render(new Template() {
             @Override
             protected String getFilePath() {
-                return "_invalid.st";
+                return "invalid.st";
             }
         });
     }
 
     @Test
-    public void templateWithListArgs() {
-        class TemplateWithListArgs extends Template {
+    public void templateWithCollection() {
+        class TemplateWithCollection extends Template {
             @Override
             protected String getFilePath() {
                 return "templateWithCollection.html";
             }
 
-            TemplateWithListArgs() {
+            TemplateWithCollection() {
                 add("items", new int[]{1, 2});
             }
         }
 
-        String rendered = render(new TemplateWithListArgs());
+        String rendered = render(new TemplateWithCollection());
         Assert.assertEquals("1\n2\n", rendered);
     }
 
