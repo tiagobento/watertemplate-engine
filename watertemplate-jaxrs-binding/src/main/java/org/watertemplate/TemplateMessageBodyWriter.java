@@ -21,7 +21,7 @@ public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
 
     @Override
     public boolean isWriteable(Class<?> aClass, Type type, Annotation[] annotations, MediaType mediaType) {
-        return Template.class.isAssignableFrom(aClass) && MediaType.TEXT_HTML_TYPE.equals(mediaType);
+        return Template.class.isAssignableFrom(aClass);
     }
 
     @Override
