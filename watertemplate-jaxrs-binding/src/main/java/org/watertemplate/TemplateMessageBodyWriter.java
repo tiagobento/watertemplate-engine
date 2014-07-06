@@ -35,5 +35,4 @@ public class TemplateMessageBodyWriter implements MessageBodyWriter<Template> {
         outputStream.write(build.getBytes());
         outputStream.flush();
     }
-
 }

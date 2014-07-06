@@ -20,14 +20,14 @@ public abstract class Template {
     protected abstract String getFilePath();
 
     /* Please override me */
-    protected void addSubTemplates(final TemplateMap.SubTemplates map) {
+    protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
     }
 
-    final String render() {
+    public final String render() {
         return render(TemplateRenderer.DEFAULT_LOCALE);
     }
 
-    final String render(final Locale locale) {
+    public final String render(final Locale locale) {
         try {
             return new TemplateRenderer(this, locale).render();
         } catch (Exception e) {
