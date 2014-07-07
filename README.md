@@ -8,7 +8,7 @@ With no external dependencies, it is very lightweight and robust.
 
 #### Imagine a template:
 ```html
-<h1>Months of ~year~</h2>
+<h1>Months of ~year~</h1>
 <ul>
     ~for month in months:
         <li>
@@ -48,7 +48,7 @@ public static void main(String[] args) {
 
 #### See the result:
 ```html
-<h1>Months of 2014</h2>
+<h1>Months of 2014</h1>
 <ul>
     <li>
         <span> january </span>
