@@ -19,19 +19,23 @@ class Tokens {
 
         if (TokenClass.KEYWORD.accept(string)) {
             accept(TokenClass.KEYWORD);
-        } else if (TokenClass.ID.accept(string)) {
-            accept(TokenClass.ID);
         } else {
-//            throw new RuntimeException("["+string+"] is not a valid identifier.");
+            accept(TokenClass.ID);
         }
     }
 
-    void accept(final TokenClass clazz) {
+    void accept(final TokenClass tokenClass) {
+        final String tokenValue = currentTokenValue.toString();
+
+        if (!tokenClass.accept(tokenValue)) {
+            throw new RuntimeException("[" + tokenValue + "] not accepted as " + tokenClass);
+        }
+
         if (currentTokenValue.length() == 0) {
             return;
         }
 
-        tokens.add(new Token(currentTokenValue.toString(), clazz));
+        tokens.add(new Token(tokenValue, tokenClass));
         currentTokenValue = new StringBuilder();
     }
 

@@ -17,6 +17,12 @@ enum TokenClass {
             return ID_PATTERN.matcher(string).matches();
         }
     },
+    END_OF_BLOCK {
+        @Override
+        public boolean accept(final String string) {
+            return string.isEmpty();
+        }
+    },
     ACCESSOR,
     TEXT;
 

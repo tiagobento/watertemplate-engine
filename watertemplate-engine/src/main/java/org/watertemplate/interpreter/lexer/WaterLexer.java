@@ -1,33 +1,30 @@
 package org.watertemplate.interpreter.lexer;
 
 import java.util.List;
-import java.util.Stack;
 import java.util.function.Consumer;
 
 public class WaterLexer {
-    private final Stack<Character> stack = new Stack<>();
     private final Tokens tokens = new Tokens();
 
-    private Consumer<Character> consumer = this::ordinaryText;
+    private Consumer<Character> readMode = this::ordinaryText;
 
     public void lex(final Character character) {
-        consumer.accept(character);
+        readMode.accept(character);
     }
 
+
+    /* default */
     private void ordinaryText(final Character character) {
         switch (character) {
             case '~': // start of command
                 tokens.accept(TokenClass.TEXT);
-                stack.push(character);
-                consumer = this::command;
+                readMode = this::command;
                 break;
             case ':': // start of end of command
                 tokens.accept(TokenClass.TEXT);
-                stack.pop();
-                consumer = this::command;
+                readMode = this::closingCommand;
                 break;
             case '\0': // end of input
-                testStack();
                 tokens.accept(TokenClass.TEXT);
                 break;
             default:
@@ -39,35 +36,59 @@ public class WaterLexer {
     private void command(final Character character) {
         switch (character) {
             case ':':  // end of command
-                tokens.accept();
-                stack.push(character);
-                consumer = this::ordinaryText;
+                tokens.accept(TokenClass.ID);
+                readMode = this::ordinaryText;
                 break;
             case '~': // end of property evaluation
-                tokens.accept();
-                stack.pop();
-                consumer = this::ordinaryText;
+                tokens.accept(TokenClass.ID);
+                readMode = this::ordinaryText;
                 break;
-            case ' ': // separator
+            case '\t':
+            case '\n':
+            case ' ': // separators
                 tokens.accept();
+                readMode = this::whiteSpace;
                 break;
             case '.': // accessor
-                tokens.accept();
+                tokens.accept(TokenClass.ID);
                 tokens.add(character);
                 tokens.accept(TokenClass.ACCESSOR);
                 break;
             case '\0':
-                testStack();
-                break;
+                throw new RuntimeException("Unfinished command.");
             default:
                 tokens.add(character);
                 break;
         }
     }
 
-    private void testStack() {
-        if (!stack.empty()) {
-            throw new RuntimeException("Unclosed something");
+    private void closingCommand(final Character character) {
+        switch (character) {
+            case ':':  // else
+                tokens.accept(TokenClass.KEYWORD);
+                readMode = this::ordinaryText;
+                break;
+            case '~': // end of block
+                tokens.accept(TokenClass.END_OF_BLOCK);
+                readMode = this::ordinaryText;
+                break;
+            default:
+                tokens.add(character);
+                break;
+        }
+
+    }
+
+    private void whiteSpace(final Character character) {
+        switch (character) {
+            case '\t':
+            case '\n':
+            case ' ':
+                break;
+            default:
+                command(character);
+                readMode = this::command;
+                break;
         }
     }
 
