@@ -15,7 +15,7 @@ With no external dependencies, it is very lightweight and robust.
             <span> ~month.lowerName~ </span>
             <span> with ~month.daysCount~ days </span>
         </li>
-    ~
+    :~
 </ul>
 ``` 
 
