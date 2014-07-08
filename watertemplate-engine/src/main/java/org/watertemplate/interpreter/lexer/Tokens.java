@@ -15,14 +15,18 @@ class Tokens {
     }
 
     void accept() {
-        if (Keyword.accept(currentTokenValue.toString())) {
-            accept(Token.Clazz.KEYWORD);
+        final String string = currentTokenValue.toString();
+
+        if (TokenClass.KEYWORD.accept(string)) {
+            accept(TokenClass.KEYWORD);
+        } else if (TokenClass.ID.accept(string)) {
+            accept(TokenClass.ID);
         } else {
-            accept(Token.Clazz.ID);
+//            throw new RuntimeException("["+string+"] is not a valid identifier.");
         }
     }
 
-    void accept(final Token.Clazz clazz) {
+    void accept(final TokenClass clazz) {
         if (currentTokenValue.length() == 0) {
             return;
         }

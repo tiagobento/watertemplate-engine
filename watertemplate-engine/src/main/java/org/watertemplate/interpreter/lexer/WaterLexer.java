@@ -17,18 +17,18 @@ public class WaterLexer {
     private void ordinaryText(final Character character) {
         switch (character) {
             case '~': // start of command
-                tokens.accept(Token.Clazz.TEXT);
+                tokens.accept(TokenClass.TEXT);
                 stack.push(character);
                 consumer = this::command;
                 break;
             case ':': // start of end of command
-                tokens.accept(Token.Clazz.TEXT);
+                tokens.accept(TokenClass.TEXT);
                 stack.pop();
                 consumer = this::command;
                 break;
             case '\0': // end of input
                 testStack();
-                tokens.accept(Token.Clazz.TEXT);
+                tokens.accept(TokenClass.TEXT);
                 break;
             default:
                 tokens.add(character);
@@ -54,7 +54,7 @@ public class WaterLexer {
             case '.': // accessor
                 tokens.accept();
                 tokens.add(character);
-                tokens.accept(Token.Clazz.ACCESSOR);
+                tokens.accept(TokenClass.ACCESSOR);
                 break;
             case '\0':
                 testStack();

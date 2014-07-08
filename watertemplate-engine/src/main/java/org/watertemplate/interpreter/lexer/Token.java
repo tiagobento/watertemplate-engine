@@ -2,11 +2,11 @@ package org.watertemplate.interpreter.lexer;
 
 public class Token {
     private final String value;
-    private final Clazz clazz;
+    private final TokenClass tokenClass;
 
-    public Token(final String value, final Clazz clazz) {
+    public Token(final String value, final TokenClass tokenClass) {
         this.value = value;
-        this.clazz = clazz;
+        this.tokenClass = tokenClass;
     }
 
     public String getValue() {
@@ -15,10 +15,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return clazz + "|" + value;
+        return tokenClass + "|" + value;
     }
 
-    static enum Clazz {
-        TEXT, KEYWORD, ACCESSOR, ID
-    }
 }

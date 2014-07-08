@@ -52,9 +52,6 @@ public class WaterLexerTest {
 
     @Test
     public void validProperties() {
-        assertLexEqualsArray(lex("~~"), array());
-        assertLexEqualsArray(lex("~~a"), array("a"));
-        assertLexEqualsArray(lex("~~~~"), array());
         assertLexEqualsArray(lex("a~i~"), array("a", "i"));
         assertLexEqualsArray(lex("~i~b"), array("i", "b"));
         assertLexEqualsArray(lex("~i~~id~"), array("i", "id"));
@@ -67,7 +64,7 @@ public class WaterLexerTest {
     @Test
     public void validIds() {
         assertLexEqualsArray(lex("~a~"), array("a"));
-        assertLexEqualsArray(lex("~a.~"), array("a", "."));
+        assertLexEqualsArray(lex("~a._~"), array("a", ".", "_"));
         assertLexEqualsArray(lex("~a.bc~"), array("a", ".", "bc"));
         assertLexEqualsArray(lex("~a.b.c~"), array("a", ".", "b", ".", "c"));
         assertLexEqualsArray(lex("~a1.b2.c3~"), array("a1", ".", "b2", ".", "c3"));
