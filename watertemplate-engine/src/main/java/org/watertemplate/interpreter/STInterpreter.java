@@ -26,7 +26,7 @@ public final class STInterpreter implements Interpreter {
     public String interpret(final Locale locale) {
         try {
             File templateFile = getTemplateFile(locale);
-            ST st = new ST(FileUtils.readFileToString(templateFile), GENERAL_DELIMITER, GENERAL_DELIMITER);
+            ST st = new ST(FileUtils.readFileToString(templateFile), '~', '~');
             this.addAllArguments(st, arguments);
             return st.render();
         } catch (Exception e) {

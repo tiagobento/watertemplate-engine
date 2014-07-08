@@ -20,12 +20,12 @@ public class TemplateReader {
         try {
             final char[] buffer = new char[BUFFER_SIZE];
             final BufferedReader bf = new BufferedReader(new FileReader(templateFile));
-
             for (int nReadChars; (nReadChars = bf.read(buffer, 0, BUFFER_SIZE)) != -1; ) {
                 for (int i = 0; i < nReadChars; i++) {
                     consumer.accept(buffer[i]);
                 }
             }
+            bf.close();
         } catch (Exception e) {
             throw new TemplateException(e);
         }
