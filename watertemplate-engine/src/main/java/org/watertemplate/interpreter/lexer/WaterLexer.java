@@ -71,7 +71,11 @@ public class WaterLexer {
         }
     }
 
-    public List<String> getTokens() {
+    List<String> getTokenValues() {
+        return tokens.values();
+    }
+
+    public List<Token> getTokens() {
         return tokens.all();
     }
 

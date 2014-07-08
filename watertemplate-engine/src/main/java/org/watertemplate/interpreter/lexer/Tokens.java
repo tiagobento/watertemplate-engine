@@ -39,9 +39,13 @@ class Tokens {
         currentTokenValue.append(c);
     }
 
-    public List<String> all() {
+    List<String> values() {
         return tokens.stream()
             .map(Token::getValue)
             .collect(Collectors.toList());
+    }
+
+    List<Token> all() {
+        return tokens;
     }
 }

@@ -103,7 +103,7 @@ public class WaterLexerTest {
         string.chars().forEach((c) -> lexer.lex((char) c));
         lexer.lex('\0');
 
-        final List<String> list = lexer.getTokens();
+        final List<String> list = lexer.getTokenValues();
         return list.toArray(new String[list.size()]);
     }
 
