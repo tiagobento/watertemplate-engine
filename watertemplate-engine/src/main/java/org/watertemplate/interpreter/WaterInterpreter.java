@@ -31,7 +31,7 @@ public class WaterInterpreter implements Interpreter {
         final WaterParser parser = new WaterParser(lexer.getTokens());
         parser.parse();
 
-        return lexer.getResultString();
+        return "";
     }
 
     private File getTemplateFile(final Locale locale) {

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-enum TokenClass {
+public enum TokenClass {
     KEYWORD {
         @Override
         public boolean accept(final String string) {
@@ -15,12 +15,6 @@ enum TokenClass {
         @Override
         public boolean accept(final String string) {
             return ID_PATTERN.matcher(string).matches();
-        }
-    },
-    END_OF_BLOCK {
-        @Override
-        public boolean accept(final String string) {
-            return string.isEmpty();
         }
     },
     ACCESSOR,
@@ -34,6 +28,7 @@ enum TokenClass {
         KEYWORDS.add("in");
         KEYWORDS.add("if");
         KEYWORDS.add("else");
+        KEYWORDS.add("end");
     }
 
 

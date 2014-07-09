@@ -2,92 +2,97 @@ package org.watertemplate.interpreter.lexer;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.interpreter.lexer.exception.IncompleteCommandException;
+import org.watertemplate.interpreter.lexer.exception.InvalidCommandException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WaterLexerTest {
 
     @Test
     public void validTexts() {
-        assertLexEqualsArray(lex("a"), array("a"));
-        assertLexEqualsArray(lex("ab"), array("ab"));
-        assertLexEqualsArray(lex("a b"), array("a b"));
-        assertLexEqualsArray(lex("a\nb"), array("a\nb"));
-        assertLexEqualsArray(lex("a\tb"), array("a\tb"));
-        assertLexEqualsArray(lex("a\t\nb"), array("a\t\nb"));
+        assertLexEqualsArray(lex("a"), tokens("a"));
+        assertLexEqualsArray(lex("ab"), tokens("ab"));
+        assertLexEqualsArray(lex("a b"), tokens("a b"));
+        assertLexEqualsArray(lex("a\nb"), tokens("a\nb"));
+        assertLexEqualsArray(lex("a\tb"), tokens("a\tb"));
+        assertLexEqualsArray(lex("a\t\nb"), tokens("a\t\nb"));
     }
 
 
     @Test
     public void validProperties() {
-        assertLexEqualsArray(lex("a~i~"), array("a", "i"));
-        assertLexEqualsArray(lex("~i~b"), array("i", "b"));
-        assertLexEqualsArray(lex("~i~~id~"), array("i", "id"));
-        assertLexEqualsArray(lex("~i~ ~id~"), array("i", " ", "id"));
-        assertLexEqualsArray(lex("~i~\n~id~"), array("i", "\n", "id"));
-        assertLexEqualsArray(lex("~i~\t~id~"), array("i", "\t", "id"));
-        assertLexEqualsArray(lex("~i~\t~id~\n"), array("i", "\t", "id", "\n"));
+        assertLexEqualsArray(lex("a~i~"), tokens("a", "i"));
+        assertLexEqualsArray(lex("~i~b"), tokens("i", "b"));
+        assertLexEqualsArray(lex("~i~~id~"), tokens("i", "id"));
+        assertLexEqualsArray(lex("~i~ ~id~"), tokens("i", " ", "id"));
+        assertLexEqualsArray(lex("~i~\n~id~"), tokens("i", "\n", "id"));
+        assertLexEqualsArray(lex("~i~\t~id~"), tokens("i", "\t", "id"));
+        assertLexEqualsArray(lex("~i~\t~id~\n"), tokens("i", "\t", "id", "\n"));
     }
 
     @Test
     public void validIds() {
-        assertLexEqualsArray(lex("~a~"), array("a"));
-        assertLexEqualsArray(lex("~a._~"), array("a", ".", "_"));
-        assertLexEqualsArray(lex("~a.bc~"), array("a", ".", "bc"));
-        assertLexEqualsArray(lex("~a.b.c~"), array("a", ".", "b", ".", "c"));
-        assertLexEqualsArray(lex("~a1.b2.c3~"), array("a1", ".", "b2", ".", "c3"));
-        assertLexEqualsArray(lex("~a.b.c~a.b.c"), array("a", ".", "b", ".", "c", "a.b.c"));
+        assertLexEqualsArray(lex("~a~"), tokens("a"));
+        assertLexEqualsArray(lex("~a._~"), tokens("a", ".", "_"));
+        assertLexEqualsArray(lex("~a.bc~"), tokens("a", ".", "bc"));
+        assertLexEqualsArray(lex("~a.b.c~"), tokens("a", ".", "b", ".", "c"));
+        assertLexEqualsArray(lex("~a1.b2.c3~"), tokens("a1", ".", "b2", ".", "c3"));
+        assertLexEqualsArray(lex("~a.b.c~a.b.c"), tokens("a", ".", "b", ".", "c", "a.b.c"));
     }
 
     @Test
     public void validAccessors() {
-        assertLexEqualsArray(lex("."), array("."));
-        assertLexEqualsArray(lex("a."), array("a."));
-        assertLexEqualsArray(lex(".a."), array(".a."));
-        assertLexEqualsArray(lex(".a.b"), array(".a.b"));
-        assertLexEqualsArray(lex("a.~a.b~"), array("a.", "a", ".", "b"));
-        assertLexEqualsArray(lex("a.~a.b~.abc"), array("a.", "a", ".", "b", ".abc"));
-        assertLexEqualsArray(lex("abcd.~a.b~. .~x.y.z~"), array("abcd.", "a", ".", "b", ". .", "x", ".", "y", ".", "z"));
+        assertLexEqualsArray(lex("."), tokens("."));
+        assertLexEqualsArray(lex("a."), tokens("a."));
+        assertLexEqualsArray(lex(".a."), tokens(".a."));
+        assertLexEqualsArray(lex(".a.b"), tokens(".a.b"));
+        assertLexEqualsArray(lex("a.~a.b~"), tokens("a.", "a", ".", "b"));
+        assertLexEqualsArray(lex("a.~a.b~.abc"), tokens("a.", "a", ".", "b", ".abc"));
+        assertLexEqualsArray(lex("abcd.~a.b~. .~x.y.z~"), tokens("abcd.", "a", ".", "b", ". .", "x", ".", "y", ".", "z"));
     }
 
     @Test
     public void validIfs() {
-        assertLexEqualsArray(lex("~if foo::~"), array("if", "foo"));
-        assertLexEqualsArray(lex("~if foo.bar::~"), array("if", "foo", ".", "bar"));
-        assertLexEqualsArray(lex("~if foo.bar::~"), array("if", "foo", ".", "bar"));
-        assertLexEqualsArray(lex("~if foo.bar: :~"), array("if", "foo", ".", "bar", " "));
-        assertLexEqualsArray(lex("~if x.y:  ~z~  :~"), array("if", "x", ".", "y", "  ", "z", "  "));
-        assertLexEqualsArray(lex("~if x.y:  ~z~  :else::~"), array("if", "x", ".", "y", "  ", "z", "  ", "else"));
-        assertLexEqualsArray(lex("~if x.y:  ~z~  :else: :~"), array("if", "x", ".", "y", "  ", "z", "  ", "else", " "));
-        assertLexEqualsArray(lex("~if x::else:~if j: :~:~"), array("if", "x", "else", "if", "j", " "));
+        assertLexEqualsArray(lex("~if foo::~"), tokens("if", "foo", "end"));
+        assertLexEqualsArray(lex("~if foo.bar::~"), tokens("if", "foo", ".", "bar", "end"));
+        assertLexEqualsArray(lex("~if foo.bar::~"), tokens("if", "foo", ".", "bar", "end"));
+        assertLexEqualsArray(lex("~if foo.bar: :~"), tokens("if", "foo", ".", "bar", " ", "end"));
+        assertLexEqualsArray(lex("~if x.y:  ~z~  :~"), tokens("if", "x", ".", "y", "  ", "z", "  ", "end"));
+        assertLexEqualsArray(lex("~if x.y:  ~z~  :else::~"), tokens("if", "x", ".", "y", "  ", "z", "  ", "else", "end"));
+        assertLexEqualsArray(lex("~if x.y:  ~z~  :else: :~"), tokens("if", "x", ".", "y", "  ", "z", "  ", "else", " ", "end"));
+        assertLexEqualsArray(lex("~if x::else:~if j: :~:~"), tokens("if", "x", "else", "if", "j", " ", "end", "end"));
     }
 
     @Test
     public void validFors() {
-        assertLexEqualsArray(lex("~for foo in bar::~"), array("for", "foo", "in", "bar"));
-        assertLexEqualsArray(lex("~for foo.bar in x::~"), array("for", "foo", ".", "bar", "in", "x"));
-        assertLexEqualsArray(lex("~for x in y::else::~"), array("for", "x", "in", "y", "else"));
-        assertLexEqualsArray(lex("~for x in y: :else: :~"), array("for", "x", "in", "y", " ", "else", " "));
-        assertLexEqualsArray(lex("~for x in y:~x~:else:~if x.a.b.c::else::~:~"), array("for", "x", "in", "y", "x", "else", "if", "x", ".", "a", ".", "b", ".", "c", "else"));
+        assertLexEqualsArray(lex("~for foo in bar::~"), tokens("for", "foo", "in", "bar", "end"));
+        assertLexEqualsArray(lex("~for foo.bar in x::~"), tokens("for", "foo", ".", "bar", "in", "x", "end"));
+        assertLexEqualsArray(lex("~for x in y::else::~"), tokens("for", "x", "in", "y", "else", "end"));
+        assertLexEqualsArray(lex("~for x in y: :else: :~"), tokens("for", "x", "in", "y", " ", "else", " ", "end"));
+        assertLexEqualsArray(lex("~for x in y:~x~:else:~if x.a.b.c::else::~:~"), tokens("for", "x", "in", "y", "x", "else", "if", "x", ".", "a", ".", "b", ".", "c", "else", "end", "end"));
     }
 
     @Test
     public void validWhitespaces() {
-        assertLexEqualsArray(lex("~if       foo.bar: :~"), array("if", "foo", ".", "bar", " "));
-        assertLexEqualsArray(lex("~for     x    in    y: :else: :~"), array("for", "x", "in", "y", " ", "else", " "));
-        assertLexEqualsArray(lex("~for\t\tx\tin  y::else::~"), array("for", "x", "in", "y", "else"));
-        assertLexEqualsArray(lex("~for\n\t\tx\n\t\tin\n\t\ty::else::~"), array("for", "x", "in", "y", "else"));
+        assertLexEqualsArray(lex("~if       foo.bar: :~"), tokens("if", "foo", ".", "bar", " ", "end"));
+        assertLexEqualsArray(lex("~for     x    in    y: :else: :~"), tokens("for", "x", "in", "y", " ", "else", " ", "end"));
+        assertLexEqualsArray(lex("~for\t\tx\tin  y::else::~"), tokens("for", "x", "in", "y", "else", "end"));
+        assertLexEqualsArray(lex("~for\n\t\tx\n\t\tin\n\t\ty::else::~"), tokens("for", "x", "in", "y", "else", "end"));
+        assertLexEqualsArray(lex("~if :"), tokens("if"));
+        assertLexEqualsArray(lex("~if x :"), tokens("if", "x"));
+        assertLexEqualsArray(lex("~for   x in  x.y  :"), tokens("for", "x", "in", "x", ".", "y"));
     }
 
     @Test
     //TODO: improve exceptions
     public void invalidCommands() {
-        lexExpecting("~", RuntimeException.class);
-        lexExpecting("~x", RuntimeException.class);
-        lexExpecting("~if", RuntimeException.class);
-        lexExpecting("~if :", RuntimeException.class);
-        lexExpecting("~if x :", RuntimeException.class);
-        lexExpecting("~if x ::else: :x~", RuntimeException.class);
+        lexExpecting("~", IncompleteCommandException.class);
+        lexExpecting("~x", IncompleteCommandException.class);
+        lexExpecting("~if", IncompleteCommandException.class);
+        lexExpecting("~if x ::else: :x~", InvalidCommandException.class);
+        lexExpecting(":  else :", InvalidCommandException.class);
     }
 
     @Test
@@ -106,25 +111,26 @@ public class WaterLexerTest {
                 ":~"
         );
 
-        String[] array = array(
+        String[] tokens = tokens(
             "if", "x", "\n",
             "y", ".", "p", "\n",
             "z", "\n",
             "if", "j", "\n",
             "for", "x", "in", "z", "\n",
             "x", ".", "u", "\n",
-            "\n",
-            "\n",
+            "end", "\n",
+            "end", "\n",
             "else", "\n",
-            "bla", "\n"
+            "bla", "\n",
+            "end"
         );
 
-        assertLexEqualsArray(lex, array);
+        assertLexEqualsArray(lex, tokens);
     }
 
     //
 
-    private String[] array(final String... strings) {
+    private String[] tokens(final String... strings) {
         return strings;
     }
 
@@ -134,19 +140,24 @@ public class WaterLexerTest {
         string.chars().forEach((c) -> lexer.lex((char) c));
         lexer.lex('\0');
 
-        final List<String> list = lexer.getTokenValues();
-        return list.toArray(new String[list.size()]);
+        final List<String> tokenValues = lexer.getTokens()
+            .stream()
+            .map(Token::getValue)
+            .collect(Collectors.toList());
+
+        return tokenValues.toArray(new String[tokenValues.size()]);
     }
 
-    private void assertLexEqualsArray(final String[] lex, final String[] array) {
+    private void assertLexEqualsArray(final String[] lex, final String[] exp) {
         try {
-            Assert.assertArrayEquals(array, lex);
+            Assert.assertArrayEquals(exp, lex);
         } catch (AssertionError e) {
             System.out.print("lex: ");
             for (String s : lex) System.out.printf("[%s]", s);
 
-            System.out.print("\nexp: ");
-            for (String s : array) System.out.printf("[%s]", s);
+            System.out.print("\n");
+            System.out.println("exp: ");
+            for (String s : exp) System.out.printf("[%s]", s);
 
             throw e;
         }
