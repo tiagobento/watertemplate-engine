@@ -60,7 +60,7 @@ public class WaterLexer {
                 tokens.accept();
                 readMode = this::whiteSpaceInsideCommands;
                 break;
-            case Symbol.Char.ACCESSOR:
+            case Symbol.Char.NESTED_PROPERTY_ACCESSOR:
                 tokens.accept(TokenClass.IDENTIFIER);
                 tokens.add(character);
                 tokens.accept(TokenClass.SYMBOL);
