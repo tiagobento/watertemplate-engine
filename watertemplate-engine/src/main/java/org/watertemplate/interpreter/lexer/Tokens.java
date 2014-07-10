@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.lexer;
 
-import org.watertemplate.interpreter.lexer.exception.InvalidCommandException;
+import org.watertemplate.interpreter.lexer.exception.InvalidTokenException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ class Tokens {
         final String tokenValue = currentTokenValue.toString();
 
         if (!tokenClass.accept(tokenValue)) {
-            throw new InvalidCommandException(tokenValue, tokenClass);
+            throw new InvalidTokenException(tokenValue, tokenClass);
         }
 
         tokens.add(new Token(tokenValue, tokenClass, lineNumber, columnAccepted));

@@ -20,7 +20,7 @@ public class TemplateMap<T> {
             this.mapper = mapper;
         }
 
-        Map<String, Object> map(T object) {
+        Map<String, Object> map(final T object) {
             Arguments arguments = new Arguments();
             mapper.accept(object, arguments);
             return arguments.map;
@@ -33,6 +33,10 @@ public class TemplateMap<T> {
         TemplateObject(final T object, final BiConsumer<T, Arguments> mapper) {
             super(mapper);
             this.object = object;
+        }
+
+        Map<String, Object> map() {
+            return map(object);
         }
 
         @Override

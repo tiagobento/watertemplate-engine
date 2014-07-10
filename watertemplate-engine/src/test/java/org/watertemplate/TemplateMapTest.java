@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 public class TemplateMapTest {
     @Test
@@ -51,6 +52,22 @@ public class TemplateMapTest {
 
         Assert.assertEquals(1, arguments.map.size());
         Assert.assertTrue(arguments.map.get("strings") instanceof TemplateMap.TemplateCollection);
+    }
+
+    @Test
+    public void map() {
+        final TemplateMap.TemplateObject<String> templateObject;
+        templateObject = new TemplateMap.TemplateObject<>("foo", (string, stringMap) -> {
+            stringMap.add("lower", string.toLowerCase());
+            stringMap.add("upper", string.toUpperCase());
+            stringMap.add("size", string.length());
+        });
+
+        final Map<String, Object> map = templateObject.map();
+        Assert.assertEquals(map.get("lower"), "foo");
+        Assert.assertEquals(map.get("upper"), "FOO");
+        Assert.assertEquals(map.get("size"), 3);
+
     }
 
     private Collection<Character> getChars(final String string) {

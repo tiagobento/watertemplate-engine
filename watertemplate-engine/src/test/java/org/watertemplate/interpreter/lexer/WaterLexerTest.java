@@ -2,8 +2,8 @@ package org.watertemplate.interpreter.lexer;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.watertemplate.interpreter.lexer.exception.IncompleteCommandException;
-import org.watertemplate.interpreter.lexer.exception.InvalidCommandException;
+import org.watertemplate.interpreter.lexer.exception.IncompleteTokenException;
+import org.watertemplate.interpreter.lexer.exception.InvalidTokenException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,12 +87,12 @@ public class WaterLexerTest {
 
     @Test
     public void invalidCommands() {
-        lexExpecting("~", IncompleteCommandException.class);
-        lexExpecting("~x", IncompleteCommandException.class);
-        lexExpecting("~if", IncompleteCommandException.class);
-        lexExpecting("~if x ::else: :x~", InvalidCommandException.class);
-        lexExpecting(":  else :", InvalidCommandException.class);
-        lexExpecting("~if *(::", InvalidCommandException.class);
+        lexExpecting("~", IncompleteTokenException.class);
+        lexExpecting("~x", IncompleteTokenException.class);
+        lexExpecting("~if", IncompleteTokenException.class);
+        lexExpecting("~if x ::else: :x~", InvalidTokenException.class);
+        lexExpecting(":  else :", InvalidTokenException.class);
+        lexExpecting("~if *(::", InvalidTokenException.class);
     }
 
     @Test
@@ -167,7 +167,6 @@ public class WaterLexerTest {
         try {
             lex(string);
         } catch (final Exception e) {
-            System.out.println(e.getMessage());
             Assert.assertEquals(exceptionClass, e.getClass());
             return;
         }

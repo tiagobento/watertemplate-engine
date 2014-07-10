@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.lexer;
 
-import org.watertemplate.interpreter.lexer.exception.IncompleteCommandException;
+import org.watertemplate.interpreter.lexer.exception.IncompleteTokenException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -66,7 +66,7 @@ public class WaterLexer {
                 tokens.accept(TokenClass.ACCESSOR, i, j);
                 break;
             case '\0':
-                throw new IncompleteCommandException(i, j);
+                throw new IncompleteTokenException(i, j);
             default:
                 tokens.add(character);
                 break;
