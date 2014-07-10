@@ -59,11 +59,11 @@ public class TemplateMap<T> {
 
     public static class Arguments extends TemplateMap<Object> {
         public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateCollection<T>(iterable, mapper));
+            add(key, new TemplateCollection<>(iterable, mapper));
         }
 
         public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateObject<T>(object, mapper));
+            add(key, new TemplateObject<>(object, mapper));
         }
 
         public final String get(final String key) {

@@ -86,7 +86,6 @@ public class WaterLexerTest {
     }
 
     @Test
-    //TODO: improve exceptions
     public void invalidCommands() {
         lexExpecting("~", IncompleteCommandException.class);
         lexExpecting("~x", IncompleteCommandException.class);
@@ -138,8 +137,8 @@ public class WaterLexerTest {
     private String[] lex(final String string) {
         final WaterLexer lexer = new WaterLexer();
 
-        string.chars().forEach((c) -> lexer.lex((char) c));
-        lexer.lex('\0');
+        string.chars().forEach((c) -> lexer.accept((char) c));
+        lexer.accept('\0');
 
         final List<String> tokenValues = lexer.getTokens()
             .stream()

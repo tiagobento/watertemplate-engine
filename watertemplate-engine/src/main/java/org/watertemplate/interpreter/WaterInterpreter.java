@@ -26,7 +26,7 @@ public class WaterInterpreter implements Interpreter {
         final WaterLexer lexer = new WaterLexer();
 
         final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
-        reader.readExecuting(lexer::lex);
+        reader.readExecuting(lexer::accept);
 
         final WaterParser parser = new WaterParser(lexer.getTokens());
         parser.parse();

@@ -27,9 +27,7 @@ public class TokenClassTest {
 
     @Test
     public void acceptKeywords() {
-        TokenClass.KEYWORDS.stream().forEach((keyword) -> {
-            assertTrue(KEYWORD.accept(keyword));
-        });
+        TokenClass.KEYWORDS.stream().forEach((keyword) -> assertTrue(KEYWORD.accept(keyword)));
 
         assertFalse(KEYWORD.accept("foo"));
         assertFalse(KEYWORD.accept("bar"));

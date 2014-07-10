@@ -31,7 +31,6 @@ public enum TokenClass {
         KEYWORDS.add("end");
     }
 
-
     public boolean accept(final String string) {
         return true;
     }

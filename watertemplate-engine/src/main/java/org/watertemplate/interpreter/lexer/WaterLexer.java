@@ -10,10 +10,10 @@ public class WaterLexer {
     private final Tokens tokens = new Tokens();
     private Consumer<Character> readMode = this::ordinaryText;
 
-    int i = 0;
-    int j = 0;
+    private int i = 0;
+    private int j = 0;
 
-    public void lex(final Character character) {
+    public void accept(final Character character) {
         switch (character) {
             case '\n':
                 i++;

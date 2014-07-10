@@ -49,7 +49,7 @@ public class TemplateRendererTest {
         class TemplateWithSubTemplatesAndMasterTemplate extends Template {
             @Override
             protected String getFilePath() {
-                return "templateWithMasterAndSubtemplates.html";
+                return "templateWithMasterAndSubTemplates.html";
             }
 
             @Override

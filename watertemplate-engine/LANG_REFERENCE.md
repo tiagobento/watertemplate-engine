@@ -16,7 +16,7 @@ Argument accessor
 If
 --
 
-- Else is trigeered when the value of the key `[argumentKey]` is false.
+- Else is triggered when the value of the key `[argumentKey]` is false.
 - Only booleans are allowed to perform the if condition.
 
 ```
@@ -49,7 +49,7 @@ For
 If within for
 --
 
-Hence during a for loop you can access `x` mapped properties, they can be used as if conditions aswell.
+Hence during a for loop you can access `x` mapped properties, they can be used as if conditions as well.
 ```
 ~for x in [argumentKey]:
     // for statements
