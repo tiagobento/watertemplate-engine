@@ -15,17 +15,17 @@ class Tokens {
         this.currentTokenValue = new StringBuilder();
     }
 
-    void accept(int lineNumber, int columnAccepted) {
+    void accept() {
         final String string = currentTokenValue.toString();
 
         if (TokenClass.KEYWORD.accept(string)) {
-            accept(TokenClass.KEYWORD, lineNumber, columnAccepted);
+            accept(TokenClass.KEYWORD);
         } else {
-            accept(TokenClass.IDENTIFIER, lineNumber, columnAccepted);
+            accept(TokenClass.IDENTIFIER);
         }
     }
 
-    void accept(final TokenClass tokenClass, int lineNumber, int columnAccepted) {
+    void accept(final TokenClass tokenClass) {
         if (currentTokenValue.length() == 0) {
             return;
         }
@@ -36,7 +36,7 @@ class Tokens {
             throw new InvalidTokenException(tokenValue, tokenClass);
         }
 
-        tokens.add(new Token(tokenValue, tokenClass, lineNumber, columnAccepted));
+        tokens.add(new Token(tokenValue, tokenClass));
         currentTokenValue = new StringBuilder();
     }
 

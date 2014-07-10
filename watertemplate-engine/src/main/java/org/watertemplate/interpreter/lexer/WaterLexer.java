@@ -10,33 +10,33 @@ public class WaterLexer {
     private final Tokens tokens = new Tokens();
     private Consumer<Character> readMode = this::ordinaryText;
 
-    private int i = 0;
-    private int j = 0;
+    private int lineNumber = 0;
+    private int columnNumber = 0;
 
     public void accept(final Character character) {
         switch (character) {
             case '\n':
-                i++;
-                j = 0;
+                lineNumber++;
+                columnNumber = 0;
             default:
                 readMode.accept(character);
-                j++;
+                columnNumber++;
         }
     }
 
     /* default */
     private void ordinaryText(final Character character) {
         switch (character) {
-            case '~': // start of command
-                tokens.accept(TokenClass.TEXT, i, j);
-                readMode = this::command;
+            case Symbol.Char.ENVIRONMENT_CHANGER:
+                tokens.accept(TokenClass.TEXT);
+                readMode = this::commandOrPropertyEvaluation;
                 break;
-            case ':': // start of end of command
-                tokens.accept(TokenClass.TEXT, i, j);
-                readMode = this::closingCommand;
+            case Symbol.Char.BLOCK_CLOSER:
+                tokens.accept(TokenClass.TEXT);
+                readMode = this::endOfBlock;
                 break;
-            case '\0': // end of input
-                tokens.accept(TokenClass.TEXT, i, j);
+            case '\0':
+                tokens.accept(TokenClass.TEXT);
                 break;
             default:
                 tokens.add(character);
@@ -44,44 +44,44 @@ public class WaterLexer {
         }
     }
 
-    private void command(final Character character) {
+    private void commandOrPropertyEvaluation(final Character character) {
         switch (character) {
-            case ':':  // end of command
-                tokens.accept(TokenClass.IDENTIFIER, i, j);
+            case Symbol.Char.BLOCK_OPENER:
+                tokens.accept(TokenClass.IDENTIFIER);
                 readMode = this::ordinaryText;
                 break;
-            case '~': // end of property evaluation
-                tokens.accept(TokenClass.IDENTIFIER, i, j);
+            case Symbol.Char.PROPERTY_EVALUATION_CLOSER:
+                tokens.accept(TokenClass.IDENTIFIER);
                 readMode = this::ordinaryText;
                 break;
             case '\t':
             case '\n':
-            case ' ': // separators
-                tokens.accept(i, j);
+            case ' ':
+                tokens.accept();
                 readMode = this::whiteSpaceInsideCommands;
                 break;
-            case '.': // accessor
-                tokens.accept(TokenClass.IDENTIFIER, i, j);
+            case Symbol.Char.ACCESSOR:
+                tokens.accept(TokenClass.IDENTIFIER);
                 tokens.add(character);
-                tokens.accept(TokenClass.ACCESSOR, i, j);
+                tokens.accept(TokenClass.SYMBOL);
                 break;
             case '\0':
-                throw new IncompleteTokenException(i, j);
+                throw new IncompleteTokenException(lineNumber, columnNumber);
             default:
                 tokens.add(character);
                 break;
         }
     }
 
-    private void closingCommand(final Character character) {
+    private void endOfBlock(final Character character) {
         switch (character) {
-            case ':':  // else
-                tokens.accept(TokenClass.KEYWORD, i, j);
+            case Symbol.Char.BLOCK_OPENER:
+                tokens.accept(TokenClass.KEYWORD);
                 readMode = this::ordinaryText;
                 break;
-            case '~': // end of block
-                tokens.add('e').add('n').add('d');
-                tokens.accept(TokenClass.KEYWORD, i, j);
+            case Symbol.Char.ENVIRONMENT_CHANGER:
+                Keyword.END.getStringRepresentation().chars().forEach(c -> tokens.add((char) c));
+                tokens.accept(TokenClass.KEYWORD);
                 readMode = this::ordinaryText;
                 break;
             default:
@@ -96,12 +96,12 @@ public class WaterLexer {
             case '\n':
             case ' ':
                 break;
-            case ':':
+            case Symbol.Char.BLOCK_OPENER:
                 readMode = this::ordinaryText;
                 break;
             default:
-                command(character);
-                readMode = this::command;
+                commandOrPropertyEvaluation(character);
+                readMode = this::commandOrPropertyEvaluation;
                 break;
         }
     }
