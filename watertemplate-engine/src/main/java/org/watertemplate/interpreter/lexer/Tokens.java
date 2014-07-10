@@ -15,32 +15,25 @@ class Tokens {
         this.currentTokenValue = new StringBuilder();
     }
 
-    void accept() {
-        final String string = currentTokenValue.toString();
-
-        if (TokenClass.KEYWORD.accept(string)) {
-            accept(TokenClass.KEYWORD);
-        } else {
-            accept(TokenClass.IDENTIFIER);
-        }
-    }
-
-    void accept(final TokenClass tokenClass) {
+    void acceptFirstIfNotEmpty(final TokenClass... tokenClasses) {
         if (currentTokenValue.length() == 0) {
             return;
         }
 
         final String tokenValue = currentTokenValue.toString();
 
-        if (!tokenClass.accept(tokenValue)) {
-            throw new InvalidTokenException(tokenValue, tokenClass);
+        for (TokenClass tokenClass : tokenClasses) {
+            if (tokenClass.accept(tokenValue)) {
+                tokens.add(new Token(tokenValue, tokenClass));
+                currentTokenValue = new StringBuilder();
+                return;
+            }
         }
 
-        tokens.add(new Token(tokenValue, tokenClass));
-        currentTokenValue = new StringBuilder();
+        throw new InvalidTokenException(tokenValue, tokenClasses[tokenClasses.length - 1]);
     }
 
-    Tokens add(final Character c) {
+    Tokens append(final Character c) {
         currentTokenValue.append(c);
         return this;
     }
