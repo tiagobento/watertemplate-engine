@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.lexer;
 
-public enum Keyword {
+enum Keyword {
     FOR("for"),
     IN("in"),
     IF("if"),
