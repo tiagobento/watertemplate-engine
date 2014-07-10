@@ -27,11 +27,11 @@ public class WaterLexer {
     /* default */
     private void ordinaryText(final Character character) {
         switch (character) {
-            case Symbol.Char.ENVIRONMENT_CHANGER:
+            case Symbol.ENVIRONMENT_CHANGER:
                 tokens.acceptFirstIfNotEmpty(TokenClass.TEXT);
                 readMode = this::commandOrPropertyEvaluation;
                 break;
-            case Symbol.Char.BLOCK_CLOSER:
+            case Symbol.BLOCK_CLOSER:
                 tokens.acceptFirstIfNotEmpty(TokenClass.TEXT);
                 readMode = this::endOfBlock;
                 break;
@@ -46,11 +46,11 @@ public class WaterLexer {
 
     private void commandOrPropertyEvaluation(final Character character) {
         switch (character) {
-            case Symbol.Char.BLOCK_OPENER:
+            case Symbol.BLOCK_OPENER:
                 tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
                 readMode = this::ordinaryText;
                 break;
-            case Symbol.Char.PROPERTY_EVALUATION_CLOSER:
+            case Symbol.PROPERTY_EVALUATION_CLOSER:
                 tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
                 readMode = this::ordinaryText;
                 break;
@@ -58,9 +58,9 @@ public class WaterLexer {
             case '\n':
             case ' ':
                 tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD, TokenClass.IDENTIFIER);
-                readMode = this::whiteSpaceInsideCommands;
+                readMode = this::whiteSpacesInsideCommandEnvironment;
                 break;
-            case Symbol.Char.NESTED_PROPERTY_ACCESSOR:
+            case Symbol.NESTED_PROPERTY_ACCESSOR:
                 tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
                 tokens.append(character);
                 tokens.acceptFirstIfNotEmpty(TokenClass.SYMBOL);
@@ -75,11 +75,11 @@ public class WaterLexer {
 
     private void endOfBlock(final Character character) {
         switch (character) {
-            case Symbol.Char.BLOCK_OPENER:
+            case Symbol.BLOCK_OPENER:
                 tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD);
                 readMode = this::ordinaryText;
                 break;
-            case Symbol.Char.ENVIRONMENT_CHANGER:
+            case Symbol.ENVIRONMENT_CHANGER:
                 Keyword.END.getStringRepresentation().chars().forEach(c -> tokens.append((char) c));
                 tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD);
                 readMode = this::ordinaryText;
@@ -90,13 +90,13 @@ public class WaterLexer {
         }
     }
 
-    private void whiteSpaceInsideCommands(final Character character) {
+    private void whiteSpacesInsideCommandEnvironment(final Character character) {
         switch (character) {
             case '\t':
             case '\n':
             case ' ':
                 break;
-            case Symbol.Char.BLOCK_OPENER:
+            case Symbol.BLOCK_OPENER:
                 readMode = this::ordinaryText;
                 break;
             default:

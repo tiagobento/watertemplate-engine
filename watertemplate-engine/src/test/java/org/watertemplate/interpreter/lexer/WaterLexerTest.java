@@ -156,7 +156,7 @@ public class WaterLexerTest {
             for (String s : lex) System.out.printf("[%s]", s);
 
             System.out.print("\n");
-            System.out.println("exp: ");
+            System.out.print("exp: ");
             for (String s : exp) System.out.printf("[%s]", s);
 
             throw e;
