@@ -21,8 +21,8 @@ public enum TokenClass {
     SYMBOL,
     TEXT;
 
-    final static Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
-    final static Set<String> KEYWORDS = new HashSet<>();
+    private final static Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
+    private final static Set<String> KEYWORDS = new HashSet<>();
 
     static {
         Arrays.asList(Keyword.values())

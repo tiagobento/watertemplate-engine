@@ -3,6 +3,8 @@ package org.watertemplate.interpreter.lexer;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.watertemplate.interpreter.lexer.TokenClass.IDENTIFIER;
@@ -27,7 +29,9 @@ public class TokenClassTest {
 
     @Test
     public void acceptKeywords() {
-        TokenClass.KEYWORDS.stream().forEach((keyword) -> assertTrue(KEYWORD.accept(keyword)));
+        Arrays.asList(Keyword.values())
+            .stream()
+            .forEach((keyword) -> assertTrue(KEYWORD.accept(keyword.getStringRepresentation())));
 
         assertFalse(KEYWORD.accept("foo"));
         assertFalse(KEYWORD.accept("bar"));

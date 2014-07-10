@@ -22,7 +22,7 @@ class Tokens {
 
         final String tokenValue = currentTokenValue.toString();
 
-        for (TokenClass tokenClass : tokenClasses) {
+        for (final TokenClass tokenClass : tokenClasses) {
             if (tokenClass.accept(tokenValue)) {
                 tokens.add(new Token(tokenValue, tokenClass));
                 currentTokenValue = new StringBuilder();

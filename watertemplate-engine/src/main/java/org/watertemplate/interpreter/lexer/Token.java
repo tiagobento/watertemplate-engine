@@ -13,9 +13,12 @@ public class Token {
         return value;
     }
 
+    public TokenClass getTokenClass() {
+        return tokenClass;
+    }
+
     @Override
     public String toString() {
         return tokenClass + "|" + value;
     }
-
 }
