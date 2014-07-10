@@ -93,6 +93,7 @@ public class WaterLexerTest {
         lexExpecting("~if", IncompleteCommandException.class);
         lexExpecting("~if x ::else: :x~", InvalidCommandException.class);
         lexExpecting(":  else :", InvalidCommandException.class);
+        lexExpecting("~if *(::", InvalidCommandException.class);
     }
 
     @Test
@@ -167,6 +168,7 @@ public class WaterLexerTest {
         try {
             lex(string);
         } catch (final Exception e) {
+            System.out.println(e.getMessage());
             Assert.assertEquals(exceptionClass, e.getClass());
             return;
         }

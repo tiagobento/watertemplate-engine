@@ -11,7 +11,7 @@ public enum TokenClass {
             return KEYWORDS.contains(string);
         }
     },
-    ID {
+    IDENTIFIER {
         @Override
         public boolean accept(final String string) {
             return ID_PATTERN.matcher(string).matches();

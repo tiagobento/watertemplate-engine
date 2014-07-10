@@ -4,7 +4,6 @@ import org.watertemplate.interpreter.lexer.exception.InvalidCommandException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class Tokens {
 
@@ -22,7 +21,7 @@ class Tokens {
         if (TokenClass.KEYWORD.accept(string)) {
             accept(TokenClass.KEYWORD, lineNumber, columnAccepted);
         } else {
-            accept(TokenClass.ID, lineNumber, columnAccepted);
+            accept(TokenClass.IDENTIFIER, lineNumber, columnAccepted);
         }
     }
 

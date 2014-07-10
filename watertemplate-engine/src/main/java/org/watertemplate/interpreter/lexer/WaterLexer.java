@@ -47,11 +47,11 @@ public class WaterLexer {
     private void command(final Character character) {
         switch (character) {
             case ':':  // end of command
-                tokens.accept(TokenClass.ID, i, j);
+                tokens.accept(TokenClass.IDENTIFIER, i, j);
                 readMode = this::ordinaryText;
                 break;
             case '~': // end of property evaluation
-                tokens.accept(TokenClass.ID, i, j);
+                tokens.accept(TokenClass.IDENTIFIER, i, j);
                 readMode = this::ordinaryText;
                 break;
             case '\t':
@@ -61,7 +61,7 @@ public class WaterLexer {
                 readMode = this::whiteSpaceInsideCommands;
                 break;
             case '.': // accessor
-                tokens.accept(TokenClass.ID, i, j);
+                tokens.accept(TokenClass.IDENTIFIER, i, j);
                 tokens.add(character);
                 tokens.accept(TokenClass.ACCESSOR, i, j);
                 break;
