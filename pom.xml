@@ -18,7 +18,7 @@
     <modules>
         <module>watertemplate-engine</module>
         <module>watertemplate-jaxrs-binding</module>
-        <module>watertexample-example</module>
+        <module>watertemplate-example</module>
     </modules>
 
     <build>
