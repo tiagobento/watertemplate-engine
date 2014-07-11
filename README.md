@@ -23,11 +23,13 @@ With no external dependencies, it is very lightweight and robust.
 ```java
 class MonthsGrid extends Template {
 
+    private static final Collection<Month> months = Arrays.asList(Month.values());
+
     MonthsGrid() {
         add("year", Year.now());
-        addCollection("months", Arrays.asList(Month.values()), (month, monthMap) -> {
-            monthMap.add("lowerName", month.name().toLowerCase());
-            monthMap.add("daysCount", month.length(Year.now().isLeap()));
+        addCollection("months", months, (month, map) -> {
+            map.add("lowerName", month.name().toLowerCase());
+            map.add("daysCount", month.length(Year.now().isLeap()));
         });
     }
 
