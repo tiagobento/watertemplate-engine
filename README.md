@@ -6,8 +6,6 @@ With no external dependencies, it is very lightweight and robust.
 
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
-[![Coverage Status](https://coveralls.io/repos/tiagobento/watertemplate-engine/badge.png)](https://coveralls.io/r/tiagobento/watertemplate-engine)
-
 #### Imagine a template:
 ```html
 <h1>Months of ~year~</h1>
@@ -81,6 +79,12 @@ _NO_ configuration
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
 gives you full power to build your templates. **Take a look at the [examples](watertexample-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
 
+_NO_ reflection
+--
+Every reflection solution kills most of refactoring tools on IDEs. Renaming, finding usages, moving etc.
+Because your interface with your template files is only the `add` method, specified in `Template`, 
+you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
+
 1 to 1 complexity
 ---
 Every template Java class has one, and one only, template file associated with it.
@@ -93,9 +97,3 @@ Because each template Java class has only one template file, it's reasonable tha
 argument you add to your template through the `add` method lives only during the rendering
 of the file you specified in `getFilePath` method of your template class.
 That means that neither master nor sub templates can access arguments you've added in your template Java class.
-
-_NO_ reflection
---
-Every reflection solution kills most of refactoring tools on IDEs. Renaming, finding usages, moving etc.
-Because your interface with your template files is only the `add` method, specified in `Template`, 
-you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
