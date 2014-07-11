@@ -6,6 +6,8 @@ With no external dependencies, it is very lightweight and robust.
 
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
+[![Coverage Status](https://coveralls.io/repos/tiagobento/watertemplate-engine/badge.png)](https://coveralls.io/r/tiagobento/watertemplate-engine)
+
 #### Imagine a template:
 ```html
 <h1>Months of ~year~</h1>
