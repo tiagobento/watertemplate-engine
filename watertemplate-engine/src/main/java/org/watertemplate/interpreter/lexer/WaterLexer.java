@@ -24,7 +24,6 @@ public class WaterLexer {
         }
     }
 
-    /* default */
     private void ordinaryText(final Character character) {
         switch (character) {
             case Symbol.ENVIRONMENT_CHANGER:
