@@ -77,7 +77,7 @@ public static void main(String[] args) {
 _NO_ configuration
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
-gives you full power to build your templates. **Take a look at the [examples](watertexample-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
+gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
 
 _NO_ reflection
 --
