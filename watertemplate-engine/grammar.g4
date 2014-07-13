@@ -10,7 +10,7 @@ prop_name_body
 
 prop_name
 	: prop_name_head
-	| prop_name_head prop_name_body
+	| prop_name_head prop_name
 	;
 
 id
