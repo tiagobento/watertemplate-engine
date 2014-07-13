@@ -11,6 +11,7 @@ prop_name_body_char
 prop_name_body
 	: prop_name_body_char
 	| prop_name_body_char prop_name_body
+	;
 
 prop_name
 	: prop_name_head
