@@ -3,7 +3,7 @@ prop_name_head
 	;
 
 prop_name_body
-	: _
+	: '_'
 	| prop_name_head
 	;
 
@@ -14,7 +14,7 @@ prop_name
 
 id
 	: prop_name
-	| prop_name.id
+	| prop_name '.' id
 	;
 
 // ---------------------------------------------
@@ -24,14 +24,14 @@ prop_eval
 	;
 
 if
-	: ~if id: statements :~
-	| ~if id: statements :else: statements :~
+	: '~if' id ':' statements ':~'
+	| '~if' id ':' statements ':else:' statements ':~'
 	;
 
 
 for
-	: ~for prop_name in id: statements :~
-	| ~for prop_name in id: statements :else: statements :~
+	: '~for' prop_name 'in' id ':' statements ':~'
+	| '~for' prop_name 'in' id ':' statements ':else:' statements ':~'
 	;
 
 text
