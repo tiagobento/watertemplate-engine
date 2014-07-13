@@ -1,9 +1,10 @@
 prop_name_head
-	: Upper- or lowercase letter A through Z
+	: [a-zA-Z]
 	;
 
 prop_name_body
 	: '_'
+	| [0-9]
 	| prop_name_head
 	;
 
@@ -20,7 +21,7 @@ id
 // ---------------------------------------------
 
 prop_eval
-	: ~id~
+	: '~' id '~'
 	;
 
 if
