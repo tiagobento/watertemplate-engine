@@ -2,15 +2,19 @@ prop_name_head
 	: [a-zA-Z]
 	;
 
-prop_name_body
+prop_name_body_char
 	: '_'
 	| [0-9]
 	| prop_name_head
 	;
+	
+prop_name_body
+	: prop_name_body_char
+	| prop_name_body_char prop_name_body
 
 prop_name
 	: prop_name_head
-	| prop_name_head prop_name
+	| prop_name_head prop_name_body
 	;
 
 id
