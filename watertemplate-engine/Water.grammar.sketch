@@ -1,5 +1,8 @@
 grammar Water;
 
+
+// terminals
+
 prop_name_head
 	: ('a'..'z')
 	| ('A'..'Z')
@@ -10,6 +13,10 @@ prop_name_body_char
 	| ('0'..'9')
 	| prop_name_head
 	;
+
+text
+    : .*
+    ;
 	
 prop_name_body
 	: prop_name_body_char
@@ -21,34 +28,35 @@ prop_name
 	| prop_name_head prop_name_body
 	;
 
+
+
+
+// non-terminals
+
 id
 	: prop_name
 	| prop_name '.' id
 	;
 
-id_eval
-	: '~' id '~'
+id_evaluation
+	: id
 	;
 
-if
-	: '~if' id ':' statements ':~'
-	| '~if' id ':' statements ':else:' statements ':~'
+if_command
+	: 'if' id statements 'end'
+	| 'if' id statements 'else' statements 'end'
 	;
 
 
-for
-	: '~for' prop_name 'in' id ':' statements ':~'
-	| '~for' prop_name 'in' id ':' statements ':else:' statements ':~'
-	;
-
-text
-	: .*
+for_command
+	: 'for' prop_name 'in' id statements 'end'
+	| 'for' prop_name 'in' id statements 'else' statements 'end'
 	;
 
 statement
-	: id_eval
-	| if
-	| for
+	: id_evaluation
+	| if_command
+	| for_command
 	| text
 	| ε
 	;

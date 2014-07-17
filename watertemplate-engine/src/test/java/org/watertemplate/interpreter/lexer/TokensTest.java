@@ -10,35 +10,35 @@ public class TokensTest {
     @Test
     public void acceptKeyword() {
         Tokens tokens = tokensWithString(Keyword.ELSE.getStringRepresentation());
-        tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD);
-        assertTokensHasOnlyOne(TokenClass.KEYWORD, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.ELSE);
+        assertTokensHasOnlyOne(TokenType.ELSE, tokens);
     }
 
     @Test
-    public void acceptIdentifier() {
+    public void acceptPropertyName() {
         Tokens tokens = tokensWithString("foobar");
-        tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD, TokenClass.IDENTIFIER);
-        assertTokensHasOnlyOne(TokenClass.IDENTIFIER, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.PROPERTY_NAME);
+        assertTokensHasOnlyOne(TokenType.PROPERTY_NAME, tokens);
     }
 
     @Test
     public void acceptText() {
         Tokens tokens = tokensWithString("foo*bar");
-        tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD, TokenClass.IDENTIFIER, TokenClass.TEXT);
-        assertTokensHasOnlyOne(TokenClass.TEXT, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.FOR, TokenType.PROPERTY_NAME, TokenType.TEXT);
+        assertTokensHasOnlyOne(TokenType.TEXT, tokens);
     }
 
     @Test
-    public void acceptIdentifierEvenIfKeyword() {
+    public void acceptPropertyNameEvenIfKeyword() {
         Tokens tokens = tokensWithString(Keyword.ELSE.getStringRepresentation());
-        tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER, TokenClass.KEYWORD);
-        assertTokensHasOnlyOne(TokenClass.IDENTIFIER, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME, TokenType.ELSE);
+        assertTokensHasOnlyOne(TokenType.PROPERTY_NAME, tokens);
     }
 
-    private void assertTokensHasOnlyOne(final TokenClass identifier, final Tokens tokens) {
+    private void assertTokensHasOnlyOne(final TokenType type, final Tokens tokens) {
         List<Token> acceptedTokens = tokens.all();
         Assert.assertEquals(1, acceptedTokens.size());
-        Assert.assertEquals(identifier, acceptedTokens.get(0).getTokenClass());
+        Assert.assertEquals(type, acceptedTokens.get(0).getType());
     }
 
     private Tokens tokensWithString(final String stringRepresentation) {

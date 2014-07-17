@@ -1,24 +1,27 @@
 package org.watertemplate.interpreter.lexer;
 
 public class Token {
-    private final String value;
-    private final TokenClass tokenClass;
+    public static final Token END_OF_INPUT = new Token("eoi", TokenType.END_OF_INPUT);
 
-    public Token(final String value, final TokenClass tokenClass) {
+    private final String value;
+    private final TokenType type;
+
+    Token(final String value, final TokenType type) {
         this.value = value;
-        this.tokenClass = tokenClass;
+        this.type = type;
     }
 
     public String getValue() {
         return value;
     }
 
-    public TokenClass getTokenClass() {
-        return tokenClass;
+    public TokenType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
-        return tokenClass + "|" + value;
+        return type + "|" + value;
     }
+
 }

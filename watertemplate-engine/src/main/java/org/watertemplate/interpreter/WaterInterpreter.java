@@ -1,13 +1,15 @@
 package org.watertemplate.interpreter;
 
 import org.watertemplate.exception.TemplateException;
-import org.watertemplate.interpreter.lexer.WaterLexer;
-import org.watertemplate.interpreter.parser.WaterParser;
+import org.watertemplate.interpreter.lexer.Lexer;
+import org.watertemplate.interpreter.lexer.Token;
+import org.watertemplate.interpreter.parser.RecursiveDescentParser;
 import org.watertemplate.interpreter.reader.TemplateReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -23,12 +25,15 @@ public class WaterInterpreter implements Interpreter {
 
     @Override
     public String interpret(final Locale locale) {
-        final WaterLexer lexer = new WaterLexer();
+        final Lexer lexer = new Lexer();
 
         final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
         reader.readExecuting(lexer::accept);
 
-        final WaterParser parser = new WaterParser(lexer.getTokens());
+        final List<Token> tokens = lexer.getTokens();
+        tokens.add(Token.END_OF_INPUT);
+
+        final RecursiveDescentParser parser = new RecursiveDescentParser(tokens);
         parser.parse();
 
         return "";

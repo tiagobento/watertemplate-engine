@@ -5,10 +5,10 @@ import org.watertemplate.interpreter.lexer.exception.IncompleteTokenException;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class WaterLexer {
+public class Lexer {
 
     private final Tokens tokens = new Tokens();
-    private Consumer<Character> readMode = this::ordinaryText;
+    private Consumer<Character> readMode = this::text;
 
     private int lineNumber = 0;
     private int columnNumber = 0;
@@ -24,18 +24,18 @@ public class WaterLexer {
         }
     }
 
-    private void ordinaryText(final Character character) {
+    private void text(final Character character) {
         switch (character) {
-            case Symbol.ENVIRONMENT_CHANGER:
-                tokens.acceptFirstIfNotEmpty(TokenClass.TEXT);
+            case LexerSymbol.ENVIRONMENT_CHANGER:
+                tokens.acceptFirstIfNotEmpty(TokenType.TEXT);
                 readMode = this::commandOrPropertyEvaluation;
                 break;
-            case Symbol.BLOCK_CLOSER:
-                tokens.acceptFirstIfNotEmpty(TokenClass.TEXT);
+            case LexerSymbol.BLOCK_CLOSER:
+                tokens.acceptFirstIfNotEmpty(TokenType.TEXT);
                 readMode = this::endOfBlock;
                 break;
             case '\0':
-                tokens.acceptFirstIfNotEmpty(TokenClass.TEXT);
+                tokens.acceptFirstIfNotEmpty(TokenType.TEXT);
                 break;
             default:
                 tokens.append(character);
@@ -45,24 +45,24 @@ public class WaterLexer {
 
     private void commandOrPropertyEvaluation(final Character character) {
         switch (character) {
-            case Symbol.BLOCK_OPENER:
-                tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
-                readMode = this::ordinaryText;
+            case LexerSymbol.BLOCK_OPENER:
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
+                readMode = this::text;
                 break;
-            case Symbol.PROPERTY_EVALUATION_CLOSER:
-                tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
-                readMode = this::ordinaryText;
+            case LexerSymbol.PROPERTY_EVALUATION_CLOSER:
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
+                readMode = this::text;
                 break;
             case '\t':
             case '\n':
             case ' ':
-                tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD, TokenClass.IDENTIFIER);
+                tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.FOR, TokenType.IN, TokenType.PROPERTY_NAME);
                 readMode = this::whiteSpacesInsideCommandEnvironment;
                 break;
-            case Symbol.NESTED_PROPERTY_ACCESSOR:
-                tokens.acceptFirstIfNotEmpty(TokenClass.IDENTIFIER);
+            case LexerSymbol.ACCESSOR:
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
                 tokens.append(character);
-                tokens.acceptFirstIfNotEmpty(TokenClass.SYMBOL);
+                tokens.acceptFirstIfNotEmpty(TokenType.ACCESSOR);
                 break;
             case '\0':
                 throw new IncompleteTokenException(lineNumber, columnNumber);
@@ -74,14 +74,14 @@ public class WaterLexer {
 
     private void endOfBlock(final Character character) {
         switch (character) {
-            case Symbol.BLOCK_OPENER:
-                tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD);
-                readMode = this::ordinaryText;
+            case LexerSymbol.BLOCK_OPENER:
+                tokens.acceptFirstIfNotEmpty(TokenType.ELSE);
+                readMode = this::text;
                 break;
-            case Symbol.ENVIRONMENT_CHANGER:
+            case LexerSymbol.ENVIRONMENT_CHANGER:
                 Keyword.END.getStringRepresentation().chars().forEach(c -> tokens.append((char) c));
-                tokens.acceptFirstIfNotEmpty(TokenClass.KEYWORD);
-                readMode = this::ordinaryText;
+                tokens.acceptFirstIfNotEmpty(TokenType.END);
+                readMode = this::text;
                 break;
             default:
                 tokens.append(character);
@@ -95,12 +95,12 @@ public class WaterLexer {
             case '\n':
             case ' ':
                 break;
-            case Symbol.BLOCK_OPENER:
-                readMode = this::ordinaryText;
+            case LexerSymbol.BLOCK_OPENER:
+                readMode = this::text;
                 break;
             default:
-                commandOrPropertyEvaluation(character);
                 readMode = this::commandOrPropertyEvaluation;
+                commandOrPropertyEvaluation(character);
                 break;
         }
     }

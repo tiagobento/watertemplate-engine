@@ -8,7 +8,7 @@ import org.watertemplate.interpreter.lexer.exception.InvalidTokenException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WaterLexerTest {
+public class LexerTest {
 
     @Test
     public void validTexts() {
@@ -71,6 +71,7 @@ public class WaterLexerTest {
         assertLexEqualsArray(lex("~for foo.bar in x::~"), tokens("for", "foo", ".", "bar", "in", "x", "end"));
         assertLexEqualsArray(lex("~for x in y::else::~"), tokens("for", "x", "in", "y", "else", "end"));
         assertLexEqualsArray(lex("~for x in y: :else: :~"), tokens("for", "x", "in", "y", " ", "else", " ", "end"));
+        assertLexEqualsArray(lex("~for x y z in if for if y::~"), tokens("for", "x", "y", "z", "in", "if", "for", "if", "y", "end"));
         assertLexEqualsArray(lex("~for x in y:~x~:else:~if x.a.b.c::else::~:~"), tokens("for", "x", "in", "y", "x", "else", "if", "x", ".", "a", ".", "b", ".", "c", "else", "end", "end"));
     }
 
@@ -93,6 +94,18 @@ public class WaterLexerTest {
         lexExpecting("~if x ::else: :x~", InvalidTokenException.class);
         lexExpecting(":  else :", InvalidTokenException.class);
         lexExpecting("~if *(::", InvalidTokenException.class);
+    }
+
+    @Test
+    public void escapedDelimitersInsideText() {
+        assertLexEqualsArray(lex("~if x:&#58;:~"), htmlEscapedTokens("if", "x", ":", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;:~"), htmlEscapedTokens("if", "x", "~", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;&#58;:~"), htmlEscapedTokens("if", "x", "~:", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;&#126;:~"), htmlEscapedTokens("if", "x", "~~", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;&#58;&#58;:~"), htmlEscapedTokens("if", "x", "~::", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;:else::~"), htmlEscapedTokens("if", "x", "~", "else", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;:else:&#126;:~"), htmlEscapedTokens("if", "x", "~", "else", "~", "end"));
+        assertLexEqualsArray(lex("~if x:&#126;:else:&#58; &#126;:~"), htmlEscapedTokens("if", "x", "~", "else", ": ~", "end"));
     }
 
     @Test
@@ -130,12 +143,19 @@ public class WaterLexerTest {
 
     //
 
-    private String[] tokens(final String... strings) {
-        return strings;
+    private <T extends Exception> void lexExpecting(final String string, final Class<T> exceptionClass) {
+        try {
+            lex(string);
+        } catch (final Exception e) {
+            Assert.assertEquals(exceptionClass, e.getClass());
+            return;
+        }
+
+        Assert.fail("Invalid string [" + string + "] lexed successfully");
     }
 
     private String[] lex(final String string) {
-        final WaterLexer lexer = new WaterLexer();
+        final Lexer lexer = new Lexer();
 
         string.chars().forEach((c) -> lexer.accept((char) c));
         lexer.accept('\0');
@@ -163,15 +183,19 @@ public class WaterLexerTest {
         }
     }
 
-    private <T extends Exception> void lexExpecting(final String string, final Class<T> exceptionClass) {
-        try {
-            lex(string);
-        } catch (final Exception e) {
-            Assert.assertEquals(exceptionClass, e.getClass());
-            return;
-        }
-
-        Assert.fail("Invalid string lexed successfully");
+    private String[] tokens(final String... strings) {
+        return strings;
     }
 
+    private String[] htmlEscapedTokens(final String... strings) {
+        String[] htmlEscapedStrings = new String[strings.length];
+
+        for (int i = 0; i < strings.length; i++) {
+            htmlEscapedStrings[i] = strings[i]
+                .replace(LexerSymbol.ENVIRONMENT_CHANGER+"", "&#126;")
+                .replace(LexerSymbol.BLOCK_OPENER+"", "&#58;");
+        }
+
+        return htmlEscapedStrings;
+    }
 }

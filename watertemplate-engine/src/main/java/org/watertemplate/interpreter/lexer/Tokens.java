@@ -15,22 +15,22 @@ class Tokens {
         this.currentTokenValue = new StringBuilder();
     }
 
-    void acceptFirstIfNotEmpty(final TokenClass... tokenClasses) {
+    void acceptFirstIfNotEmpty(final TokenType... types) {
         if (currentTokenValue.length() == 0) {
             return;
         }
 
         final String tokenValue = currentTokenValue.toString();
 
-        for (final TokenClass tokenClass : tokenClasses) {
-            if (tokenClass.accept(tokenValue)) {
-                tokens.add(new Token(tokenValue, tokenClass));
+        for (final TokenType type : types) {
+            if (type.accept(tokenValue)) {
+                tokens.add(new Token(tokenValue, type));
                 currentTokenValue = new StringBuilder();
                 return;
             }
         }
 
-        throw new InvalidTokenException(tokenValue, tokenClasses[tokenClasses.length - 1]);
+        throw new InvalidTokenException(tokenValue, types[types.length - 1]);
     }
 
     Tokens append(final Character c) {
