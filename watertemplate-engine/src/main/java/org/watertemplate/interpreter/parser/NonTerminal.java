@@ -35,19 +35,13 @@ enum NonTerminal implements ParserSymbol {
             productions.add(rhs(PROPERTY_NAME));
         }
     },
-    ID_EVALUATION {
-        @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(rhs(ID));
-        }
-    },
     STATEMENT {
         @Override
         void addProductions(final List<Production> productions) {
             productions.add(rhs(TEXT));
             productions.add(rhs(FOR_COMMAND));
             productions.add(rhs(IF_COMMAND));
-            productions.add(rhs(ID_EVALUATION));
+            productions.add(rhs(ID));
         }
     },
     STATEMENTS {

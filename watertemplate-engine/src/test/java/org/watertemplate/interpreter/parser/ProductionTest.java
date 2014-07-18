@@ -54,7 +54,7 @@ public class ProductionTest {
             Terminal.IF,
             NonTerminal.ID,
             Terminal.TEXT,
-            NonTerminal.ID_EVALUATION,
+            NonTerminal.ID,
             Terminal.END
         );
 
