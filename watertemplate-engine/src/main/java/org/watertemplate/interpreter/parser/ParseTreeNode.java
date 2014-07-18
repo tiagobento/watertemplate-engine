@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 class ParseTreeNode {
-    private final ParserSymbol parserSymbol;
+    private final GrammarSymbol grammarSymbol;
 
-    ParseTreeNode(ParserSymbol parserSymbol) {
-        this.parserSymbol = parserSymbol;
+    ParseTreeNode(GrammarSymbol grammarSymbol) {
+        this.grammarSymbol = grammarSymbol;
     }
 }

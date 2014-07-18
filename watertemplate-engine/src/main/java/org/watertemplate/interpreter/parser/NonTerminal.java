@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.watertemplate.interpreter.parser.Terminal.*;
 
-enum NonTerminal implements ParserSymbol {
+enum NonTerminal implements GrammarSymbol {
 
     IF_COMMAND {
         @Override
@@ -59,7 +59,7 @@ enum NonTerminal implements ParserSymbol {
     };
 
     static {
-        for (NonTerminal nonTerminal : NonTerminal.values()) {
+        for (final NonTerminal nonTerminal : NonTerminal.values()) {
             nonTerminal.addProductions(nonTerminal.productions);
         }
     }
@@ -68,7 +68,7 @@ enum NonTerminal implements ParserSymbol {
 
     abstract void addProductions(final List<Production> productions);
 
-    Production rhs(final ParserSymbol... symbols) {
+    Production rhs(final GrammarSymbol... symbols) {
         return new Production(this, symbols);
     }
 

@@ -5,11 +5,11 @@ import org.watertemplate.interpreter.parser.exception.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
-class Production implements ParserSymbol {
+class Production implements GrammarSymbol {
     private final NonTerminal nonTerminal;
-    private final List<ParserSymbol> symbols;
+    private final List<GrammarSymbol> symbols;
 
-    public Production(final NonTerminal nonTerminal, final ParserSymbol... symbols) {
+    public Production(final NonTerminal nonTerminal, final GrammarSymbol... symbols) {
         this.nonTerminal = nonTerminal;
         this.symbols = Arrays.asList(symbols);
     }
@@ -20,7 +20,7 @@ class Production implements ParserSymbol {
         tokenStream.save();
 
         try {
-            for (ParserSymbol symbol : symbols) {
+            for (GrammarSymbol symbol : symbols) {
                 parseTree.addChild(symbol.buildParseTreeFor(tokenStream));
             }
         } catch (ParseException e) {

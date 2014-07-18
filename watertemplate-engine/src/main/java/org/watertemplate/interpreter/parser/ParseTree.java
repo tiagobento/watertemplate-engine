@@ -6,8 +6,8 @@ import java.util.List;
 class ParseTree extends ParseTreeNode {
     private final List<ParseTreeNode> children;
 
-    ParseTree(final ParserSymbol parserSymbol) {
-        super(parserSymbol);
+    ParseTree(final GrammarSymbol grammarSymbol) {
+        super(grammarSymbol);
         this.children = new ArrayList<>();
     }
 
