@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
-import org.watertemplate.interpreter.lexer.TokenFixture;
 
 import static org.junit.Assert.assertTrue;
+import static org.watertemplate.interpreter.lexer.TokenFixture.PropertyName;
 
 public class NonTerminalStatementsTest {
 
@@ -15,7 +15,7 @@ public class NonTerminalStatementsTest {
     @Test
     public void singleStatement() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyName("x")
+            new PropertyName("x")
         );
 
         assertTrue(NonTerminal.STATEMENTS.matches(tokenStream));
@@ -24,12 +24,12 @@ public class NonTerminalStatementsTest {
     @Test
     public void multipleStatements() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyName("x"),
-            new TokenFixture.PropertyName("y"),
-            new TokenFixture.PropertyName("z"),
-            new TokenFixture.PropertyName("w"),
-            new TokenFixture.PropertyName("foo"),
-            new TokenFixture.PropertyName("bar")
+            new PropertyName("x"),
+            new PropertyName("y"),
+            new PropertyName("z"),
+            new PropertyName("w"),
+            new PropertyName("foo"),
+            new PropertyName("bar")
         );
 
         assertTrue(NonTerminal.STATEMENTS.matches(tokenStream));

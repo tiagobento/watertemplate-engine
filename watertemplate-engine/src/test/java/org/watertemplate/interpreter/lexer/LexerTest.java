@@ -192,8 +192,8 @@ public class LexerTest {
 
         for (int i = 0; i < strings.length; i++) {
             htmlEscapedStrings[i] = strings[i]
-                .replace(LexerSymbol.ENVIRONMENT_CHANGER+"", "&#126;")
-                .replace(LexerSymbol.BLOCK_OPENER+"", "&#58;");
+                .replace(LexerSymbol.ENVIRONMENT_CHANGER + "", "&#126;")
+                .replace(LexerSymbol.BLOCK_OPENER + "", "&#58;");
         }
 
         return htmlEscapedStrings;
