@@ -1,14 +1,15 @@
 package org.watertemplate.interpreter.parser;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
+import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.*;
 
 public class ProductionTest {
 
-    @Test
-    public void matchesOnlyTerminals() {
+    @Test(expected = ParseException.class)
+    public void invalidProductionWithOnlyTerminals() {
         final TokenStream tokenStream = new TokenStream(
             new Else(),
             new Accessor(),
@@ -16,20 +17,29 @@ public class ProductionTest {
             new End()
         );
 
-        final Production productionThatDoesNotMatch = new Production(Terminal.IF);
-        Assert.assertFalse(productionThatDoesNotMatch.matches(tokenStream));
+        new Production(null, Terminal.IF).buildParseTreeFor(tokenStream);
+    }
 
-        final Production productionThatMatches = new Production(
+    @Test
+    public void validWithOnlyTerminals() {
+        final TokenStream tokenStream = new TokenStream(
+            new Else(),
+            new Accessor(),
+            new PropertyName("x"),
+            new End()
+        );
+
+        final Production productionThatMatches = new Production(null,
             Terminal.ELSE,
             Terminal.ACCESSOR,
             Terminal.PROPERTY_NAME,
             Terminal.END);
 
-        Assert.assertTrue(productionThatMatches.matches(tokenStream));
+        assertNotNull(productionThatMatches.buildParseTreeFor(tokenStream));
     }
 
     @Test
-    public void matchesTerminalsAndNonTerminals() {
+    public void validWithTerminalsAndNonTerminals() {
         final TokenStream tokenStream = new TokenStream(
             new If(),
             new PropertyName("x"),
@@ -40,7 +50,7 @@ public class ProductionTest {
             new End()
         );
 
-        final Production production = new Production(
+        final Production production = new Production(null,
             Terminal.IF,
             NonTerminal.ID,
             Terminal.TEXT,
@@ -48,7 +58,7 @@ public class ProductionTest {
             Terminal.END
         );
 
-        Assert.assertTrue(production.matches(tokenStream));
+        assertNotNull(production.buildParseTreeFor(tokenStream));
 
     }
 }

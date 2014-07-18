@@ -2,25 +2,23 @@ package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.lexer.TokenType;
-import org.watertemplate.interpreter.parser.exception.NoMoreTokensOnStreamException;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
 enum Terminal implements ParserSymbol {
     PROPERTY_NAME, IF, FOR, IN, ELSE, END, ACCESSOR, TEXT, END_OF_INPUT;
 
-    public boolean matches(final TokenStream tokenStream) throws NoMoreTokensOnStreamException {
-        try {
-            final Token current = tokenStream.current();
-            final TokenType tokenTypeForThisTerminal = TokenType.valueOf(name());
+    @Override
+    public ParseTreeNode buildParseTreeFor(final TokenStream tokenStream) {
 
-            final boolean accept = tokenTypeForThisTerminal.equals(current.getType());
-
-            if (accept) {
-                tokenStream.shift();
-            }
-
-            return accept;
-        } catch (NoMoreTokensOnStreamException e) {
-            return false;
+        if (!isTerminal(tokenStream.current())) {
+            throw new ParseException("Incorrect location for " + tokenStream.current());
         }
+
+        tokenStream.shift();
+        return new ParseTreeNode(this);
+    }
+
+    private boolean isTerminal(Token currentToken) {
+        return TokenType.valueOf(name()).equals(currentToken.getType());
     }
 }

@@ -1,27 +1,27 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
-import static org.junit.Assert.assertFalse;
 import static org.watertemplate.interpreter.lexer.TokenFixture.Accessor;
 import static org.watertemplate.interpreter.lexer.TokenFixture.If;
 
 public class NonTerminalStatementTest {
-    @Test
+    @Test(expected = ParseException.class)
     public void incompleteCommand() {
         TokenStream tokenStream = new TokenStream(
             new If()
         );
 
-        assertFalse(NonTerminal.STATEMENT.matches(tokenStream));
+        NonTerminal.STATEMENT.buildParseTreeFor(tokenStream);
     }
 
-    @Test
+    @Test(expected = ParseException.class)
     public void invalid() {
         TokenStream tokenStream = new TokenStream(
             new Accessor()
         );
 
-        assertFalse(NonTerminal.STATEMENT.matches(tokenStream));
+        NonTerminal.STATEMENT.buildParseTreeFor(tokenStream);
     }
 }

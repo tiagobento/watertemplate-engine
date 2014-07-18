@@ -2,7 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.*;
 
 public class NonTerminalForCommandTest {
@@ -13,7 +13,7 @@ public class NonTerminalForCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.FOR_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildParseTreeFor(tokenStream));
     }
 
     @Test
@@ -24,7 +24,7 @@ public class NonTerminalForCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.FOR_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildParseTreeFor(tokenStream));
     }
 
     @Test
@@ -37,6 +37,6 @@ public class NonTerminalForCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.FOR_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildParseTreeFor(tokenStream));
     }
 }

@@ -1,5 +1,7 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.interpreter.parser.exception.ParseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,13 +72,25 @@ enum NonTerminal implements ParserSymbol {
 
     private final List<Production> productions = new ArrayList<>();
 
-    private static Production rhs(final ParserSymbol... symbols) {
-        return new Production(symbols);
-    }
-
-    public final boolean matches(final TokenStream tokenStream) {
-        return productions.stream().anyMatch((production) -> production.matches(tokenStream));
-    }
-
     abstract void addProductions(final List<Production> productions);
+
+    Production rhs(final ParserSymbol... symbols) {
+        return new Production(this, symbols);
+    }
+
+    @Override
+    public final ParseTree buildParseTreeFor(final TokenStream tokenStream) throws ParseException {
+        ParseException lastException = null;
+
+        for (Production production : productions) {
+            try {
+                return production.buildParseTreeFor(tokenStream);
+            } catch (ParseException e) {
+                lastException = e;
+            }
+        }
+
+        throw lastException;
+    }
+
 }

@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.*;
 
 public class NonTerminalIfCommandTest {
@@ -14,7 +14,7 @@ public class NonTerminalIfCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.IF_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildParseTreeFor(tokenStream));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class NonTerminalIfCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.IF_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildParseTreeFor(tokenStream));
     }
 
     @Test
@@ -38,10 +38,10 @@ public class NonTerminalIfCommandTest {
             new End()
         );
 
-        assertTrue(NonTerminal.IF_COMMAND.matches(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildParseTreeFor(tokenStream));
     }
 
-    @Test
+    @Test(expected = ParseException.class)
     public void missingEnd() {
         TokenStream tokenStream = new TokenStream(
             new If(), new PropertyName("x"),
@@ -50,6 +50,6 @@ public class NonTerminalIfCommandTest {
             new Text("bar text foo text")
         );
 
-        assertFalse(NonTerminal.IF_COMMAND.matches(tokenStream));
+        NonTerminal.IF_COMMAND.buildParseTreeFor(tokenStream);
     }
 }

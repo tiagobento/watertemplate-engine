@@ -25,7 +25,7 @@ class TokenStream {
         return !tokens.isEmpty();
     }
 
-    public Token current() {
+    public Token current() throws NoMoreTokensOnStreamException {
         if (currentTokenPosition >= tokens.size()) {
             throw new NoMoreTokensOnStreamException();
         }

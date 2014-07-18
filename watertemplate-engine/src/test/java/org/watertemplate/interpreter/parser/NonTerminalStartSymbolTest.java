@@ -2,9 +2,9 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.interpreter.lexer.Token;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.PropertyName;
 import static org.watertemplate.interpreter.lexer.TokenFixture.Text;
 
@@ -16,10 +16,10 @@ public class NonTerminalStartSymbolTest {
             Token.END_OF_INPUT
         );
 
-        assertTrue(NonTerminal.START_SYMBOL.matches(tokenStream));
+        assertNotNull(NonTerminal.START_SYMBOL.buildParseTreeFor(tokenStream));
     }
 
-    @Test
+    @Test(expected = ParseException.class)
     public void missingEndOfInput() {
         TokenStream tokenStream = new TokenStream(
             new PropertyName("x"),
@@ -28,7 +28,7 @@ public class NonTerminalStartSymbolTest {
             new Text("another text")
         );
 
-        assertFalse(NonTerminal.START_SYMBOL.matches(tokenStream));
+        NonTerminal.START_SYMBOL.buildParseTreeFor(tokenStream);
     }
 
     @Test
@@ -41,6 +41,6 @@ public class NonTerminalStartSymbolTest {
             Token.END_OF_INPUT
         );
 
-        assertTrue(NonTerminal.START_SYMBOL.matches(tokenStream));
+        assertNotNull(NonTerminal.START_SYMBOL.buildParseTreeFor(tokenStream));
     }
 }

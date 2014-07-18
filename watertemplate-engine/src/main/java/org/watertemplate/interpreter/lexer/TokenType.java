@@ -1,5 +1,8 @@
 package org.watertemplate.interpreter.lexer;
 
+import org.watertemplate.interpreter.lexer.Keyword;
+import org.watertemplate.interpreter.lexer.LexerSymbol;
+
 import java.util.regex.Pattern;
 
 public enum TokenType {
@@ -42,7 +45,7 @@ public enum TokenType {
     ACCESSOR {
         @Override
         public boolean accept(String string) {
-            return (""+ LexerSymbol.ACCESSOR).equals(string);
+            return ("" + LexerSymbol.ACCESSOR).equals(string);
         }
     },
     TEXT,

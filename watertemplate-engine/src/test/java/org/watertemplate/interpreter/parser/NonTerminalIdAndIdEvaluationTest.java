@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
+import org.watertemplate.interpreter.parser.exception.ParseException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.Accessor;
 import static org.watertemplate.interpreter.lexer.TokenFixture.PropertyName;
 
@@ -14,7 +14,7 @@ public class NonTerminalIdAndIdEvaluationTest {
             new PropertyName("x")
         );
 
-        assertTrue(NonTerminal.ID.matches(tokenStream));
+        assertNotNull(NonTerminal.ID.buildParseTreeFor(tokenStream));
     }
 
     @Test
@@ -25,10 +25,10 @@ public class NonTerminalIdAndIdEvaluationTest {
             new PropertyName("y")
         );
 
-        assertTrue(NonTerminal.ID.matches(tokenStream));
+        assertNotNull(NonTerminal.ID.buildParseTreeFor(tokenStream));
     }
 
-    @Test
+    @Test(expected = ParseException.class)
     public void doubleAccessor() {
         TokenStream tokenStream = new TokenStream(
             new PropertyName("x"),
@@ -37,10 +37,10 @@ public class NonTerminalIdAndIdEvaluationTest {
             new PropertyName("y")
         );
 
-        assertFalse(NonTerminal.ID.matches(tokenStream));
+        NonTerminal.ID.buildParseTreeFor(tokenStream);
     }
 
-    @Test
+    @Test(expected = ParseException.class)
     public void extraAccessor() {
         TokenStream tokenStream = new TokenStream(
             new PropertyName("x"),
@@ -49,6 +49,6 @@ public class NonTerminalIdAndIdEvaluationTest {
             new Accessor()
         );
 
-        assertFalse(NonTerminal.ID.matches(tokenStream));
+        NonTerminal.ID.buildParseTreeFor(tokenStream);
     }
 }
