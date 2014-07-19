@@ -9,7 +9,6 @@ import java.util.List;
 class TokenStream {
     private final List<Token> tokens;
     private int currentTokenPosition;
-    private int save;
 
     TokenStream(final Token... tokens) {
         this(Arrays.asList(tokens));
@@ -18,7 +17,6 @@ class TokenStream {
     TokenStream(final List<Token> tokens) {
         this.tokens = tokens;
         currentTokenPosition = 0;
-        save = -1;
     }
 
     public boolean hasAny() {
@@ -33,11 +31,7 @@ class TokenStream {
         return tokens.get(currentTokenPosition);
     }
 
-    public void save() {
-        save = currentTokenPosition;
-    }
-
-    public void reset() {
+    public void reset(int save) {
         currentTokenPosition = save;
     }
 
@@ -47,5 +41,9 @@ class TokenStream {
 
     public int remaining() {
         return tokens.size() - currentTokenPosition;
+    }
+
+    public int getCurrentTokenPosition() {
+        return currentTokenPosition;
     }
 }

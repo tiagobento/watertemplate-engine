@@ -15,16 +15,16 @@ class Production implements GrammarSymbol {
     }
 
     @Override
-    public ParseTree buildParseTreeFor(final TokenStream tokenStream) throws ParseException {
+    public ParseTree buildParseTree(final TokenStream tokenStream) throws ParseException {
         final ParseTree parseTree = new ParseTree(nonTerminal);
-        tokenStream.save();
+        int save = tokenStream.getCurrentTokenPosition();
 
         try {
             for (GrammarSymbol symbol : symbols) {
-                parseTree.addChild(symbol.buildParseTreeFor(tokenStream));
+                parseTree.addChild(symbol.buildParseTree(tokenStream));
             }
         } catch (ParseException e) {
-            tokenStream.reset();
+            tokenStream.reset(save);
             throw e;
         }
 

@@ -15,24 +15,24 @@ public class TokensTest {
     }
 
     @Test
-    public void acceptPropertyName() {
+    public void acceptPropertyKey() {
         Tokens tokens = tokensWithString("foobar");
-        tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.PROPERTY_NAME);
-        assertTokensHasOnlyOne(TokenType.PROPERTY_NAME, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.PROPERTY_KEY);
+        assertTokensHasOnlyOne(TokenType.PROPERTY_KEY, tokens);
     }
 
     @Test
     public void acceptText() {
         Tokens tokens = tokensWithString("foo*bar");
-        tokens.acceptFirstIfNotEmpty(TokenType.FOR, TokenType.PROPERTY_NAME, TokenType.TEXT);
+        tokens.acceptFirstIfNotEmpty(TokenType.FOR, TokenType.PROPERTY_KEY, TokenType.TEXT);
         assertTokensHasOnlyOne(TokenType.TEXT, tokens);
     }
 
     @Test
-    public void acceptPropertyNameEvenIfKeyword() {
+    public void acceptPropertyKeyEvenIfKeyword() {
         Tokens tokens = tokensWithString(Keyword.ELSE.getStringRepresentation());
-        tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME, TokenType.ELSE);
-        assertTokensHasOnlyOne(TokenType.PROPERTY_NAME, tokens);
+        tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_KEY, TokenType.ELSE);
+        assertTokensHasOnlyOne(TokenType.PROPERTY_KEY, tokens);
     }
 
     private void assertTokensHasOnlyOne(final TokenType type, final Tokens tokens) {

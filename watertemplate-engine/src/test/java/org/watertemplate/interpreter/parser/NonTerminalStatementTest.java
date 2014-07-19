@@ -13,7 +13,7 @@ public class NonTerminalStatementTest {
             new If()
         );
 
-        NonTerminal.STATEMENT.buildParseTreeFor(tokenStream);
+        NonTerminal.STATEMENT.buildParseTree(tokenStream);
     }
 
     @Test(expected = ParseException.class)
@@ -22,6 +22,6 @@ public class NonTerminalStatementTest {
             new Accessor()
         );
 
-        NonTerminal.STATEMENT.buildParseTreeFor(tokenStream);
+        NonTerminal.STATEMENT.buildParseTree(tokenStream);
     }
 }

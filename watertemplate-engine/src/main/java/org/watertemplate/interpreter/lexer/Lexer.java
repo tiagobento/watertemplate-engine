@@ -46,21 +46,21 @@ public class Lexer {
     private void commandOrPropertyEvaluation(final Character character) {
         switch (character) {
             case LexerSymbol.BLOCK_OPENER:
-                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_KEY);
                 readMode = this::text;
                 break;
             case LexerSymbol.PROPERTY_EVALUATION_CLOSER:
-                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_KEY);
                 readMode = this::text;
                 break;
             case '\t':
             case '\n':
             case ' ':
-                tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.FOR, TokenType.IN, TokenType.PROPERTY_NAME);
+                tokens.acceptFirstIfNotEmpty(TokenType.IF, TokenType.FOR, TokenType.IN, TokenType.PROPERTY_KEY);
                 readMode = this::whiteSpacesInsideCommandEnvironment;
                 break;
             case LexerSymbol.ACCESSOR:
-                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_NAME);
+                tokens.acceptFirstIfNotEmpty(TokenType.PROPERTY_KEY);
                 tokens.append(character);
                 tokens.acceptFirstIfNotEmpty(TokenType.ACCESSOR);
                 break;

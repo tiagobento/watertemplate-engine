@@ -10,14 +10,14 @@ public class TerminalTest {
     public void buildParseTree() {
         TokenStream tokenStream = new TokenStream(
             new If(),
-            new PropertyName("id"),
-            new PropertyName("x"),
+            new PropertyKey("id"),
+            new PropertyKey("x"),
             new End());
 
-        Assert.assertNotNull(Terminal.IF.buildParseTreeFor(tokenStream));
-        Assert.assertNotNull(Terminal.PROPERTY_NAME.buildParseTreeFor(tokenStream));
-        Assert.assertNotNull(Terminal.PROPERTY_NAME.buildParseTreeFor(tokenStream));
-        Assert.assertNotNull(Terminal.END.buildParseTreeFor(tokenStream));
+        Assert.assertNotNull(Terminal.IF.buildParseTree(tokenStream));
+        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildParseTree(tokenStream));
+        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildParseTree(tokenStream));
+        Assert.assertNotNull(Terminal.END.buildParseTree(tokenStream));
     }
 
 }

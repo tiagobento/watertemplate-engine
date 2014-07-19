@@ -1,37 +1,37 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
+import org.watertemplate.interpreter.lexer.TokenFixture;
 
 import static org.junit.Assert.assertNotNull;
-import static org.watertemplate.interpreter.lexer.TokenFixture.PropertyName;
 
 public class NonTerminalStatementsTest {
 
     @Test
     public void empty() {
-        assertNotNull(NonTerminal.STATEMENTS.buildParseTreeFor(new TokenStream()));
+        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(new TokenStream()));
     }
 
     @Test
     public void singleStatement() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x")
+            new TokenFixture.PropertyKey("x")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildParseTreeFor(tokenStream) != null);
+        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream) != null);
     }
 
     @Test
     public void multipleStatements() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x"),
-            new PropertyName("y"),
-            new PropertyName("z"),
-            new PropertyName("w"),
-            new PropertyName("foo"),
-            new PropertyName("bar")
+            new TokenFixture.PropertyKey("x"),
+            new TokenFixture.PropertyKey("y"),
+            new TokenFixture.PropertyKey("z"),
+            new TokenFixture.PropertyKey("w"),
+            new TokenFixture.PropertyKey("foo"),
+            new TokenFixture.PropertyKey("bar")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildParseTreeFor(tokenStream) != null);
+        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream) != null);
     }
 }

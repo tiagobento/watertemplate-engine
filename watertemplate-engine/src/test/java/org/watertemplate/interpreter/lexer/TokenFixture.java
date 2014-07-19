@@ -37,9 +37,9 @@ public class TokenFixture {
         }
     }
 
-    public static class PropertyName extends Token {
-        public PropertyName(final String propertyName) {
-            super(propertyName, TokenType.PROPERTY_NAME);
+    public static class PropertyKey extends Token {
+        public PropertyKey(final String propertyKey) {
+            super(propertyKey, TokenType.PROPERTY_KEY);
         }
     }
 

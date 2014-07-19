@@ -15,7 +15,7 @@ public class TokenStreamTest {
     public void before() {
         tokenStream = new TokenStream(
             new If(),
-            new PropertyName("foo"),
+            new PropertyKey("foo"),
             new Else(),
             new End());
     }
@@ -30,20 +30,20 @@ public class TokenStreamTest {
     public void currentAndShift() {
         assertCurrentIsOfType(TokenType.IF);
         tokenStream.shift();
-        assertCurrentIsOfType(TokenType.PROPERTY_NAME);
+        assertCurrentIsOfType(TokenType.PROPERTY_KEY);
         tokenStream.shift();
         assertCurrentIsOfType(TokenType.ELSE);
     }
 
     @Test
     public void saveAndReset() {
-        tokenStream.save();
+        int save = tokenStream.getCurrentTokenPosition();
         assertCurrentIsOfType(TokenType.IF);
         tokenStream.shift();
         tokenStream.shift();
         tokenStream.shift();
         assertCurrentIsNotOfType(TokenType.IF);
-        tokenStream.reset();
+        tokenStream.reset(save);
         assertCurrentIsOfType(TokenType.IF);
     }
 

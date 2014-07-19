@@ -13,11 +13,11 @@ public class ProductionTest {
         final TokenStream tokenStream = new TokenStream(
             new Else(),
             new Accessor(),
-            new PropertyName("x"),
+            new PropertyKey("x"),
             new End()
         );
 
-        new Production(null, Terminal.IF).buildParseTreeFor(tokenStream);
+        new Production(null, Terminal.IF).buildParseTree(tokenStream);
     }
 
     @Test
@@ -25,28 +25,28 @@ public class ProductionTest {
         final TokenStream tokenStream = new TokenStream(
             new Else(),
             new Accessor(),
-            new PropertyName("x"),
+            new PropertyKey("x"),
             new End()
         );
 
         final Production productionThatMatches = new Production(null,
             Terminal.ELSE,
             Terminal.ACCESSOR,
-            Terminal.PROPERTY_NAME,
+            Terminal.PROPERTY_KEY,
             Terminal.END);
 
-        assertNotNull(productionThatMatches.buildParseTreeFor(tokenStream));
+        assertNotNull(productionThatMatches.buildParseTree(tokenStream));
     }
 
     @Test
     public void validWithTerminalsAndNonTerminals() {
         final TokenStream tokenStream = new TokenStream(
             new If(),
-            new PropertyName("x"),
+            new PropertyKey("x"),
             new Text("foo text"),
-            new PropertyName("y"),
+            new PropertyKey("y"),
             new Accessor(),
-            new PropertyName("z"),
+            new PropertyKey("z"),
             new End()
         );
 
@@ -58,7 +58,7 @@ public class ProductionTest {
             Terminal.END
         );
 
-        assertNotNull(production.buildParseTreeFor(tokenStream));
+        assertNotNull(production.buildParseTree(tokenStream));
 
     }
 }

@@ -1,57 +1,54 @@
 package org.watertemplate.interpreter.parser;
 
-import junit.framework.Assert;
 import org.junit.Test;
+import org.watertemplate.interpreter.lexer.TokenFixture;
 import org.watertemplate.interpreter.parser.exception.IncorrectLocationForToken;
-import org.watertemplate.interpreter.parser.exception.NoMoreTokensOnStreamException;
-import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import static org.junit.Assert.assertNotNull;
 import static org.watertemplate.interpreter.lexer.TokenFixture.Accessor;
-import static org.watertemplate.interpreter.lexer.TokenFixture.PropertyName;
 
 public class NonTerminalIdTest {
     @Test
-    public void singlePropertyName() {
+    public void singlePropertyKey() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x")
+            new TokenFixture.PropertyKey("x")
         );
 
-        assertNotNull(NonTerminal.ID.buildParseTreeFor(tokenStream));
+        assertNotNull(NonTerminal.ID.buildParseTree(tokenStream));
     }
 
     @Test
     public void nestedProperties() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x"),
+            new TokenFixture.PropertyKey("x"),
             new Accessor(),
-            new PropertyName("y")
+            new TokenFixture.PropertyKey("y")
         );
 
-        assertNotNull(NonTerminal.ID.buildParseTreeFor(tokenStream));
+        assertNotNull(NonTerminal.ID.buildParseTree(tokenStream));
     }
 
-    @Test(expected = IncorrectLocationForToken.class)
+    @Test (expected = IncorrectLocationForToken.class)
     public void doubleAccessor() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x"),
+            new TokenFixture.PropertyKey("x"),
             new Accessor(),
             new Accessor(),
-            new PropertyName("y")
+            new TokenFixture.PropertyKey("y")
         );
 
-        NonTerminal.ID.buildParseTreeFor(tokenStream);
+        NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
     }
 
-    @Test(expected = NoMoreTokensOnStreamException.class)
+    @Test (expected = IncorrectLocationForToken.class)
     public void extraAccessor() {
         TokenStream tokenStream = new TokenStream(
-            new PropertyName("x"),
+            new TokenFixture.PropertyKey("x"),
             new Accessor(),
-            new PropertyName("y"),
+            new TokenFixture.PropertyKey("y"),
             new Accessor()
         );
 
-        NonTerminal.ID.buildParseTreeFor(tokenStream);
+        NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
     }
 }

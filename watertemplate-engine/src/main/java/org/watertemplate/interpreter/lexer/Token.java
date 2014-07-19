@@ -21,7 +21,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "[" + value + "] (i:j)";
+        return "[" + value + "] (at i:j)";
     }
 
 }

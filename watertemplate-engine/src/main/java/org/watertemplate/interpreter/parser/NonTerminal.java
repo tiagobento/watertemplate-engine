@@ -12,49 +12,49 @@ enum NonTerminal implements GrammarSymbol {
     IF_COMMAND {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(IF, ID, STATEMENTS, ELSE_BLOCK, END));
+            productions.add(production(IF, ID, STATEMENTS, ELSE_BLOCK, END));
         }
     },
     FOR_COMMAND {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(FOR, PROPERTY_NAME, IN, ID, STATEMENTS, ELSE_BLOCK, END));
+            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE_BLOCK, END));
         }
     },
     ELSE_BLOCK {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(ELSE, STATEMENTS));
-            productions.add(rhs());
+            productions.add(production(ELSE, STATEMENTS));
+            productions.add(production());
         }
     },
     ID {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(PROPERTY_NAME, ACCESSOR, ID));
-            productions.add(rhs(PROPERTY_NAME));
+            productions.add(production(PROPERTY_KEY, ACCESSOR, ID));
+            productions.add(production(PROPERTY_KEY));
         }
     },
     STATEMENT {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(TEXT));
-            productions.add(rhs(FOR_COMMAND));
-            productions.add(rhs(IF_COMMAND));
-            productions.add(rhs(ID));
+            productions.add(production(TEXT));
+            productions.add(production(FOR_COMMAND));
+            productions.add(production(IF_COMMAND));
+            productions.add(production(ID));
         }
     },
     STATEMENTS {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(STATEMENT, STATEMENTS));
-            productions.add(rhs());
+            productions.add(production(STATEMENT, STATEMENTS));
+            productions.add(production());
         }
     },
     START_SYMBOL {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(rhs(STATEMENTS, END_OF_INPUT));
+            productions.add(production(STATEMENTS, END_OF_INPUT));
         }
     };
 
@@ -68,17 +68,17 @@ enum NonTerminal implements GrammarSymbol {
 
     abstract void addProductions(final List<Production> productions);
 
-    Production rhs(final GrammarSymbol... symbols) {
+    Production production(final GrammarSymbol... symbols) {
         return new Production(this, symbols);
     }
 
     @Override
-    public final ParseTree buildParseTreeFor(final TokenStream tokenStream) throws ParseException {
+    public final ParseTree buildParseTree(final TokenStream tokenStream) throws ParseException {
         ParseException lastException = null;
 
         for (Production production : productions) {
             try {
-                return production.buildParseTreeFor(tokenStream);
+                return production.buildParseTree(tokenStream);
             } catch (ParseException e) {
                 lastException = e;
             }

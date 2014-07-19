@@ -14,6 +14,6 @@ public class RecursiveDescentParser {
     }
 
     public ParseTree parse() throws ParseException {
-        return NonTerminal.START_SYMBOL.buildParseTreeFor(tokenStream);
+        return NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
     }
 }

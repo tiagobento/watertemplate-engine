@@ -6,7 +6,7 @@ import org.watertemplate.interpreter.lexer.LexerSymbol;
 import java.util.regex.Pattern;
 
 public enum TokenType {
-    PROPERTY_NAME {
+    PROPERTY_KEY {
         @Override
         public boolean accept(final String string) {
             return PROPERTY_NAME_PATTERN.matcher(string).matches();
