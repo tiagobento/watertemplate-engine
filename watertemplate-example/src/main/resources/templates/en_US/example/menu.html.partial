@@ -4,12 +4,12 @@
             <li>
                 <a href="~item.url~"> ~item.label~ </a>
             </li>
-        ~else:
+        :else:
             <li>
                 <span>No items in this menu.</span>
             </li>
-        ~
+        :~
     </ul>
-~else:
+:else:
     <span>Menu unavailable.</span>
-~
+:~

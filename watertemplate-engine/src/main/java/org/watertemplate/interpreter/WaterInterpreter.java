@@ -34,7 +34,7 @@ public class WaterInterpreter implements Interpreter {
         tokens.add(Token.END_OF_INPUT);
 
         final RecursiveDescentParser parser = new RecursiveDescentParser(tokens);
-        parser.parse();
+            parser.parse();
 
         return "";
     }

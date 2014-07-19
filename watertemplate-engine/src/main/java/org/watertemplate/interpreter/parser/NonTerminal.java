@@ -28,11 +28,17 @@ enum NonTerminal implements GrammarSymbol {
             productions.add(production());
         }
     },
+    NESTED_PROPERTY {
+        @Override
+        void addProductions(final List<Production> productions) {
+            productions.add(production(ACCESSOR, ID));
+            productions.add(production());
+        }
+    },
     ID {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(production(PROPERTY_KEY, ACCESSOR, ID));
-            productions.add(production(PROPERTY_KEY));
+            productions.add(production(PROPERTY_KEY, NESTED_PROPERTY));
         }
     },
     STATEMENT {

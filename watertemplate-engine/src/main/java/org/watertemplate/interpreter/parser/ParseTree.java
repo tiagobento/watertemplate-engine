@@ -3,7 +3,7 @@ package org.watertemplate.interpreter.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-class ParseTree extends ParseTreeNode {
+public class ParseTree extends ParseTreeNode {
     private final List<ParseTreeNode> children;
 
     ParseTree(final GrammarSymbol grammarSymbol) {

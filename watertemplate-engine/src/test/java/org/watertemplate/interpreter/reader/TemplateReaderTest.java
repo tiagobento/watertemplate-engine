@@ -17,6 +17,6 @@ public class TemplateReaderTest {
         StringBuilder stringBuilder = new StringBuilder();
         reader.readExecuting(stringBuilder::append);
 
-        Assert.assertEquals("readerTest.html content", stringBuilder.toString());
+        Assert.assertEquals("readerTest.html content\0", stringBuilder.toString());
     }
 }

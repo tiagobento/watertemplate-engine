@@ -25,6 +25,7 @@ public class TemplateReader {
                     consumer.accept(buffer[i]);
                 }
             }
+            consumer.accept('\0');
             bf.close();
         } catch (Exception e) {
             throw new TemplateException(e);
