@@ -4,6 +4,8 @@ Water Template Engine
 Water Template Engine is an open-source modern Java template engine that simplifies the way you interact with templates.
 With no external dependencies, it is very lightweight and robust.
 
+Just like [mustache](https://github.com/janl/mustache.js), Water is a logic-less template engine, but it takes advantage of statically typed languages features to increase reliability and prevent errors.
+
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
 #### Imagine a template:
