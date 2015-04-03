@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.function.Consumer;
 
-public class TemplateReader {
+public class Reader {
     private static final int BUFFER_SIZE = 8192;
 
     private final File templateFile;
 
-    public TemplateReader(final File templateFile) {
+    public Reader(final File templateFile) {
         this.templateFile = templateFile;
     }
 

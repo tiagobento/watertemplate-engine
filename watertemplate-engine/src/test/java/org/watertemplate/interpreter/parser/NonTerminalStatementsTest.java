@@ -18,7 +18,7 @@ public class NonTerminalStatementsTest {
             new TokenFixture.PropertyKey("x")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream) != null);
+        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream));
     }
 
     @Test
@@ -32,6 +32,6 @@ public class NonTerminalStatementsTest {
             new TokenFixture.PropertyKey("bar")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream) != null);
+        assertNotNull(NonTerminal.STATEMENTS.buildParseTree(tokenStream));
     }
 }

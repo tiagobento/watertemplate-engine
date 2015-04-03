@@ -3,6 +3,7 @@ package org.watertemplate.interpreter.parser;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.watertemplate.interpreter.parser.Terminal.*;
@@ -75,7 +76,7 @@ enum NonTerminal implements GrammarSymbol {
     abstract void addProductions(final List<Production> productions);
 
     Production production(final GrammarSymbol... symbols) {
-        return new Production(this, symbols);
+        return new Production(symbols);
     }
 
     @Override
@@ -84,7 +85,7 @@ enum NonTerminal implements GrammarSymbol {
 
         for (Production production : productions) {
             try {
-                return production.buildParseTree(tokenStream);
+                return buildParseTreeForProduction(tokenStream, production);
             } catch (ParseException e) {
                 lastException = e;
             }
@@ -93,4 +94,27 @@ enum NonTerminal implements GrammarSymbol {
         throw lastException;
     }
 
+    private ParseTree buildParseTreeForProduction(TokenStream tokenStream, Production production) {
+        final ParseTree parseTree = new ParseTree(this);
+        int save = tokenStream.getCurrentTokenPosition();
+
+        try {
+            for (GrammarSymbol symbol : production.symbols) {
+                parseTree.addChild(symbol.buildParseTree(tokenStream));
+            }
+        } catch (ParseException e) {
+            tokenStream.reset(save);
+            throw e;
+        }
+
+        return parseTree;
+    }
+
+    static class Production {
+        private final List<GrammarSymbol> symbols;
+
+        public Production(final GrammarSymbol... symbols) {
+            this.symbols = Arrays.asList(symbols);
+        }
+    }
 }

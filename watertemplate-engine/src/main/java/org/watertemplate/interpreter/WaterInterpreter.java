@@ -1,13 +1,17 @@
 package org.watertemplate.interpreter;
 
+import org.apache.commons.io.FileUtils;
 import org.watertemplate.exception.TemplateException;
+import org.watertemplate.interpreter.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
+import org.watertemplate.interpreter.parser.ParseTree;
 import org.watertemplate.interpreter.parser.RecursiveDescentParser;
-import org.watertemplate.interpreter.reader.TemplateReader;
+import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -25,21 +29,40 @@ public class WaterInterpreter implements Interpreter {
 
     @Override
     public String interpret(final Locale locale) {
-        final Lexer lexer = new Lexer();
+        final File templateFile = findTemplateFileWith(locale);
 
-        final TemplateReader reader = new TemplateReader(getTemplateFile(locale));
-        reader.readExecuting(lexer::accept);
+        final List<Token> tokens = lex(templateFile);
+        final ParseTree parseTree = parse(tokens);
 
-        final List<Token> tokens = lexer.getTokens();
-        tokens.add(Token.END_OF_INPUT);
+        final AbstractSyntaxTree abs = new AbstractSyntaxTree(parseTree);
+        return render(abs);
+    }
 
-        final RecursiveDescentParser parser = new RecursiveDescentParser(tokens);
-            parser.parse();
+    private String render(final AbstractSyntaxTree abs) {
+//        System.out.println(arguments);
+//        percorre a árvore in ordem e executa os comando
+//        controlar escopo
+//        erros de runtime
 
         return "";
     }
 
-    private File getTemplateFile(final Locale locale) {
+    private List<Token> lex(final File templateFile) {
+        final Lexer lexer = new Lexer();
+
+        final Reader reader = new Reader(templateFile);
+        reader.readExecuting(lexer::accept);
+
+        final List<Token> tokens = lexer.getTokens();
+        tokens.add(Token.END_OF_INPUT);
+        return tokens;
+    }
+
+    private ParseTree parse(final List<Token> tokens) {
+        return new RecursiveDescentParser(tokens).parse();
+    }
+
+    private File findTemplateFileWith(final Locale locale) {
         final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
         final URL url = getClass().getClassLoader().getResource(templateFileURI);
 
@@ -48,7 +71,7 @@ public class WaterInterpreter implements Interpreter {
         }
 
         if (!locale.equals(DEFAULT_LOCALE)) {
-            return getTemplateFile(DEFAULT_LOCALE);
+            return findTemplateFileWith(DEFAULT_LOCALE);
         }
 
         throw new TemplateException(new FileNotFoundException(templateFilePath));

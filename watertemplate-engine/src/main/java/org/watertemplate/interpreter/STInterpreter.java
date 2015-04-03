@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 
+@Deprecated
 /* Temporary interpreter */
 public final class STInterpreter implements Interpreter {
 
