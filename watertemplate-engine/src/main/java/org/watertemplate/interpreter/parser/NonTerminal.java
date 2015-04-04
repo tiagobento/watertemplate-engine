@@ -13,33 +13,22 @@ enum NonTerminal implements GrammarSymbol {
     IF_COMMAND {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(production(IF, ID, STATEMENTS, ELSE_BLOCK, END));
+            productions.add(production(IF, ID, STATEMENTS, END));
+            productions.add(production(IF, ID, STATEMENTS, ELSE, STATEMENTS, END));
         }
     },
     FOR_COMMAND {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE_BLOCK, END));
-        }
-    },
-    ELSE_BLOCK {
-        @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(ELSE, STATEMENTS));
-            productions.add(production());
-        }
-    },
-    NESTED_PROPERTY {
-        @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(ACCESSOR, ID));
-            productions.add(production());
+            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, END));
+            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE, STATEMENTS, END));
         }
     },
     ID {
         @Override
         void addProductions(final List<Production> productions) {
-            productions.add(production(PROPERTY_KEY, NESTED_PROPERTY));
+            productions.add(production(PROPERTY_KEY, ACCESSOR, ID));
+            productions.add(production(PROPERTY_KEY));
         }
     },
     STATEMENT {
