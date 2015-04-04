@@ -2,8 +2,6 @@ package org.watertemplate.interpreter.parser.abs;
 
 import org.watertemplate.TemplateMap;
 
-import java.util.Map;
-
 class IfCommand implements AbstractSyntaxTree.Command {
 
     private final AbstractSyntaxTree.Command ifStatements;

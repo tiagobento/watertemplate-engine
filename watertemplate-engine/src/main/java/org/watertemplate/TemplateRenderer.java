@@ -2,7 +2,6 @@ package org.watertemplate;
 
 import org.watertemplate.interpreter.Interpreter;
 import org.watertemplate.interpreter.STInterpreter;
-import org.watertemplate.interpreter.WaterInterpreter;
 
 import java.util.Locale;
 

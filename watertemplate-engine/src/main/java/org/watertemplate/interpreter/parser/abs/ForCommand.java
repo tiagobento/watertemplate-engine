@@ -1,26 +1,26 @@
 package org.watertemplate.interpreter.parser.abs;
 
-import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
 
 import static org.watertemplate.TemplateMap.Arguments;
 import static org.watertemplate.TemplateMap.TemplateCollection;
+import static org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree.Command;
 
-class ForCommand implements AbstractSyntaxTree.Command {
+class ForCommand implements Command {
 
     private final String variableName;
     private final IdCommand collectionIdCommand;
-    private final AbstractSyntaxTree.Command forStatements;
-    private final AbstractSyntaxTree.Command elseStatements;
+    private final Command forStatements;
+    private final Command elseStatements;
 
-    public ForCommand(final String variableName, final IdCommand collectionIdCommand, final AbstractSyntaxTree.Command forStatements) {
+    public ForCommand(final String variableName, final IdCommand collectionIdCommand, final Command forStatements) {
         this.variableName = variableName;
         this.collectionIdCommand = collectionIdCommand;
         this.forStatements = forStatements;
         this.elseStatements = (arguments) -> "";
     }
 
-    public ForCommand(final String variableName, final IdCommand collectionIdCommand, final AbstractSyntaxTree.Command forStatements, final AbstractSyntaxTree.Command elseStatements) {
+    public ForCommand(final String variableName, final IdCommand collectionIdCommand, final Command forStatements, final Command elseStatements) {
         this.variableName = variableName;
         this.collectionIdCommand = collectionIdCommand;
         this.forStatements = forStatements;

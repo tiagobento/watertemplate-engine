@@ -1,9 +1,6 @@
 package org.watertemplate.interpreter.parser.abs;
 
-import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
-
-import java.util.Map;
 
 import static org.watertemplate.TemplateMap.Arguments;
 import static org.watertemplate.TemplateMap.TemplateObject;
@@ -24,6 +21,7 @@ class IdCommand implements AbstractSyntaxTree.Command {
     }
 
     public Object run(final Arguments arguments) {
+
         if (nestedIdCommand instanceof IdCommand) try {
             Arguments nestedArguments = ((TemplateObject) arguments.getObject(propertyKey)).map();
             return nestedIdCommand.run(nestedArguments);
@@ -37,5 +35,4 @@ class IdCommand implements AbstractSyntaxTree.Command {
 
         return propertyKey;
     }
-
 }
