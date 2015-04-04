@@ -1,8 +1,12 @@
 package org.watertemplate.interpreter.parser.abs;
 
+import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
 
 import java.util.Map;
+
+import static org.watertemplate.TemplateMap.Arguments;
+import static org.watertemplate.TemplateMap.TemplateObject;
 
 class IdCommand implements AbstractSyntaxTree.Command {
 
@@ -19,15 +23,16 @@ class IdCommand implements AbstractSyntaxTree.Command {
         this.nestedIdCommand = nestedIdCommand;
     }
 
-    public Object run(final Map<String, Object> arguments) {
+    public Object run(final Arguments arguments) {
         if (nestedIdCommand instanceof IdCommand) try {
-            return nestedIdCommand.run((Map) arguments.get(propertyKey));
+            Arguments nestedArguments = ((TemplateObject) arguments.getObject(propertyKey)).map();
+            return nestedIdCommand.run(nestedArguments);
         } catch (ClassCastException e) {
             throw new TemplateException("Property \"" + propertyKey + "\" contains no nested properties.");
         }
 
-        if (arguments.containsKey(propertyKey)) {
-            return arguments.get(propertyKey);
+        if (arguments.getObject(propertyKey) != null) {
+            return arguments.getObject(propertyKey);
         }
 
         return propertyKey;

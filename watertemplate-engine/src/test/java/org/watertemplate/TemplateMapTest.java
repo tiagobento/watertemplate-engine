@@ -63,10 +63,10 @@ public class TemplateMapTest {
             stringMap.add("size", string.length());
         });
 
-        final Map<String, Object> map = templateObject.map();
+        final TemplateMap.Arguments map = templateObject.map();
         Assert.assertEquals(map.get("lower"), "foo");
         Assert.assertEquals(map.get("upper"), "FOO");
-        Assert.assertEquals(map.get("size"), 3);
+        Assert.assertEquals(map.get("size"), "3");
 
     }
 

@@ -1,5 +1,7 @@
 package org.watertemplate.interpreter.parser.abs;
 
+import org.watertemplate.TemplateMap;
+
 import java.util.Map;
 
 class IfCommand implements AbstractSyntaxTree.Command {
@@ -21,7 +23,7 @@ class IfCommand implements AbstractSyntaxTree.Command {
     }
 
     @Override
-    public Object run(final Map<String, Object> arguments) {
+    public Object run(final TemplateMap.Arguments arguments) {
         if ((boolean) conditionIdCommand.run(arguments)) {
             return ifStatements.run(arguments);
         } else {

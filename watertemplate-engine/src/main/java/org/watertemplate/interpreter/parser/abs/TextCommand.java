@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.parser.abs;
 
-import java.util.Map;
+import org.watertemplate.TemplateMap;
 
 class TextCommand implements AbstractSyntaxTree.Command {
 
@@ -11,7 +11,7 @@ class TextCommand implements AbstractSyntaxTree.Command {
     }
 
     @Override
-    public Object run(final Map<String, Object> arguments) {
+    public Object run(final TemplateMap.Arguments arguments) {
         return value;
     }
 }

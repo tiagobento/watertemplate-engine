@@ -11,65 +11,81 @@ public class ForCommandTest {
 
     @Test
     public void normalFor() {
-        Map<String, Object> arguments = new HashMap<>();
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         AbstractSyntaxTree abs = new AbstractSyntaxTree(
-                new ForCommand("x", new IdCommand("list"),
+                new ForCommand("x", new IdCommand("collection"),
                         new IdCommand("x"),
-                        new TextCommand("list has no elements"))
+                        new TextCommand("collection has no elements"))
         );
 
-        arguments.put("list", Arrays.asList(1, 2, 3, 4, 5, 6, 7));
+        arguments.addCollection("collection", Arrays.asList(1, 2, 3, 4, 5, 6, 7));
         String result = abs.run(arguments);
         assertEquals("1234567", result);
 
-        arguments.put("list", new ArrayList<>());
+        arguments.add("collection", new ArrayList<>());
         result = abs.run(arguments);
-        assertEquals("list has no elements", result);
+        assertEquals("collection has no elements", result);
 
-        arguments.put("list", null);
+        arguments.add("collection", null);
         result = abs.run(arguments);
-        assertEquals("list has no elements", result);
+        assertEquals("collection has no elements", result);
     }
 
     @Test
     public void forWithoutElse() {
-        Map<String, Object> arguments = new HashMap<>();
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         AbstractSyntaxTree abs = new AbstractSyntaxTree(
-                new ForCommand("x", new IdCommand("list"),
+                new ForCommand("x", new IdCommand("collection"),
                         new IdCommand("x")
-        ));
+                ));
 
-        arguments.put("list", Arrays.asList("a", 'v', 3, "%", 5, "4", 7));
+        arguments.addCollection("collection", Arrays.asList("a", 'v', 3, "%", 5, "4", 7));
         String result = abs.run(arguments);
         assertEquals("av3%547", result);
 
-        arguments.put("list", new ArrayList<>());
+        arguments.add("collection", new ArrayList<>());
         result = abs.run(arguments);
         assertEquals("", result);
 
-        arguments.put("list", null);
+        arguments.add("collection", null);
         result = abs.run(arguments);
         assertEquals("", result);
     }
 
     @Test
     public void forUsingItsVariable() {
-        Map<String, Object> arguments = new HashMap<>();
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         AbstractSyntaxTree abs = new AbstractSyntaxTree(
-                new ForCommand("x", new IdCommand("list"),
+                new ForCommand("x", new IdCommand("collection"),
                         new IdCommand("x")
                 ));
 
-        arguments.put("list", Arrays.asList("a", "b", "c", "d"));
+        arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"));
         String result = abs.run(arguments);
         assertEquals("abcd", result);
 
-        arguments.put("list", new ArrayList<>());
+        arguments.add("collection", new ArrayList<>());
         result = abs.run(arguments);
         assertEquals("", result);
 
-        arguments.put("list", null);
+        arguments.add("collection", null);
         result = abs.run(arguments);
         assertEquals("", result);
+    }
+
+    @Test
+    public void forUsingItsVariablesMappedProperties() {
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        AbstractSyntaxTree abs = new AbstractSyntaxTree(
+                new ForCommand("x", new IdCommand("collection"),
+                    new IdCommand("x", new IdCommand("upper"))
+                ));
+
+        arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"), (letter, map) -> {
+            map.add("upper", letter.toUpperCase());
+        });
+
+        String result = abs.run(arguments);
+        assertEquals("ABCD", result);
     }
 }

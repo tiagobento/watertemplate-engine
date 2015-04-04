@@ -1,6 +1,7 @@
 package org.watertemplate.interpreter.parser.abs;
 
 import org.junit.Test;
+import org.watertemplate.TemplateMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,15 +18,15 @@ public class IfCommandTest {
                         new IdCommand("else_statements")
                 ));
 
-        Map<String, Object> arguments = new HashMap<>();
-        arguments.put("if_statements", "condition was true");
-        arguments.put("else_statements", "condition was false");
-        arguments.put("condition", true);
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        arguments.add("if_statements", "condition was true");
+        arguments.add("else_statements", "condition was false");
+        arguments.add("condition", true);
 
         String result = abs.run(arguments);
         assertEquals("condition was true", result);
 
-        arguments.put("condition", false);
+        arguments.add("condition", false);
         result = abs.run(arguments);
         assertEquals("condition was false", result);
     }
@@ -39,19 +40,15 @@ public class IfCommandTest {
                         new IdCommand("else_statements")
                 ));
 
-        Map<String, Object> arguments = new HashMap<>();
-        arguments.put("if_statements", "nested condition was true");
-        arguments.put("else_statements", "nested condition was false");
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        arguments.add("if_statements", "nested condition was true");
+        arguments.add("else_statements", "nested condition was false");
 
-        Map<String, Object> conditionObject = new HashMap<>();
-        conditionObject.put("nested_condition", true);
-
-        arguments.put("condition", conditionObject);
-
+        arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", true));
         String result = abs.run(arguments);
         assertEquals("nested condition was true", result);
 
-        conditionObject.put("nested_condition", false);
+        arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", false));
         result = abs.run(arguments);
         assertEquals("nested condition was false", result);
     }
@@ -63,14 +60,14 @@ public class IfCommandTest {
                         new IdCommand("condition"), new IdCommand("if_statements")
                 ));
 
-        Map<String, Object> arguments = new HashMap<>();
-        arguments.put("if_statements", "condition was true");
-        arguments.put("condition", true);
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        arguments.add("if_statements", "condition was true");
+        arguments.add("condition", true);
 
         String result = abs.run(arguments);
         assertEquals("condition was true", result);
 
-        arguments.put("condition", false);
+        arguments.add("condition", false);
         result = abs.run(arguments);
         assertEquals("", result);
     }

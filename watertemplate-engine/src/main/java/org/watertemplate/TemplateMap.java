@@ -1,6 +1,7 @@
 package org.watertemplate;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -13,21 +14,25 @@ public class TemplateMap<T> {
 
     //
 
-    private static abstract class Mappable<T> {
+    static abstract class Mappable<T> {
         private final BiConsumer<T, Arguments> mapper;
 
         Mappable(final BiConsumer<T, Arguments> mapper) {
             this.mapper = mapper;
         }
 
-        Map<String, Object> map(final T object) {
+        public Arguments map(final T object) {
             Arguments arguments = new Arguments();
             mapper.accept(object, arguments);
-            return arguments.map;
+            return arguments;
+        }
+
+        public BiConsumer<T, Arguments> getMapper() {
+            return mapper;
         }
     }
 
-    static class TemplateObject<T> extends Mappable<T> {
+    public static class TemplateObject<T> extends Mappable<T> {
         private final T object;
 
         TemplateObject(final T object, final BiConsumer<T, Arguments> mapper) {
@@ -35,7 +40,7 @@ public class TemplateMap<T> {
             this.object = object;
         }
 
-        Map<String, Object> map() {
+        public Arguments map() {
             return map(object);
         }
 
@@ -45,10 +50,10 @@ public class TemplateMap<T> {
         }
     }
 
-    static class TemplateCollection<T> extends Mappable<T> {
+    public static class TemplateCollection<T> extends Mappable<T> implements Iterable {
         private final Iterable<T> iterable;
 
-        TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+        public TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
             super(mapper);
             this.iterable = iterable;
         }
@@ -57,14 +62,25 @@ public class TemplateMap<T> {
         public String toString() {
             return iterable.toString();
         }
+
+        @Override
+        public Iterator iterator() {
+            return iterable.iterator();
+        }
     }
 
     //
 
     public static class Arguments extends TemplateMap<Object> {
+        public final <T> void addCollection(final String key, final Iterable<T> iterable) {
+            add(key, new TemplateCollection<>(iterable, (a, b) -> {}));
+        }
+
         public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateCollection<>(iterable, mapper));
         }
+
+
 
         public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateObject<>(object, mapper));
@@ -72,6 +88,14 @@ public class TemplateMap<T> {
 
         public final String get(final String key) {
             return "" + map.get(key);
+        }
+
+        public final Object getObject(final String key) {
+            return map.get(key);
+        }
+
+        public void remove(final String key) {
+            map.remove(key);
         }
     }
 

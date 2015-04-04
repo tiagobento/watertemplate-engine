@@ -1,11 +1,12 @@
 package org.watertemplate.interpreter;
 
+import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
-import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.ParseTree;
 import org.watertemplate.interpreter.parser.RecursiveDescentParser;
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
@@ -13,14 +14,13 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class WaterInterpreter implements Interpreter {
 
-    private final Map<String, Object> arguments;
+    private final TemplateMap.Arguments arguments;
     private final String templateFilePath;
 
-    public WaterInterpreter(final String templateFilePath, final Map<String, Object> arguments) {
+    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments) {
         this.templateFilePath = templateFilePath;
         this.arguments = arguments;
     }

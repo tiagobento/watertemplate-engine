@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.parser.abs;
 
-import java.util.Map;
+import org.watertemplate.TemplateMap;
 
 public class AbstractSyntaxTree {
 
@@ -10,11 +10,11 @@ public class AbstractSyntaxTree {
         this.command = command;
     }
 
-    public String run(final Map<String, Object> args) {
-        return (String) command.run(args);
+    public String run(final TemplateMap.Arguments arguments) {
+        return (String) command.run(arguments);
     }
 
     static interface Command {
-        public Object run(final Map<String, Object> arguments);
+        public Object run(final TemplateMap.Arguments arguments);
     }
 }
