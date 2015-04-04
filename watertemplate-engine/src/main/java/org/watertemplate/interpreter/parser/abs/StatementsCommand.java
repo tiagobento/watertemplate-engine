@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import static org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree.Command;
 
-public class StatementsCommand implements Command {
+class StatementsCommand implements Command {
 
     private Collection<Command> commands;
 

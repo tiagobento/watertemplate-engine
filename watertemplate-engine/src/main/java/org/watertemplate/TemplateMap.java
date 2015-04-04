@@ -65,7 +65,7 @@ public class TemplateMap<T> {
 
         @Override
         public Iterator iterator() {
-            return iterable.iterator();
+            return iterable == null ? null : iterable.iterator();
         }
     }
 

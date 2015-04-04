@@ -22,11 +22,11 @@ public class ForCommandTest {
         String result = abs.run(arguments);
         assertEquals("1234567", result);
 
-        arguments.add("collection", new ArrayList<>());
+        arguments.addCollection("collection", new ArrayList<>());
         result = abs.run(arguments);
         assertEquals("collection has no elements", result);
 
-        arguments.add("collection", null);
+        arguments.addCollection("collection", null);
         result = abs.run(arguments);
         assertEquals("collection has no elements", result);
     }
@@ -43,11 +43,11 @@ public class ForCommandTest {
         String result = abs.run(arguments);
         assertEquals("av3%547", result);
 
-        arguments.add("collection", new ArrayList<>());
+        arguments.addCollection("collection", new ArrayList<>());
         result = abs.run(arguments);
         assertEquals("", result);
 
-        arguments.add("collection", null);
+        arguments.addCollection("collection", null);
         result = abs.run(arguments);
         assertEquals("", result);
     }
@@ -64,11 +64,11 @@ public class ForCommandTest {
         String result = abs.run(arguments);
         assertEquals("abcd", result);
 
-        arguments.add("collection", new ArrayList<>());
+        arguments.addCollection("collection", new ArrayList<>());
         result = abs.run(arguments);
         assertEquals("", result);
 
-        arguments.add("collection", null);
+        arguments.addCollection("collection", null);
         result = abs.run(arguments);
         assertEquals("", result);
     }
