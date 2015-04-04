@@ -6,6 +6,7 @@ import org.junit.Test;
 import static org.watertemplate.interpreter.lexer.TokenFixture.*;
 
 public class TerminalTest {
+
     @Test
     public void buildParseTree() {
         TokenStream tokenStream = new TokenStream(

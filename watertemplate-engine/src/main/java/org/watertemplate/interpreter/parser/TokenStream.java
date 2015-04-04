@@ -19,7 +19,7 @@ class TokenStream {
         currentTokenPosition = 0;
     }
 
-    public boolean hasAny() {
+    boolean hasAny() {
         return !tokens.isEmpty();
     }
 
