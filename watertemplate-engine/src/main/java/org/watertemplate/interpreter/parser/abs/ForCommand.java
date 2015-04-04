@@ -31,7 +31,6 @@ class ForCommand implements AbstractSyntaxTree.Command {
     public Object run(final Arguments arguments) {
         Object collection = collectionIdCommand.run(arguments);
 
-
         if (!(collection instanceof TemplateCollection)) {
             throw new TemplateException("Cannot iterate if collection was not added by addCollection method.");
         }
