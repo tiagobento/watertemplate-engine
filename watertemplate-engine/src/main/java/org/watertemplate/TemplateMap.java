@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class TemplateMap<T> {
-    final Map<String, T> map = new HashMap<>();
+    public final Map<String, T> map = new HashMap<>();
 
     public final void add(final String key, final T value) {
         this.map.put(key, value);

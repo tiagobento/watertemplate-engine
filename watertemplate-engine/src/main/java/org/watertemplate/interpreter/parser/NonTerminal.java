@@ -94,7 +94,7 @@ enum NonTerminal implements GrammarSymbol {
         throw lastException;
     }
 
-    private ParseTree buildParseTreeForProduction(TokenStream tokenStream, Production production) {
+    private ParseTree buildParseTreeForProduction(final TokenStream tokenStream, final Production production) {
         final ParseTree parseTree = new ParseTree(this);
         int save = tokenStream.getCurrentTokenPosition();
 

@@ -1,17 +1,15 @@
 package org.watertemplate.interpreter;
 
-import org.apache.commons.io.FileUtils;
 import org.watertemplate.exception.TemplateException;
-import org.watertemplate.interpreter.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.ParseTree;
 import org.watertemplate.interpreter.parser.RecursiveDescentParser;
 import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -34,17 +32,8 @@ public class WaterInterpreter implements Interpreter {
         final List<Token> tokens = lex(templateFile);
         final ParseTree parseTree = parse(tokens);
 
-        final AbstractSyntaxTree abs = new AbstractSyntaxTree(parseTree);
-        return render(abs);
-    }
-
-    private String render(final AbstractSyntaxTree abs) {
-//        System.out.println(arguments);
-//        percorre a árvore in ordem e executa os comando
-//        controlar escopo
-//        erros de runtime
-
-        return "";
+        AbstractSyntaxTree abs = new AbstractSyntaxTree(null); //FIXME: :)
+        return abs.run(arguments);
     }
 
     private List<Token> lex(final File templateFile) {

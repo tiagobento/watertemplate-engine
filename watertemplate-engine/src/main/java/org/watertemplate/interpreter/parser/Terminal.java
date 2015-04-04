@@ -8,14 +8,15 @@ enum Terminal implements GrammarSymbol {
     PROPERTY_KEY, IF, FOR, IN, ELSE, END, ACCESSOR, TEXT, END_OF_INPUT;
 
     @Override
-    public ParseTreeNode buildParseTree(final TokenStream tokenStream) {
+    public ParseTree buildParseTree(final TokenStream tokenStream) {
 
-        if (!isTerminal(tokenStream.current())) {
-            throw new IncorrectLocationForToken(getTokenType(), tokenStream.current());
+        Token current = tokenStream.current();
+        if (!isTerminal(current)) {
+            throw new IncorrectLocationForToken(getTokenType(), current);
         }
 
         tokenStream.shift();
-        return new ParseTreeNode(this);
+        return new ParseTree(this, current.getValue());
     }
 
     private boolean isTerminal(Token currentToken) {
