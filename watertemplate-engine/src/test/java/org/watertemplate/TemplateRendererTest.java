@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.watertemplate.exception.TemplateException;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public class TemplateRendererTest {
@@ -130,7 +131,7 @@ public class TemplateRendererTest {
             }
 
             TemplateWithCollection() {
-                add("items", new int[]{1, 2});
+                addCollection("items", Arrays.asList(1,2), (a, b) -> {});
             }
         }
 

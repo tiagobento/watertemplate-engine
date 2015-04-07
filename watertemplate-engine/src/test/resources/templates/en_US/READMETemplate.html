@@ -10,7 +10,7 @@
 
     ~if mustDisplayMenu:
         <ul id="menu">
-            ~for item in items:
+            ~for item in menuItems:
                 <li>
                     <a href="~item.url~"> ~item.label~ </a>
                 </li>
@@ -22,6 +22,6 @@
         </ul>
     :else:
         <span>Menu unavailable.</span>
-    ~
+    :~
 </body>
 </html>

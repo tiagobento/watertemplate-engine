@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.watertemplate.interpreter.parser.Terminal.*;
@@ -12,45 +12,45 @@ enum NonTerminal implements GrammarSymbol {
 
     IF_COMMAND {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(IF, ID, STATEMENTS, END));
-            productions.add(production(IF, ID, STATEMENTS, ELSE, STATEMENTS, END));
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(new Production.If());
+            productions.add(new Production.IfElse());
         }
     },
     FOR_COMMAND {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, END));
-            productions.add(production(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE, STATEMENTS, END));
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(new Production.For());
+            productions.add(new Production.ForElse());
         }
     },
     ID {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(PROPERTY_KEY, ACCESSOR, ID));
-            productions.add(production(PROPERTY_KEY));
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(new Production.IdWithNestedProperties());
+            productions.add(PROPERTY_KEY);
         }
     },
     STATEMENT {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(TEXT));
-            productions.add(production(FOR_COMMAND));
-            productions.add(production(IF_COMMAND));
-            productions.add(production(ID));
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(TEXT);
+            productions.add(FOR_COMMAND);
+            productions.add(IF_COMMAND);
+            productions.add(ID);
         }
     },
     STATEMENTS {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(STATEMENT, STATEMENTS));
-            productions.add(production());
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(new Production(STATEMENT, STATEMENTS));
+            productions.add(new Production.Empty());
         }
     },
     START_SYMBOL {
         @Override
-        void addProductions(final List<Production> productions) {
-            productions.add(production(STATEMENTS, END_OF_INPUT));
+        void addProductions(final List<GrammarSymbol> productions) {
+            productions.add(new Production(STATEMENTS, END_OF_INPUT));
         }
     };
 
@@ -60,50 +60,22 @@ enum NonTerminal implements GrammarSymbol {
         }
     }
 
-    private final List<Production> productions = new ArrayList<>();
+    private final List<GrammarSymbol> productions = new ArrayList<>();
 
-    abstract void addProductions(final List<Production> productions);
-
-    Production production(final GrammarSymbol... symbols) {
-        return new Production(symbols);
-    }
+    abstract void addProductions(final List<GrammarSymbol> productions);
 
     @Override
     public final ParseTree buildParseTree(final TokenStream tokenStream) throws ParseException {
         ParseException lastException = null;
 
-        for (Production production : productions) {
+        for (GrammarSymbol production : productions) {
             try {
-                return buildParseTreeForProduction(tokenStream, production);
+                return production.buildParseTree(tokenStream);
             } catch (ParseException e) {
                 lastException = e;
             }
         }
 
         throw lastException;
-    }
-
-    private ParseTree buildParseTreeForProduction(final TokenStream tokenStream, final Production production) {
-        final ParseTree parseTree = new ParseTree(this);
-        int save = tokenStream.getCurrentTokenPosition();
-
-        try {
-            for (GrammarSymbol symbol : production.symbols) {
-                parseTree.addChild(symbol.buildParseTree(tokenStream));
-            }
-        } catch (ParseException e) {
-            tokenStream.reset(save);
-            throw e;
-        }
-
-        return parseTree;
-    }
-
-    static class Production {
-        private final List<GrammarSymbol> symbols;
-
-        public Production(final GrammarSymbol... symbols) {
-            this.symbols = Arrays.asList(symbols);
-        }
     }
 }
