@@ -1,6 +1,5 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import java.util.ArrayList;

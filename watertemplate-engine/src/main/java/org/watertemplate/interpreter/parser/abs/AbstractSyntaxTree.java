@@ -125,7 +125,7 @@ public interface AbstractSyntaxTree {
 
     class Statements implements AbstractSyntaxTree {
 
-        private List<AbstractSyntaxTree> abstractSyntaxTrees;
+        private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
         public Statements(List<AbstractSyntaxTree> abstractSyntaxTrees) {
             this.abstractSyntaxTrees = abstractSyntaxTrees;
@@ -133,10 +133,6 @@ public interface AbstractSyntaxTree {
 
         public Statements(AbstractSyntaxTree... abstractSyntaxTrees) {
             this.abstractSyntaxTrees = Arrays.asList(abstractSyntaxTrees);
-        }
-
-        public void addChild(final AbstractSyntaxTree child) {
-            abstractSyntaxTrees.add(child);
         }
 
         @Override
