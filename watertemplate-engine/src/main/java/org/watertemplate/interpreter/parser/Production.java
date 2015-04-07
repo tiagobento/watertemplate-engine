@@ -12,7 +12,7 @@ import static org.watertemplate.interpreter.parser.NonTerminal.STATEMENTS;
 import static org.watertemplate.interpreter.parser.Terminal.*;
 import static org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree.Id;
 
-class Production implements GrammarSymbol, ParseTreeNode {
+abstract class Production implements GrammarSymbol, ParseTreeNode {
 
     private final List<GrammarSymbol> symbols;
 
@@ -38,13 +38,7 @@ class Production implements GrammarSymbol, ParseTreeNode {
     }
 
     @Override
-    public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-        List<AbstractSyntaxTree> statements = parseTree.getChildren().stream().map(
-                child -> child.getNode().buildAbstractSyntaxTree(child)
-        ).collect(Collectors.toList());
-
-        return new AbstractSyntaxTree.Statements(statements);
-    }
+    public abstract AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree);
 
     static class Empty extends Production {
         @Override
@@ -108,7 +102,7 @@ class Production implements GrammarSymbol, ParseTreeNode {
             String propertyName = parseTree.child(1).getValue();
             Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getNode().buildAbstractSyntaxTree(parseTree.child(3));
             AbstractSyntaxTree forStatements = parseTree.child(4).getNode().buildAbstractSyntaxTree(parseTree.child(4));
-            AbstractSyntaxTree elseStatements = parseTree.child(7).getNode().buildAbstractSyntaxTree(parseTree.child(7));
+            AbstractSyntaxTree elseStatements = parseTree.child(6).getNode().buildAbstractSyntaxTree(parseTree.child(6));
 
             return new AbstractSyntaxTree.For(propertyName, listIdAbstractSyntaxTree, forStatements, elseStatements);
         }
@@ -121,10 +115,23 @@ class Production implements GrammarSymbol, ParseTreeNode {
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            ParseTree nestedIdParseTree = parseTree.child(2);
-            AbstractSyntaxTree nestedPropertyAbs = nestedIdParseTree.getNode().buildAbstractSyntaxTree(nestedIdParseTree);
+            Id nestedPropertyAbs = (Id) parseTree.child(2).getNode().buildAbstractSyntaxTree(parseTree.child(2));
+            return new Id(parseTree.child(0).getValue(), nestedPropertyAbs);
+        }
+    }
 
-            return new Id(parseTree.child(0).getValue(), (Id) nestedPropertyAbs);
+    static class Statements extends Production {
+        public Statements(final GrammarSymbol ... statements) {
+            super(statements);
+        }
+
+        @Override
+        public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
+            List<AbstractSyntaxTree> statements = parseTree.getChildren().stream().map(
+                    child -> child.getNode().buildAbstractSyntaxTree(child)
+            ).collect(Collectors.toList());
+
+            return new AbstractSyntaxTree.Statements(statements);
         }
     }
 }

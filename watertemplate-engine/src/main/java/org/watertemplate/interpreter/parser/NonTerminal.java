@@ -42,14 +42,14 @@ enum NonTerminal implements GrammarSymbol {
     STATEMENTS {
         @Override
         void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production(STATEMENT, STATEMENTS));
+            productions.add(new Production.Statements(STATEMENT, STATEMENTS));
             productions.add(new Production.Empty());
         }
     },
     START_SYMBOL {
         @Override
         void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production(STATEMENTS, END_OF_INPUT));
+            productions.add(new Production.Statements(STATEMENTS, END_OF_INPUT));
         }
     };
 

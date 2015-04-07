@@ -6,9 +6,11 @@ import org.watertemplate.exception.TemplateException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.watertemplate.TemplateMap.Arguments;
+
 public interface AbstractSyntaxTree {
 
-    public Object run(final TemplateMap.Arguments arguments);
+    public Object run(final Arguments arguments);
 
     class For implements AbstractSyntaxTree {
 
@@ -33,7 +35,7 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final TemplateMap.Arguments arguments) {
+        public Object run(final Arguments arguments) {
             Object collection = collectionIdCommand.run(arguments);
 
             if (!(collection instanceof TemplateMap.TemplateCollection)) {
@@ -56,7 +58,6 @@ public interface AbstractSyntaxTree {
             arguments.remove(variableName);
             return sb.toString();
         }
-
     }
 
     class Id implements AbstractSyntaxTree {
@@ -75,10 +76,10 @@ public interface AbstractSyntaxTree {
 
         }
 
-        public Object run(final TemplateMap.Arguments arguments) {
+        public Object run(final Arguments arguments) {
 
             if (nestedIdAbstractSyntaxTree instanceof Id) try {
-                TemplateMap.Arguments nestedArguments = ((TemplateMap.TemplateObject) arguments.getObject(propertyKey)).map();
+                Arguments nestedArguments = ((TemplateMap.TemplateObject) arguments.getObject(propertyKey)).map();
                 return nestedIdAbstractSyntaxTree.run(nestedArguments);
             } catch (ClassCastException e) {
                 throw new TemplateException("Property \"" + propertyKey + "\" contains no nested properties.");
@@ -90,7 +91,6 @@ public interface AbstractSyntaxTree {
 
             return propertyKey;
         }
-
     }
 
     class If implements AbstractSyntaxTree {
@@ -113,14 +113,13 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final TemplateMap.Arguments arguments) {
+        public Object run(final Arguments arguments) {
             if ((boolean) conditionIdCommand.run(arguments)) {
                 return ifStatements.run(arguments);
             } else {
                 return elseStatements.run(arguments);
             }
         }
-
     }
 
     class Statements implements AbstractSyntaxTree {
@@ -136,18 +135,16 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(TemplateMap.Arguments arguments) {
+        public Object run(Arguments arguments) {
             StringBuilder sb = new StringBuilder();
             for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
                 sb.append(abstractSyntaxTree.run(arguments));
             }
             return sb.toString();
         }
-
     }
 
     class Text implements AbstractSyntaxTree {
-
         private final String value;
 
         public Text(final String value) {
@@ -155,16 +152,15 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final TemplateMap.Arguments arguments) {
+        public Object run(final Arguments arguments) {
             return value;
         }
 
     }
 
     public static class Empty implements AbstractSyntaxTree {
-
         @Override
-        public Object run(TemplateMap.Arguments arguments) {
+        public Object run(Arguments arguments) {
             return "";
         }
     }
