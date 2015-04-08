@@ -12,7 +12,7 @@ import static org.watertemplate.interpreter.parser.NonTerminal.STATEMENTS;
 import static org.watertemplate.interpreter.parser.Terminal.*;
 import static org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree.Id;
 
-abstract class Production implements GrammarSymbol, ParseTreeNode {
+public abstract class Production implements GrammarSymbol {
 
     private final List<GrammarSymbol> symbols;
 
@@ -22,7 +22,7 @@ abstract class Production implements GrammarSymbol, ParseTreeNode {
 
     @Override
     public final ParseTree buildParseTree(final TokenStream tokenStream) {
-            final ParseTree parseTree = new ParseTree(this);
+        final ParseTree parseTree = new ParseTree(this);
         int save = tokenStream.getCurrentTokenPosition();
 
         try {
@@ -37,15 +37,7 @@ abstract class Production implements GrammarSymbol, ParseTreeNode {
         return parseTree;
     }
 
-    @Override
     public abstract AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree);
-
-    static class Empty extends Production {
-        @Override
-        public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
-            return new AbstractSyntaxTree.Empty();
-        }
-    }
 
     static class If extends Production {
 
@@ -55,29 +47,33 @@ abstract class Production implements GrammarSymbol, ParseTreeNode {
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
-            Id conditionId = (Id) parseTree.child(1).getNode().buildAbstractSyntaxTree(parseTree.child(1));
-            AbstractSyntaxTree ifStatements = parseTree.child(2).getNode().buildAbstractSyntaxTree(parseTree.child(2));
+            Id conditionId = (Id) parseTree.child(1).getProduction().buildAbstractSyntaxTree(parseTree.child(1));
+            AbstractSyntaxTree ifStatements = parseTree.child(2).getProduction().buildAbstractSyntaxTree(parseTree.child(2));
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements);
         }
+
     }
 
     static class IfElse extends Production {
+
         IfElse() {
             super(IF, ID, STATEMENTS, ELSE, STATEMENTS, END);
         }
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            Id conditionId = (Id) parseTree.child(1).getNode().buildAbstractSyntaxTree(parseTree.child(1));
-            AbstractSyntaxTree ifStatements = parseTree.child(2).getNode().buildAbstractSyntaxTree(parseTree.child(2));
-            AbstractSyntaxTree elseStatements = parseTree.child(4).getNode().buildAbstractSyntaxTree(parseTree.child(4));
+            Id conditionId = (Id) parseTree.child(1).getProduction().buildAbstractSyntaxTree(parseTree.child(1));
+            AbstractSyntaxTree ifStatements = parseTree.child(2).getProduction().buildAbstractSyntaxTree(parseTree.child(2));
+            AbstractSyntaxTree elseStatements = parseTree.child(4).getProduction().buildAbstractSyntaxTree(parseTree.child(4));
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements, elseStatements);
         }
+
     }
 
     static class For extends Production {
+
         For() {
             super(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, END);
         }
@@ -85,14 +81,16 @@ abstract class Production implements GrammarSymbol, ParseTreeNode {
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
             String propertyName = parseTree.child(1).getValue();
-            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getNode().buildAbstractSyntaxTree(parseTree.child(3));
-            AbstractSyntaxTree forStatements = parseTree.child(4).getNode().buildAbstractSyntaxTree(parseTree.child(4));
+            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
+            AbstractSyntaxTree forStatements = parseTree.child(4).getProduction().buildAbstractSyntaxTree(parseTree.child(4));
 
             return new AbstractSyntaxTree.For(propertyName, listIdAbstractSyntaxTree, forStatements);
         }
+
     }
 
     static class ForElse extends Production {
+
         ForElse() {
             super(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE, STATEMENTS, END);
         }
@@ -100,38 +98,66 @@ abstract class Production implements GrammarSymbol, ParseTreeNode {
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
             String propertyName = parseTree.child(1).getValue();
-            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getNode().buildAbstractSyntaxTree(parseTree.child(3));
-            AbstractSyntaxTree forStatements = parseTree.child(4).getNode().buildAbstractSyntaxTree(parseTree.child(4));
-            AbstractSyntaxTree elseStatements = parseTree.child(6).getNode().buildAbstractSyntaxTree(parseTree.child(6));
+            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
+            AbstractSyntaxTree forStatements = parseTree.child(4).getProduction().buildAbstractSyntaxTree(parseTree.child(4));
+            AbstractSyntaxTree elseStatements = parseTree.child(6).getProduction().buildAbstractSyntaxTree(parseTree.child(6));
 
             return new AbstractSyntaxTree.For(propertyName, listIdAbstractSyntaxTree, forStatements, elseStatements);
         }
+
     }
 
     static class IdWithNestedProperties extends Production {
+
         IdWithNestedProperties() {
             super(PROPERTY_KEY, ACCESSOR, ID);
         }
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            Id nestedPropertyAbs = (Id) parseTree.child(2).getNode().buildAbstractSyntaxTree(parseTree.child(2));
+            Id nestedPropertyAbs = (Id) parseTree.child(2).getProduction().buildAbstractSyntaxTree(parseTree.child(2));
             return new Id(parseTree.child(0).getValue(), nestedPropertyAbs);
         }
+
     }
 
     static class Statements extends Production {
-        public Statements(final GrammarSymbol ... statements) {
+
+        public Statements(final GrammarSymbol... statements) {
             super(statements);
         }
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
             List<AbstractSyntaxTree> statements = parseTree.getChildren().stream().map(
-                    child -> child.getNode().buildAbstractSyntaxTree(child)
+                    child -> child.getProduction().buildAbstractSyntaxTree(child)
             ).collect(Collectors.toList());
 
             return new AbstractSyntaxTree.Statements(statements);
+        }
+
+    }
+
+    static class PropertyKey extends Production {
+
+        @Override
+        public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
+            return new Id(parseTree.getValue());
+        }
+    }
+
+    static class Text extends Production {
+
+        @Override
+        public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
+            return new AbstractSyntaxTree.Text(parseTree.getValue());
+        }
+    }
+
+    static class Empty extends Production {
+        @Override
+        public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
+            return new AbstractSyntaxTree.Empty();
         }
     }
 }

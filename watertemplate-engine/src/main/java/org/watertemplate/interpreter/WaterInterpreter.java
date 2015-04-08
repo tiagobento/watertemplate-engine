@@ -32,7 +32,7 @@ public class WaterInterpreter implements Interpreter {
         final List<Token> tokens = lex(templateFile);
         final ParseTree parseTree = parse(tokens);
 
-        AbstractSyntaxTree abs = parseTree.getNode().buildAbstractSyntaxTree(parseTree);
+        AbstractSyntaxTree abs = parseTree.getProduction().buildAbstractSyntaxTree(parseTree);
         return (String) abs.run(arguments);
     }
 

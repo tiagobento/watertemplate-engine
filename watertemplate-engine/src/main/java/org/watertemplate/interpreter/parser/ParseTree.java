@@ -8,22 +8,24 @@ public class ParseTree {
 
     private final List<ParseTree> children;
 
-    private final ParseTreeNode node;
+    private final Production production;
     private final String value;
 
     ParseTree(final Terminal terminal) {
-        this(terminal, null);
+        this(terminal.getProduction());
     }
 
-    ParseTree(final Production node) {
-        this.children = new ArrayList<>();
-        this.node = node;
-        this.value = null;
+    ParseTree(final Terminal terminal, final String value) {
+        this(terminal.getProduction(), value);
     }
 
-    ParseTree(final Terminal node, final String value) {
+    ParseTree(final Production production) {
+        this(production, null);
+    }
+
+    ParseTree(final Production production, final String value) {
         this.children = new ArrayList<>();
-        this.node = node;
+        this.production = production;
         this.value = value;
     }
 
@@ -35,8 +37,8 @@ public class ParseTree {
         return value;
     }
 
-    public ParseTreeNode getNode() {
-        return node;
+    public Production getProduction() {
+        return production;
     }
 
     ParseTree child(int i) {

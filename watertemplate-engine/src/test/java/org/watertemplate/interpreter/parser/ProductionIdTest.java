@@ -42,7 +42,7 @@ public class ProductionIdTest {
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         arguments.add("char", "a");
 
-        AbstractSyntaxTree abs = PROPERTY_KEY.buildAbstractSyntaxTree(parseTree);
+        AbstractSyntaxTree abs = PROPERTY_KEY.getProduction().buildAbstractSyntaxTree(parseTree);
         Object result = abs.run(arguments);
         assertEquals("a", result);
     }

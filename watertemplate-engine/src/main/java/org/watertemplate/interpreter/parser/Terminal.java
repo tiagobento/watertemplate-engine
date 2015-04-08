@@ -2,24 +2,22 @@ package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.lexer.TokenType;
-import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.IncorrectLocationForToken;
 
-enum Terminal implements GrammarSymbol, ParseTreeNode {
-    PROPERTY_KEY {
-        @Override
-        public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            return new AbstractSyntaxTree.Id(parseTree.getValue());
-        }
-    },
-    TEXT {
-        @Override
-        public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            return new AbstractSyntaxTree.Text(parseTree.getValue());
-        }
-    },
-
+enum Terminal implements GrammarSymbol {
+    TEXT(new Production.Text()),
+    PROPERTY_KEY(new Production.PropertyKey()),
     IF, FOR, IN, ELSE, END, ACCESSOR, END_OF_INPUT;
+
+    private final Production production;
+
+    Terminal() {
+        this.production = new Production.Empty();
+    }
+
+    Terminal(final Production production) {
+        this.production = production;
+    }
 
     @Override
     public final ParseTree buildParseTree(final TokenStream tokenStream) {
@@ -30,12 +28,7 @@ enum Terminal implements GrammarSymbol, ParseTreeNode {
         }
 
         tokenStream.shift();
-        return new ParseTree(this, current.getValue());
-    }
-
-    @Override
-    public AbstractSyntaxTree buildAbstractSyntaxTree(ParseTree parseTree) {
-        return new AbstractSyntaxTree.Empty();
+        return new ParseTree(production, current.getValue());
     }
 
     private boolean isTerminal(Token currentToken) {
@@ -44,5 +37,9 @@ enum Terminal implements GrammarSymbol, ParseTreeNode {
 
     private TokenType getTokenType() {
         return TokenType.valueOf(name());
+    }
+
+    Production getProduction() {
+        return production;
     }
 }
