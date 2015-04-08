@@ -76,6 +76,4 @@ enum NonTerminal implements GrammarSymbol {
 
         throw lastException;
     }
-
-
 }

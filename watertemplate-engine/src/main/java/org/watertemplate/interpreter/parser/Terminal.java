@@ -20,10 +20,6 @@ enum Terminal implements GrammarSymbol {
 
     IF, FOR, IN, ELSE, END, ACCESSOR, END_OF_INPUT;
 
-    AbstractSyntaxTree buildAbstractSyntaxTree(final Token current) {
-        return new AbstractSyntaxTree.Empty();
-    }
-
     @Override
     public final AbstractSyntaxTree buildAbstractSyntaxTree(final TokenStream tokenStream) {
         Token current = tokenStream.current();
@@ -34,6 +30,10 @@ enum Terminal implements GrammarSymbol {
 
         tokenStream.shift();
         return buildAbstractSyntaxTree(current);
+    }
+
+    AbstractSyntaxTree buildAbstractSyntaxTree(final Token current) {
+        return new AbstractSyntaxTree.Empty();
     }
 
     private boolean isTerminal(final Token currentToken) {
