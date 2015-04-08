@@ -5,6 +5,7 @@ import org.watertemplate.exception.TemplateException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public abstract class Template {
 
@@ -43,6 +44,10 @@ public abstract class Template {
 
     protected final void add(final String key, final Object value) {
         this.arguments.add(key, value);
+    }
+
+    protected final <T> void addMappedObject(final String key, final T object, final Consumer<TemplateMap.Arguments> mapper) {
+        this.addMappedObject(key, object, (a, b) -> mapper.accept(b) );
     }
 
     protected final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {

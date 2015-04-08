@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class TemplateMap<T> {
     public final Map<String, T> map = new HashMap<>();
@@ -79,8 +80,6 @@ public class TemplateMap<T> {
         public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateCollection<>(iterable, mapper));
         }
-
-
 
         public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateObject<>(object, mapper));

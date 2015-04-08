@@ -5,12 +5,12 @@ import org.watertemplate.Template;
 
 class NewUserMail extends Template {
     public NewUserMail(final User user) {
-        addMappedObject("user", user, (u, userMap) -> {
-            userMap.add("email", u.email);
-            userMap.add("username", u.username);
-            userMap.add("date_of_birth", u.dateOfBirth);
+        addMappedObject("user", user, (userMap) -> {
+            userMap.add("email", user.email);
+            userMap.add("username", user.username);
+            userMap.add("date_of_birth", user.dateOfBirth);
 
-            userMap.addMappedObject("name", u.name, (name, nameMap) -> {
+            userMap.addMappedObject("name", user.name, (name, nameMap) -> {
                 nameMap.add("capitalized", WordUtils.capitalizeFully(name));
             });
         });

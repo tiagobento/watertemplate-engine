@@ -58,17 +58,15 @@ public interface AbstractSyntaxTree {
     static class Id implements AbstractSyntaxTree {
 
         private final String propertyKey;
-
-        private final AbstractSyntaxTree nestedIdAbstractSyntaxTree;
-
-        public Id(final String propertyKey, final Id nestedIdCommand) {
-            this.propertyKey = propertyKey;
-            this.nestedIdAbstractSyntaxTree = nestedIdCommand;
-        }
+        private final AbstractSyntaxTree nestedId;
 
         public Id(final String propertyKey) {
             this(propertyKey, null);
+        }
 
+        public Id(final String propertyKey, final Id nestedId) {
+            this.propertyKey = propertyKey;
+            this.nestedId = nestedId;
         }
 
         public Object run(final Arguments arguments) {
@@ -78,8 +76,8 @@ public interface AbstractSyntaxTree {
                 throw new TemplateException("Property \"" + propertyKey + "\" was not correctly mapped");
             }
 
-            if (nestedIdAbstractSyntaxTree instanceof Id) try {
-                return nestedIdAbstractSyntaxTree.run(((TemplateObject) object).map());
+            if (nestedId instanceof Id) try {
+                return nestedId.run(((TemplateObject) object).map());
             } catch (ClassCastException e) {
                 throw new TemplateException("Property \"" + propertyKey + "\" contains no nested properties.");
             }
@@ -155,7 +153,7 @@ public interface AbstractSyntaxTree {
 
     static class Empty implements AbstractSyntaxTree {
         @Override
-        public Object run(Arguments arguments) {
+        public Object run(final Arguments arguments) {
             return "";
         }
     }
