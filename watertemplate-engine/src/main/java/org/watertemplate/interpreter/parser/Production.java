@@ -81,10 +81,10 @@ public abstract class Production implements GrammarSymbol {
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
             String propertyName = parseTree.child(1).getValue();
-            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
+            Id collectionId = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
             AbstractSyntaxTree forStatements = parseTree.child(4).getProduction().buildAbstractSyntaxTree(parseTree.child(4));
 
-            return new AbstractSyntaxTree.For(propertyName, listIdAbstractSyntaxTree, forStatements);
+            return new AbstractSyntaxTree.For(propertyName, collectionId, forStatements);
         }
 
     }
@@ -98,11 +98,11 @@ public abstract class Production implements GrammarSymbol {
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
             String propertyName = parseTree.child(1).getValue();
-            Id listIdAbstractSyntaxTree = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
+            Id collectionId = (Id) parseTree.child(3).getProduction().buildAbstractSyntaxTree(parseTree.child(3));
             AbstractSyntaxTree forStatements = parseTree.child(4).getProduction().buildAbstractSyntaxTree(parseTree.child(4));
             AbstractSyntaxTree elseStatements = parseTree.child(6).getProduction().buildAbstractSyntaxTree(parseTree.child(6));
 
-            return new AbstractSyntaxTree.For(propertyName, listIdAbstractSyntaxTree, forStatements, elseStatements);
+            return new AbstractSyntaxTree.For(propertyName, collectionId, forStatements, elseStatements);
         }
 
     }
@@ -115,8 +115,8 @@ public abstract class Production implements GrammarSymbol {
 
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final ParseTree parseTree) {
-            Id nestedPropertyAbs = (Id) parseTree.child(2).getProduction().buildAbstractSyntaxTree(parseTree.child(2));
-            return new Id(parseTree.child(0).getValue(), nestedPropertyAbs);
+            Id nestedId = (Id) parseTree.child(2).getProduction().buildAbstractSyntaxTree(parseTree.child(2));
+            return new Id(parseTree.child(0).getValue(), nestedId);
         }
 
     }

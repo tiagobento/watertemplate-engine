@@ -14,7 +14,7 @@ public class TemplateMap<T> {
 
     //
 
-    static abstract class Mappable<T> {
+    private static abstract class Mappable<T> {
         private final BiConsumer<T, Arguments> mapper;
 
         Mappable(final BiConsumer<T, Arguments> mapper) {

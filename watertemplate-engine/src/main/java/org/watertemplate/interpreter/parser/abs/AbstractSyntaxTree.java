@@ -1,12 +1,12 @@
 package org.watertemplate.interpreter.parser.abs;
 
-import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.watertemplate.TemplateMap.Arguments;
+import static org.watertemplate.TemplateMap.TemplateCollection;
 import static org.watertemplate.TemplateMap.TemplateObject;
 
 public interface AbstractSyntaxTree {
@@ -17,33 +17,33 @@ public interface AbstractSyntaxTree {
 
         private final String variableName;
 
-        private final Id collectionIdCommand;
+        private final Id collectionId;
         private final AbstractSyntaxTree forStatements;
         private final AbstractSyntaxTree elseStatements;
 
-        public For(final String variableName, final Id collectionIdCommand, final AbstractSyntaxTree forStatements) {
+        public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements) {
             this.variableName = variableName;
-            this.collectionIdCommand = collectionIdCommand;
+            this.collectionId = collectionId;
             this.forStatements = forStatements;
-            this.elseStatements = (arguments) -> "";
+            this.elseStatements = new Empty();
         }
 
-        public For(final String variableName, final Id collectionIdCommand, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
+        public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
             this.variableName = variableName;
-            this.collectionIdCommand = collectionIdCommand;
+            this.collectionId = collectionId;
             this.forStatements = forStatements;
             this.elseStatements = elseStatements;
         }
 
         @Override
         public Object run(final Arguments arguments) {
-            Object collection = collectionIdCommand.run(arguments);
+            Object collection = collectionId.run(arguments);
 
-            if (!(collection instanceof TemplateMap.TemplateCollection)) {
+            if (!(collection instanceof TemplateCollection)) {
                 throw new TemplateException("Cannot iterate if collection was not added by addCollection method.");
             }
 
-            TemplateMap.TemplateCollection templateCollection = (TemplateMap.TemplateCollection) collection;
+            TemplateCollection templateCollection = (TemplateCollection) collection;
 
             if (templateCollection.iterator() == null || !templateCollection.iterator().hasNext()) {
                 return elseStatements.run(arguments);
@@ -99,23 +99,23 @@ public interface AbstractSyntaxTree {
         private final AbstractSyntaxTree ifStatements;
 
         private final AbstractSyntaxTree elseStatements;
-        private final Id conditionIdCommand;
+        private final Id conditionId;
 
-        public If(final Id conditionIdCommand, final AbstractSyntaxTree ifStatements) {
+        public If(final Id conditionId, final AbstractSyntaxTree ifStatements) {
             this.ifStatements = ifStatements;
             this.elseStatements = (arguments) -> "";
-            this.conditionIdCommand = conditionIdCommand;
+            this.conditionId = conditionId;
         }
 
-        public If(final Id conditionIdCommand, final AbstractSyntaxTree ifStatements, final AbstractSyntaxTree elseStatements) {
+        public If(final Id conditionId, final AbstractSyntaxTree ifStatements, final AbstractSyntaxTree elseStatements) {
             this.ifStatements = ifStatements;
             this.elseStatements = elseStatements;
-            this.conditionIdCommand = conditionIdCommand;
+            this.conditionId = conditionId;
         }
 
         @Override
         public Object run(final Arguments arguments) {
-            if ((boolean) conditionIdCommand.run(arguments)) {
+            if ((boolean) conditionId.run(arguments)) {
                 return ifStatements.run(arguments);
             } else {
                 return elseStatements.run(arguments);
