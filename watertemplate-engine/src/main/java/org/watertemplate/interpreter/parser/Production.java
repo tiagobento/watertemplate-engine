@@ -126,12 +126,6 @@ abstract class Production implements GrammarSymbol {
 
     static class Empty extends Production {
     }
-
-    public static class Text extends Production {
-    }
-
-    public static class PropertyKey extends Production {
-    }
 }
 
 

@@ -5,7 +5,7 @@ import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
-import org.watertemplate.interpreter.parser.RecursiveDescentParser;
+import org.watertemplate.interpreter.parser.Parser;
 import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
@@ -34,8 +34,8 @@ public class WaterInterpreter implements Interpreter {
         return (String) abs.run(arguments);
     }
 
-    private AbstractSyntaxTree parse(List<Token> tokens) {
-        return new RecursiveDescentParser(tokens).buildAbs();
+    private AbstractSyntaxTree parse(final List<Token> tokens) {
+        return new Parser(tokens).buildAbstractSyntaxTree();
     }
 
     private List<Token> lex(final File templateFile) {
