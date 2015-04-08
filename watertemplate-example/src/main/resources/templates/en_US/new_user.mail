@@ -1,0 +1,14 @@
+Dear, ~user.name.capitalized~,
+
+Welcome to amazing-services-website! Here you can spend your time in front of your computer more than in any other app. Enjoy your new account.
+
+Your information
+----------------------------
+Username ~user.username~
+Email ~user.email~
+Date of birth ~user.date_of_birth~
+----------------------------
+
+Have fun!
+
+Your amazing-services-website team.

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.watertemplate.TemplateMap.Arguments;
+import static org.watertemplate.TemplateMap.TemplateObject;
 
 public interface AbstractSyntaxTree {
 
@@ -77,19 +78,19 @@ public interface AbstractSyntaxTree {
         }
 
         public Object run(final Arguments arguments) {
+            Object object = arguments.getObject(propertyKey);
+
+            if (object == null) {
+                throw new TemplateException("Property \"" + propertyKey + "\" was not correctly mapped");
+            }
 
             if (nestedIdAbstractSyntaxTree instanceof Id) try {
-                Arguments nestedArguments = ((TemplateMap.TemplateObject) arguments.getObject(propertyKey)).map();
-                return nestedIdAbstractSyntaxTree.run(nestedArguments);
+                return nestedIdAbstractSyntaxTree.run(((TemplateObject) object).map());
             } catch (ClassCastException e) {
                 throw new TemplateException("Property \"" + propertyKey + "\" contains no nested properties.");
             }
 
-            if (arguments.getObject(propertyKey) != null) {
-                return arguments.getObject(propertyKey);
-            }
-
-            return propertyKey;
+            return object;
         }
     }
 
