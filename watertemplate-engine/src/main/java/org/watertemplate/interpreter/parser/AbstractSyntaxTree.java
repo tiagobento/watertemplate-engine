@@ -1,8 +1,7 @@
-package org.watertemplate.interpreter.parser.abs;
+package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.exception.TemplateException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface AbstractSyntaxTree {
 
     public Object run(final Arguments arguments);
 
-    class For implements AbstractSyntaxTree {
+    static class For implements AbstractSyntaxTree {
 
         private final String variableName;
 
@@ -60,7 +59,7 @@ public interface AbstractSyntaxTree {
         }
     }
 
-    class Id implements AbstractSyntaxTree {
+    static class Id implements AbstractSyntaxTree {
 
         private final String propertyKey;
 
@@ -97,7 +96,7 @@ public interface AbstractSyntaxTree {
         }
     }
 
-    class If implements AbstractSyntaxTree {
+    static class If implements AbstractSyntaxTree {
 
         private final AbstractSyntaxTree ifStatements;
 
@@ -126,16 +125,12 @@ public interface AbstractSyntaxTree {
         }
     }
 
-    class Statements implements AbstractSyntaxTree {
+    static class Statements implements AbstractSyntaxTree {
 
         private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
         public Statements(List<AbstractSyntaxTree> abstractSyntaxTrees) {
             this.abstractSyntaxTrees = abstractSyntaxTrees;
-        }
-
-        public Statements(int a) {
-            this.abstractSyntaxTrees = new ArrayList<>();
         }
 
         public Statements(AbstractSyntaxTree... abstractSyntaxTrees) {
@@ -151,16 +146,12 @@ public interface AbstractSyntaxTree {
             return sb.toString();
         }
 
-        public void addChild(AbstractSyntaxTree abstractSyntaxTree) {
-            abstractSyntaxTrees.add(abstractSyntaxTree);
-        }
-
         public AbstractSyntaxTree child(int i) {
             return abstractSyntaxTrees.get(i);
         }
     }
 
-    class Text implements AbstractSyntaxTree {
+    static class Text implements AbstractSyntaxTree {
         private final String value;
 
         public Text(final String value) {
@@ -171,10 +162,9 @@ public interface AbstractSyntaxTree {
         public Object run(final Arguments arguments) {
             return value;
         }
-
     }
 
-    public static class Empty implements AbstractSyntaxTree {
+    static class Empty implements AbstractSyntaxTree {
         @Override
         public Object run(Arguments arguments) {
             return "";

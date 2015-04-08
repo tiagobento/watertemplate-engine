@@ -1,6 +1,5 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import java.util.ArrayList;
@@ -64,12 +63,12 @@ enum NonTerminal implements GrammarSymbol {
 
     abstract void addProductions(final List<GrammarSymbol> symbols);
 
-    public final AbstractSyntaxTree buildAbs(final TokenStream tokenStream) throws ParseException {
+    public final AbstractSyntaxTree buildAbstractSyntaxTree(final TokenStream tokenStream) throws ParseException {
         ParseException lastException = null;
 
         for (GrammarSymbol symbol : symbols) {
             try {
-                return symbol.buildAbs(tokenStream);
+                return symbol.buildAbstractSyntaxTree(tokenStream);
             } catch (ParseException e) {
                 lastException = e;
             }

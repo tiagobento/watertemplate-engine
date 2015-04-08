@@ -1,7 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.Token;
-import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 
 import java.util.List;
 
@@ -14,6 +13,6 @@ public class RecursiveDescentParser {
     }
 
     public AbstractSyntaxTree buildAbs() {
-        return NonTerminal.START_SYMBOL.buildAbs(tokenStream);
+        return NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream);
     }
 }

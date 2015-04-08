@@ -13,7 +13,7 @@ public class NonTerminalForTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.FOR_COMMAND.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildAbstractSyntaxTree(tokenStream));
     }
 
     @Test
@@ -24,7 +24,7 @@ public class NonTerminalForTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.FOR_COMMAND.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildAbstractSyntaxTree(tokenStream));
     }
 
     @Test
@@ -37,6 +37,6 @@ public class NonTerminalForTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.FOR_COMMAND.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.FOR_COMMAND.buildAbstractSyntaxTree(tokenStream));
     }
 }

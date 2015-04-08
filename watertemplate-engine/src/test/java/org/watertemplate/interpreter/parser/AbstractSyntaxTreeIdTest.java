@@ -1,12 +1,13 @@
-package org.watertemplate.interpreter.parser.abs;
+package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
+import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
 
 import static org.junit.Assert.assertEquals;
 
-public class IdWithNestedPropertiesTest {
+public class AbstractSyntaxTreeIdTest {
 
     @Test
     public void idWithOnlyOnePropertyKey() {

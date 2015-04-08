@@ -15,7 +15,7 @@ public class NonTerminalStartSymbolTest {
             Token.END_OF_INPUT
         );
 
-        assertNotNull(NonTerminal.START_SYMBOL.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream));
     }
 
     @Test(expected = ParseException.class)
@@ -27,7 +27,7 @@ public class NonTerminalStartSymbolTest {
             new TokenFixture.Text("another text")
         );
 
-        NonTerminal.START_SYMBOL.buildAbs(tokenStream);
+        NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream);
     }
 
     @Test
@@ -40,6 +40,6 @@ public class NonTerminalStartSymbolTest {
             Token.END_OF_INPUT
         );
 
-        assertNotNull(NonTerminal.START_SYMBOL.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream));
     }
 }

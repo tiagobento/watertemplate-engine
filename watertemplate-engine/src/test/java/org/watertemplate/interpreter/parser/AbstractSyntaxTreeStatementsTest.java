@@ -1,13 +1,14 @@
-package org.watertemplate.interpreter.parser.abs;
+package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
+import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
 
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class StatementsTest {
+public class AbstractSyntaxTreeStatementsTest {
 
     @Test
     public void sequentialStatements() {

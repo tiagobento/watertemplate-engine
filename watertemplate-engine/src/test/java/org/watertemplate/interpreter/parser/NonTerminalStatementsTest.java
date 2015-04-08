@@ -9,7 +9,7 @@ public class NonTerminalStatementsTest {
 
     @Test
     public void empty() {
-        assertNotNull(NonTerminal.STATEMENTS.buildAbs(new TokenStream()));
+        assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(new TokenStream()));
     }
 
     @Test
@@ -18,7 +18,7 @@ public class NonTerminalStatementsTest {
             new TokenFixture.PropertyKey("x")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));
     }
 
     @Test
@@ -32,6 +32,6 @@ public class NonTerminalStatementsTest {
             new TokenFixture.PropertyKey("bar")
         );
 
-        assertNotNull(NonTerminal.STATEMENTS.buildAbs(tokenStream));
+        assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));
     }
 }

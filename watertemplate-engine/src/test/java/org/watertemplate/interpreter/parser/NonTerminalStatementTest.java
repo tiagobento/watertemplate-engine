@@ -11,7 +11,7 @@ public class NonTerminalStatementTest {
             new TokenFixture.If()
         );
 
-        NonTerminal.STATEMENT.buildAbs(tokenStream);
+        NonTerminal.STATEMENT.buildAbstractSyntaxTree(tokenStream);
     }
 
     @Test(expected = ParseException.class)
@@ -20,6 +20,6 @@ public class NonTerminalStatementTest {
             new TokenFixture.Accessor()
         );
 
-        NonTerminal.STATEMENT.buildAbs(tokenStream);
+        NonTerminal.STATEMENT.buildAbstractSyntaxTree(tokenStream);
     }
 }
