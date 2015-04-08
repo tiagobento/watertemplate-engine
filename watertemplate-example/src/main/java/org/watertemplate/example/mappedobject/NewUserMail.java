@@ -18,6 +18,6 @@ class NewUserMail extends Template {
 
     @Override
     protected String getFilePath() {
-        return "new_user.mail";
+        return "mappedobject/new_user.mail";
     }
 }

@@ -21,6 +21,6 @@ class MonthsGrid extends Template {
 
     @Override
     protected String getFilePath() {
-        return "months_grid.html";
+        return "collection/months_grid.html";
     }
 }
