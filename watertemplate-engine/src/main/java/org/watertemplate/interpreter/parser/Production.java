@@ -33,11 +33,11 @@ abstract class Production implements GrammarSymbol {
             throw e;
         }
 
-        return zip(new AbstractSyntaxTree.Statements(abstractSyntaxTrees));
+        return zip(abstractSyntaxTrees);
     }
 
-    AbstractSyntaxTree zip(AbstractSyntaxTree.Statements statements) {
-        return statements;
+    AbstractSyntaxTree zip(List<AbstractSyntaxTree> statements) {
+        return new AbstractSyntaxTree.Statements(statements);
     }
 
     static class If extends Production {
@@ -47,9 +47,9 @@ abstract class Production implements GrammarSymbol {
         }
 
         @Override
-        AbstractSyntaxTree zip(final AbstractSyntaxTree.Statements statements) {
-            Id conditionId = (Id) statements.child(1);
-            AbstractSyntaxTree ifStatements = statements.child(2);
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            Id conditionId = (Id) statements.get(1);
+            AbstractSyntaxTree ifStatements = statements.get(2);
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements);
         }
@@ -62,10 +62,10 @@ abstract class Production implements GrammarSymbol {
         }
 
         @Override
-        AbstractSyntaxTree zip(final AbstractSyntaxTree.Statements statements) {
-            Id conditionId = (Id) statements.child(1);
-            AbstractSyntaxTree ifStatements = statements.child(2);
-            AbstractSyntaxTree elseStatements = statements.child(3);
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            Id conditionId = (Id) statements.get(1);
+            AbstractSyntaxTree ifStatements = statements.get(2);
+            AbstractSyntaxTree elseStatements = statements.get(3);
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements, elseStatements);
         }
@@ -78,10 +78,10 @@ abstract class Production implements GrammarSymbol {
         }
 
         @Override
-        AbstractSyntaxTree zip(final AbstractSyntaxTree.Statements statements) {
-            String propertyKey = ((Id) statements.child(1)).getPropertyKey();
-            Id collectionId = (Id) statements.child(3);
-            AbstractSyntaxTree forStatements = statements.child(4);
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            String propertyKey = ((Id) statements.get(1)).getPropertyKey();
+            Id collectionId = (Id) statements.get(3);
+            AbstractSyntaxTree forStatements = statements.get(4);
 
             return new AbstractSyntaxTree.For(propertyKey, collectionId, forStatements);
         }
@@ -94,11 +94,11 @@ abstract class Production implements GrammarSymbol {
         }
 
         @Override
-        AbstractSyntaxTree zip(final AbstractSyntaxTree.Statements statements) {
-            String propertyKey = ((Id) statements.child(1)).getPropertyKey();
-            Id collectionId = (Id) statements.child(3);
-            AbstractSyntaxTree forStatements = statements.child(4);
-            AbstractSyntaxTree elseStatements = statements.child(6);
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            String propertyKey = ((Id) statements.get(1)).getPropertyKey();
+            Id collectionId = (Id) statements.get(3);
+            AbstractSyntaxTree forStatements = statements.get(4);
+            AbstractSyntaxTree elseStatements = statements.get(6);
 
             return new AbstractSyntaxTree.For(propertyKey, collectionId, forStatements, elseStatements);
         }
@@ -111,9 +111,9 @@ abstract class Production implements GrammarSymbol {
         }
 
         @Override
-        AbstractSyntaxTree zip(final AbstractSyntaxTree.Statements statements) {
-            String propertyKey = ((Id) statements.child(0)).getPropertyKey();
-            Id nestedId = (Id) statements.child(2);
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            String propertyKey = ((Id) statements.get(0)).getPropertyKey();
+            Id nestedId = (Id) statements.get(2);
             return new Id(propertyKey, nestedId);
         }
     }

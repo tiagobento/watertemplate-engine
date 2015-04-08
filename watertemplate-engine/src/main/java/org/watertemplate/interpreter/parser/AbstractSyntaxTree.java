@@ -14,16 +14,12 @@ public interface AbstractSyntaxTree {
     static class For implements AbstractSyntaxTree {
 
         private final String variableName;
-
         private final Id collectionId;
         private final AbstractSyntaxTree forStatements;
         private final AbstractSyntaxTree elseStatements;
 
         public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements) {
-            this.variableName = variableName;
-            this.collectionId = collectionId;
-            this.forStatements = forStatements;
-            this.elseStatements = new Empty();
+            this(variableName, collectionId, forStatements, new Empty());
         }
 
         public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
@@ -98,21 +94,18 @@ public interface AbstractSyntaxTree {
 
     static class If implements AbstractSyntaxTree {
 
-        private final AbstractSyntaxTree ifStatements;
-
-        private final AbstractSyntaxTree elseStatements;
         private final Id conditionId;
+        private final AbstractSyntaxTree ifStatements;
+        private final AbstractSyntaxTree elseStatements;
 
         public If(final Id conditionId, final AbstractSyntaxTree ifStatements) {
-            this.ifStatements = ifStatements;
-            this.elseStatements = (arguments) -> "";
-            this.conditionId = conditionId;
+            this(conditionId, ifStatements, new Empty());
         }
 
         public If(final Id conditionId, final AbstractSyntaxTree ifStatements, final AbstractSyntaxTree elseStatements) {
+            this.conditionId = conditionId;
             this.ifStatements = ifStatements;
             this.elseStatements = elseStatements;
-            this.conditionId = conditionId;
         }
 
         @Override
@@ -129,25 +122,21 @@ public interface AbstractSyntaxTree {
 
         private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
-        public Statements(List<AbstractSyntaxTree> abstractSyntaxTrees) {
+        public Statements(final List<AbstractSyntaxTree> abstractSyntaxTrees) {
             this.abstractSyntaxTrees = abstractSyntaxTrees;
         }
 
-        public Statements(AbstractSyntaxTree... abstractSyntaxTrees) {
+        public Statements(final AbstractSyntaxTree... abstractSyntaxTrees) {
             this.abstractSyntaxTrees = Arrays.asList(abstractSyntaxTrees);
         }
 
         @Override
-        public Object run(Arguments arguments) {
+        public Object run(final Arguments arguments) {
             StringBuilder sb = new StringBuilder();
             for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
                 sb.append(abstractSyntaxTree.run(arguments));
             }
             return sb.toString();
-        }
-
-        public AbstractSyntaxTree child(int i) {
-            return abstractSyntaxTrees.get(i);
         }
     }
 
