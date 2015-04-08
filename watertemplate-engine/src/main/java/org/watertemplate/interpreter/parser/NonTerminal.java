@@ -1,5 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import java.util.ArrayList;
@@ -11,65 +12,64 @@ enum NonTerminal implements GrammarSymbol {
 
     IF_COMMAND {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production.If());
-            productions.add(new Production.IfElse());
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.If());
+            symbols.add(new Production.IfElse());
         }
     },
     FOR_COMMAND {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production.For());
-            productions.add(new Production.ForElse());
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.For());
+            symbols.add(new Production.ForElse());
         }
     },
     ID {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production.IdWithNestedProperties());
-            productions.add(PROPERTY_KEY);
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.IdWithNestedProperties());
+            symbols.add(PROPERTY_KEY);
         }
     },
     STATEMENT {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(TEXT);
-            productions.add(FOR_COMMAND);
-            productions.add(IF_COMMAND);
-            productions.add(ID);
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(ID);
+            symbols.add(TEXT);
+            symbols.add(FOR_COMMAND);
+            symbols.add(IF_COMMAND);
         }
     },
     STATEMENTS {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production.Statements(STATEMENT, STATEMENTS));
-            productions.add(new Production.Empty());
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.Statements(STATEMENT, STATEMENTS));
+            symbols.add(new Production.Empty());
         }
     },
     START_SYMBOL {
         @Override
-        void addProductions(final List<GrammarSymbol> productions) {
-            productions.add(new Production.Statements(STATEMENTS, END_OF_INPUT));
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.Statements(STATEMENTS, END_OF_INPUT));
         }
     };
 
     static {
         for (final NonTerminal nonTerminal : NonTerminal.values()) {
-            nonTerminal.addProductions(nonTerminal.productions);
+            nonTerminal.addProductions(nonTerminal.symbols);
         }
     }
 
-    private final List<GrammarSymbol> productions = new ArrayList<>();
+    private final List<GrammarSymbol> symbols = new ArrayList<>();
 
-    abstract void addProductions(final List<GrammarSymbol> productions);
+    abstract void addProductions(final List<GrammarSymbol> symbols);
 
-    @Override
-    public final ParseTree buildParseTree(final TokenStream tokenStream) throws ParseException {
+    public final AbstractSyntaxTree buildAbs(final TokenStream tokenStream) throws ParseException {
         ParseException lastException = null;
 
-        for (GrammarSymbol production : productions) {
+        for (GrammarSymbol symbol : symbols) {
             try {
-                return production.buildParseTree(tokenStream);
+                return symbol.buildAbs(tokenStream);
             } catch (ParseException e) {
                 lastException = e;
             }
@@ -77,4 +77,6 @@ enum NonTerminal implements GrammarSymbol {
 
         throw lastException;
     }
+
+
 }

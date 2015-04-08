@@ -15,10 +15,10 @@ public class TerminalTest {
             new PropertyKey("x"),
             new End());
 
-        Assert.assertNotNull(Terminal.IF.buildParseTree(tokenStream));
-        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildParseTree(tokenStream));
-        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildParseTree(tokenStream));
-        Assert.assertNotNull(Terminal.END.buildParseTree(tokenStream));
+        Assert.assertNotNull(Terminal.IF.buildAbs(tokenStream));
+        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildAbs(tokenStream));
+        Assert.assertNotNull(Terminal.PROPERTY_KEY.buildAbs(tokenStream));
+        Assert.assertNotNull(Terminal.END.buildAbs(tokenStream));
     }
 
 }

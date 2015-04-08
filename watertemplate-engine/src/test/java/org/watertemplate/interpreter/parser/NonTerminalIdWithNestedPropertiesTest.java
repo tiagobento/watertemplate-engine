@@ -13,7 +13,7 @@ public class NonTerminalIdWithNestedPropertiesTest {
             new TokenFixture.PropertyKey("x")
         );
 
-        assertNotNull(NonTerminal.ID.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.ID.buildAbs(tokenStream));
     }
 
     @Test
@@ -24,7 +24,7 @@ public class NonTerminalIdWithNestedPropertiesTest {
             new TokenFixture.PropertyKey("y")
         );
 
-        assertNotNull(NonTerminal.ID.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.ID.buildAbs(tokenStream));
     }
 
     @Test (expected = IncorrectLocationForToken.class)
@@ -36,7 +36,7 @@ public class NonTerminalIdWithNestedPropertiesTest {
             new TokenFixture.PropertyKey("y")
         );
 
-        NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
+        NonTerminal.START_SYMBOL.buildAbs(tokenStream);
     }
 
     @Test (expected = IncorrectLocationForToken.class)
@@ -48,6 +48,6 @@ public class NonTerminalIdWithNestedPropertiesTest {
             new TokenFixture.Accessor()
         );
 
-        NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
+        NonTerminal.START_SYMBOL.buildAbs(tokenStream);
     }
 }

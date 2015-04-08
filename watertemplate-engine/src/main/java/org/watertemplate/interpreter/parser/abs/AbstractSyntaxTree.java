@@ -2,12 +2,11 @@ package org.watertemplate.interpreter.parser.abs;
 
 import org.watertemplate.exception.TemplateException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.watertemplate.TemplateMap.Arguments;
-import static org.watertemplate.TemplateMap.TemplateCollection;
-import static org.watertemplate.TemplateMap.TemplateObject;
+import static org.watertemplate.TemplateMap.*;
 
 public interface AbstractSyntaxTree {
 
@@ -92,6 +91,10 @@ public interface AbstractSyntaxTree {
 
             return object;
         }
+
+        public String getPropertyKey() {
+            return propertyKey;
+        }
     }
 
     class If implements AbstractSyntaxTree {
@@ -131,6 +134,10 @@ public interface AbstractSyntaxTree {
             this.abstractSyntaxTrees = abstractSyntaxTrees;
         }
 
+        public Statements(int a) {
+            this.abstractSyntaxTrees = new ArrayList<>();
+        }
+
         public Statements(AbstractSyntaxTree... abstractSyntaxTrees) {
             this.abstractSyntaxTrees = Arrays.asList(abstractSyntaxTrees);
         }
@@ -142,6 +149,14 @@ public interface AbstractSyntaxTree {
                 sb.append(abstractSyntaxTree.run(arguments));
             }
             return sb.toString();
+        }
+
+        public void addChild(AbstractSyntaxTree abstractSyntaxTree) {
+            abstractSyntaxTrees.add(abstractSyntaxTree);
+        }
+
+        public AbstractSyntaxTree child(int i) {
+            return abstractSyntaxTrees.get(i);
         }
     }
 

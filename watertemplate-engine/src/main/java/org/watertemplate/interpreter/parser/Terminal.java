@@ -2,33 +2,51 @@ package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.lexer.TokenType;
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.IncorrectLocationForToken;
 
 enum Terminal implements GrammarSymbol {
-    TEXT(new Production.Text()),
-    PROPERTY_KEY(new Production.PropertyKey()),
+    TEXT(new Production.Text()) {
+        @Override
+        public AbstractSyntaxTree buildAbs(final TokenStream tokenStream) {
+            Token current = extractCurrentToken(tokenStream);
+            return new AbstractSyntaxTree.Text(current.getValue());
+        }
+    },
+    PROPERTY_KEY(new Production.PropertyKey()) {
+
+        @Override
+        public AbstractSyntaxTree buildAbs(final TokenStream tokenStream) {
+            Token current = extractCurrentToken(tokenStream);
+            return new AbstractSyntaxTree.Id(current.getValue());
+        }
+    },
     IF, FOR, IN, ELSE, END, ACCESSOR, END_OF_INPUT;
 
     private final Production production;
+
+    Terminal(Production production) {
+        this.production = production;
+    }
 
     Terminal() {
         this.production = new Production.Empty();
     }
 
-    Terminal(final Production production) {
-        this.production = production;
+    @Override
+    public AbstractSyntaxTree buildAbs(TokenStream tokenStream) {
+        extractCurrentToken(tokenStream);
+        return production.buildAbs(tokenStream);
     }
 
-    @Override
-    public final ParseTree buildParseTree(final TokenStream tokenStream) {
-
+    Token extractCurrentToken(TokenStream tokenStream) {
         Token current = tokenStream.current();
         if (!isTerminal(current)) {
             throw new IncorrectLocationForToken(getTokenType(), current);
         }
 
         tokenStream.shift();
-        return new ParseTree(production, current.getValue());
+        return current;
     }
 
     private boolean isTerminal(Token currentToken) {
@@ -39,7 +57,7 @@ enum Terminal implements GrammarSymbol {
         return TokenType.valueOf(name());
     }
 
-    Production getProduction() {
+    public Production getProduction() {
         return production;
     }
 }

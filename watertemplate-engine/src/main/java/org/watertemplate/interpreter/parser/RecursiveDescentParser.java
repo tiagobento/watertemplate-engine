@@ -1,7 +1,7 @@
 package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.Token;
-import org.watertemplate.interpreter.parser.exception.ParseException;
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class RecursiveDescentParser {
         this.tokenStream = new TokenStream(tokens);
     }
 
-    public ParseTree parse() throws ParseException {
-        return NonTerminal.START_SYMBOL.buildParseTree(tokenStream);
+    public AbstractSyntaxTree buildAbs() {
+        return NonTerminal.START_SYMBOL.buildAbs(tokenStream);
     }
 }

@@ -1,7 +1,7 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.interpreter.parser.exception.ParseException;
+import org.watertemplate.interpreter.parser.abs.AbstractSyntaxTree;
 
 interface GrammarSymbol {
-    ParseTree buildParseTree(final TokenStream tokenStream) throws ParseException;
+    AbstractSyntaxTree buildAbs(TokenStream tokenStream);
 }

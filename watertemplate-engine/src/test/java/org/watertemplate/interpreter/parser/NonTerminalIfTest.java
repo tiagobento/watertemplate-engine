@@ -15,7 +15,7 @@ public class NonTerminalIfTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.IF_COMMAND.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildAbs(tokenStream));
     }
 
     @Test
@@ -26,7 +26,7 @@ public class NonTerminalIfTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.IF_COMMAND.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildAbs(tokenStream));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class NonTerminalIfTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.IF_COMMAND.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildAbs(tokenStream));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class NonTerminalIfTest {
             new TokenFixture.End()
         );
 
-        assertNotNull(NonTerminal.IF_COMMAND.buildParseTree(tokenStream));
+        assertNotNull(NonTerminal.IF_COMMAND.buildAbs(tokenStream));
     }
 
     @Test (expected = IncorrectLocationForToken.class)
@@ -77,7 +77,7 @@ public class NonTerminalIfTest {
             new TokenFixture.End()
         );
 
-        NonTerminal.IF_COMMAND.buildParseTree(tokenStream);
+        NonTerminal.IF_COMMAND.buildAbs(tokenStream);
     }
 
     @Test(expected = NoMoreTokensOnStreamException.class)
@@ -89,6 +89,6 @@ public class NonTerminalIfTest {
                 new TokenFixture.Text("bar text foo text")
         );
 
-        NonTerminal.IF_COMMAND.buildParseTree(tokenStream);
+        NonTerminal.IF_COMMAND.buildAbs(tokenStream);
     }
 }
