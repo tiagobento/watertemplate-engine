@@ -27,17 +27,17 @@ class MonthsGrid extends Template {
 
     private static final Collection<Month> months = Arrays.asList(Month.values());
 
-    MonthsGrid() {
-        add("year", Year.now());
+    MonthsGrid(final Year year) {
+        add("year", year);
         addCollection("months", months, (month, map) -> {
             map.add("lowerName", month.name().toLowerCase());
-            map.add("daysCount", month.length(Year.now().isLeap()));
+            map.add("daysCount", month.length(year.isLeap()));
         });
     }
 
     @Override
     protected String getFilePath() {
-        return "templates/monthsGrid.html";
+        return "months_grid.html";
     }
 }
 ```
@@ -45,8 +45,8 @@ class MonthsGrid extends Template {
 #### Render it:
 ```java
 public static void main(String[] args) {
-    MonthsGrid monthsGrid = new MonthsGrid();
-    monthsGrid.render();
+    MonthsGrid monthsGrid = new MonthsGrid(2015);
+    System.out.println(monthsGrid.render());
 }
 ```
 
@@ -79,13 +79,17 @@ public static void main(String[] args) {
 _NO_ configuration
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
-gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example/app/Main.java) and the source code!**
+gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example/collection/Main.java) and the source code!**
 
 _NO_ reflection
 --
 Every reflection solution kills most of refactoring tools on IDEs. Renaming, finding usages, moving etc.
-Because your interface with your template files is only the `add` method, specified in `Template`, 
+Because your interface with your template files is only the `add` methods, specified in `Template`, 
 you can trust that **any refactor you make in your Java code will not propagate through your templates _silently_.**
+
+_NO_ function calls
+--
+Why enable function calls inside a template file if you can use the `addMappedObject` and the `addCollection` methods to **call functions you wrote in your Java files**? See an [explanatory example] (watertemplate-example/src/main/java/org/watertemplate/example/mappedobject/Main.java).
 
 1 to 1 complexity
 ---
