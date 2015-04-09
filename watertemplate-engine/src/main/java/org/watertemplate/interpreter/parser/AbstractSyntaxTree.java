@@ -81,8 +81,8 @@ public interface AbstractSyntaxTree {
 
             if (nestedId == null) {
                 return object;
-
             }
+
             if (!(object instanceof TemplateObject)) {
                 throw new IdCouldNotBeResolvedException(this);
             }

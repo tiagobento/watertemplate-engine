@@ -1,6 +1,5 @@
 package org.watertemplate.uri;
 
-import org.watertemplate.exception.TemplateException;
 import org.watertemplate.uri.exception.NotEnoughArgumentsException;
 
 public abstract class ResourceURI {
@@ -17,3 +16,4 @@ public abstract class ResourceURI {
         return staticPath;
     }
 }
+
