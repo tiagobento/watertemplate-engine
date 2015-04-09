@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
+import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,16 +22,21 @@ public class AbstractSyntaxTreeIdTest {
         assertEquals("success", result);
     }
 
-    @Test(expected = TemplateException.class)
-    public void wrongIdNestedProperties() {
+    @Test(expected = IdCouldNotBeResolvedException.class)
+    public void tooManyNestedProperties() {
         AbstractSyntaxTree abs =
                 new AbstractSyntaxTree.Id("prop_key",
-                        new AbstractSyntaxTree.Id("nested_property"));
+                        new AbstractSyntaxTree.Id("nested1",
+                                new AbstractSyntaxTree.Id("nested2",
+                                        new AbstractSyntaxTree.Id("nested3")
+                                )
+                        )
+                );
 
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         arguments.add("prop_key", "success");
 
-        abs.run(arguments);
+        System.out.println(abs.run(arguments));
     }
 
     @Test

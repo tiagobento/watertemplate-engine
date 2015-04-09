@@ -28,7 +28,7 @@ public class Reader {
             consumer.accept('\0');
             bf.close();
         } catch (Exception e) {
-            throw new TemplateException(e);
+            throw new RuntimeException(e);
         }
     }
 }

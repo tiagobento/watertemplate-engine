@@ -1,6 +1,7 @@
 package org.watertemplate.uri;
 
 import org.watertemplate.exception.TemplateException;
+import org.watertemplate.uri.exception.NotEnoughArgumentsException;
 
 public abstract class ResourceURI {
 
@@ -11,7 +12,7 @@ public abstract class ResourceURI {
             staticPath = staticPath.replaceFirst(PATH_PARAM_REGEX, arg.toString());
 
         if (staticPath.matches(".*" + PATH_PARAM_REGEX + ".*"))
-            throw new TemplateException("Not enough arguments.");
+            throw new NotEnoughArgumentsException(staticPath);
 
         return staticPath;
     }

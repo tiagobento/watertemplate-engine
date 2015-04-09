@@ -2,6 +2,7 @@ package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
+import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
@@ -61,6 +62,6 @@ public class WaterInterpreter implements Interpreter {
             return findTemplateFileWith(DEFAULT_LOCALE);
         }
 
-        throw new TemplateException(new FileNotFoundException(templateFilePath));
+        throw new TemplateFileNotFoundException(templateFilePath);
     }
 }

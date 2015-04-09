@@ -24,7 +24,7 @@ enum Terminal implements GrammarSymbol {
     public final AbstractSyntaxTree buildAbstractSyntaxTree(final TokenStream tokenStream) {
         Token current = tokenStream.current();
 
-        if (!isTerminal(current)) {
+        if (!isTokenThisTerminal(current)) {
             throw new IncorrectLocationForToken(getTokenType(), current);
         }
 
@@ -36,7 +36,7 @@ enum Terminal implements GrammarSymbol {
         return new AbstractSyntaxTree.Empty();
     }
 
-    private boolean isTerminal(final Token currentToken) {
+    private boolean isTokenThisTerminal(final Token currentToken) {
         return getTokenType().equals(currentToken.getType());
     }
 

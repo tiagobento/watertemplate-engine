@@ -1,6 +1,6 @@
 package org.watertemplate.exception;
 
-public class TemplateException extends RuntimeException {
+public abstract class TemplateException extends RuntimeException {
     public TemplateException(Exception e) {
         super(e);
     }

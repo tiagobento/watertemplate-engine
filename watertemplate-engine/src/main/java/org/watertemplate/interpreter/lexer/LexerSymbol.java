@@ -1,6 +1,6 @@
 package org.watertemplate.interpreter.lexer;
 
-class LexerSymbol {
+public class LexerSymbol {
     public static final char BLOCK_OPENER = ':';
     public static final char BLOCK_CLOSER = ':';
     public static final char ACCESSOR = '.';

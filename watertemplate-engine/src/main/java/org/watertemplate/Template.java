@@ -29,11 +29,7 @@ public abstract class Template {
     }
 
     public final String render(final Locale locale) {
-        try {
-            return new TemplateRenderer(this, locale).render();
-        } catch (Exception e) {
-            throw new TemplateException(e);
-        }
+        return new TemplateRenderer(this, locale).render();
     }
 
     final Map<String, Template> getSubTemplates() {

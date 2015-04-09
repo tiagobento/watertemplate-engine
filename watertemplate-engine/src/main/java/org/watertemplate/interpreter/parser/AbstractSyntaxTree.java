@@ -1,6 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.exception.TemplateException;
+import org.watertemplate.interpreter.lexer.LexerSymbol;
+import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
+import org.watertemplate.interpreter.parser.exception.ObjectNotTemplateCollectionException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +37,7 @@ public interface AbstractSyntaxTree {
             Object collection = collectionId.run(arguments);
 
             if (!(collection instanceof TemplateCollection)) {
-                throw new TemplateException("Cannot iterate if collection was not added by addCollection method.");
+                throw new ObjectNotTemplateCollectionException(collectionId);
             }
 
             TemplateCollection templateCollection = (TemplateCollection) collection;
@@ -58,7 +61,7 @@ public interface AbstractSyntaxTree {
     static class Id implements AbstractSyntaxTree {
 
         private final String propertyKey;
-        private final AbstractSyntaxTree nestedId;
+        private final Id nestedId;
 
         public Id(final String propertyKey) {
             this(propertyKey, null);
@@ -73,20 +76,34 @@ public interface AbstractSyntaxTree {
             Object object = arguments.getObject(propertyKey);
 
             if (object == null) {
-                throw new TemplateException("Property \"" + propertyKey + "\" was not correctly mapped");
+                throw new IdCouldNotBeResolvedException(this);
             }
 
-            if (nestedId instanceof Id) try {
+            if (nestedId == null) {
+                return object;
+
+            }
+            if (!(object instanceof TemplateObject)) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+
+            try {
                 return nestedId.run(((TemplateObject) object).map());
-            } catch (ClassCastException e) {
-                throw new TemplateException("Property \"" + propertyKey + "\" contains no nested properties.");
+            } catch (IdCouldNotBeResolvedException e) {
+                throw new IdCouldNotBeResolvedException(this);
             }
-
-            return object;
         }
 
         public String getPropertyKey() {
             return propertyKey;
+        }
+
+        public String getFullId() {
+            if (nestedId == null) {
+                return propertyKey;
+            }
+
+            return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
         }
     }
 
