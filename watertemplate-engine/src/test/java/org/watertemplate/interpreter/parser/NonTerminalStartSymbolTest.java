@@ -3,6 +3,7 @@ package org.watertemplate.interpreter.parser;
 import org.junit.Test;
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.lexer.TokenFixture;
+import org.watertemplate.interpreter.parser.exception.NoMoreTokensOnStreamException;
 import org.watertemplate.interpreter.parser.exception.ParseException;
 
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +19,7 @@ public class NonTerminalStartSymbolTest {
         assertNotNull(NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream));
     }
 
-    @Test(expected = ParseException.class)
+    @Test(expected = NoMoreTokensOnStreamException.class)
     public void missingEndOfInput() {
         TokenStream tokenStream = new TokenStream(
             new TokenFixture.PropertyKey("x"),

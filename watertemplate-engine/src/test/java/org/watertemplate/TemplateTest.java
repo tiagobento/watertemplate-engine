@@ -7,7 +7,7 @@ public class TemplateTest {
 
     @Test
     public void render() {
-        Template template = new Fixture.SubTemplate();
+        Template template = new TemplateFixture.SubTemplate();
         Assert.assertNotNull(template.render());
     }
 }
