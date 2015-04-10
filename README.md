@@ -89,7 +89,6 @@ public static void main(String[] args) {
 
 
 ## Configuration
---
 Add the [maven dependency]() to your project.
 Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
 
@@ -98,17 +97,15 @@ Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
 
   
 ## Nested templates
---
-Water gives you the possibility to nest templates in many levels. Each template can have one MasterTemplate and many SubTemplates. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
+Water gives you the possibility to nest templates in many levels. Each `Template` can have one `MasterTemplate` and many `SubTemplates`. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
 
-When rendering, Water ensures that each template is atomic. This means you can't create any relation that affects your master- or subtemplates inside your template file.
+Also, each `Template` has one, and one only, template file associated with it. This 1 to 1 relationship ensures that
+you cannot access other template files within your `Template` and you cannot access other `Templates` within your template files.
 
 See an [example](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates).
 
 
 ## JAX-RS
---
-
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency]() to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
 
 ```java
@@ -128,16 +125,3 @@ you can trust that **any refactor you make in your Java code will not propagate 
 _NO_ function calls
 --
 Why enable function calls inside a template file if you can use the `addMappedObject` and the `addCollection` methods to **call functions you wrote in your Java files**? See an [explanatory example] (watertemplate-example/src/main/java/org/watertemplate/example/mappedobject/Main.java).
-
-1 to 1 complexity
----
-Every template Java class has one, and one only, template file associated with it.
-You cannot access other template files within your template class and you cannot access
-other template Java classes within your template files.
-
-Context isolation
----
-Because each template Java class has only one template file, it's reasonable that every
-argument you add to your template through the `add` method lives only during the rendering
-of the file you specified in `getFilePath` method of your template class.
-That means that neither master nor sub templates can access arguments you've added in your template Java class.
