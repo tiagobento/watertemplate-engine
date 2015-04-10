@@ -163,6 +163,3 @@ public Template getHomePage() {
     return new HomePage();
 }
 ```
-_NO_ function calls
---
-Why enable function calls inside a template file if you can use the `addMappedObject` and the `addCollection` methods to **call functions you wrote in your Java files**? See an [explanatory example] (watertemplate-example/src/main/java/org/watertemplate/example/mappedobject/Main.java).
