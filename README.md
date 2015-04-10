@@ -8,6 +8,17 @@ Just like [mustache](https://github.com/janl/mustache.js), Water is a logic-less
 
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
 
+Table of contents
+--
+
+- [Quick start](#quick-start)
+- [Configuration](#no-configuration)
+- i18n
+- Subtemplating
+- Adding arguments
+- JAX-RS
+
+## Quick start
 #### Imagine a template:
 ```html
 <h1>Months of ~year~</h1>
@@ -78,7 +89,7 @@ public static void main(String[] args) {
     
 _NO_ configuration
 --
-No complex annotations, no xml configuration, no thousands of modules dependency. Extending `Template`
+No complex annotations, no xml configuration, no thousands of modules dependency. Adding the maven dependency and extending `Template`
 gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
 
 _NO_ reflection
