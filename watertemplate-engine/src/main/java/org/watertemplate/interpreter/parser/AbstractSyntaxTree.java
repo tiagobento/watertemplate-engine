@@ -1,6 +1,5 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 import org.watertemplate.interpreter.parser.exception.ObjectNotTemplateCollectionException;

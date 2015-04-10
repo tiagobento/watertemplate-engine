@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.watertemplate.interpreter.parser.AbstractSyntaxTree.Id;
 import static org.watertemplate.interpreter.parser.NonTerminal.ID;
 import static org.watertemplate.interpreter.parser.NonTerminal.STATEMENTS;
 import static org.watertemplate.interpreter.parser.Terminal.*;
-import static org.watertemplate.interpreter.parser.AbstractSyntaxTree.Id;
 
 abstract class Production implements GrammarSymbol {
 

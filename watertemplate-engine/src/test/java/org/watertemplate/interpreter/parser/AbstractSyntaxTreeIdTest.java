@@ -3,7 +3,6 @@ package org.watertemplate.interpreter.parser;
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.TemplateException;
-import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import static org.junit.Assert.assertEquals;

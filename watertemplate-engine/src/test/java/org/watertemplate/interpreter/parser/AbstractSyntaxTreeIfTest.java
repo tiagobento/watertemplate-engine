@@ -2,7 +2,6 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
-import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
 
 import static org.junit.Assert.assertEquals;
 
