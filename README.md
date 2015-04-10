@@ -117,7 +117,7 @@ See an [example](watertemplate-example/src/main/java/org/watertemplate/example/n
 
 
 ## Adding arguments
-Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any** time and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. There are three basic methods which let you add arguments:
+Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. There are three basic methods which let you add arguments:
 
 ```java
     add("email", user.getEmail()); 
