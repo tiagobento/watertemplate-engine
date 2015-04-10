@@ -16,6 +16,7 @@ Table of contents
 - i18n
 - [Nested templates](#nested-templates)
 - [Adding arguments](#adding-arguments)
+- [Commands](#commands)
 - [JAX-RS](#jax-rs)
 
 
@@ -149,6 +150,32 @@ You can also nest `MappedObjects` or add them inside a collection mapping:
     //   ~for user in users: ~user.email~ :~
     // or also with
     //   ~for user in users: ~user.email.upper~ :~
+```
+
+## Commands
+Water provides **if** and **for** commands. 
+
+
+
+- **_If:_** The if condition _must_ a boolean. Null objects are not a valid condition.
+
+- **_For:_** The for collection _must_ be added by the `addCollection` method. The else is triggered when the collection is empty or null.
+
+##### Syntax
+```html
+~for user in users:
+    
+    <span> ~user.name~ </span>
+
+    ~if user.is_already_followed:
+        <input type="button"> Unfollow </input>
+    :else:
+        <input type="button"> Follow </input>
+    :~
+    
+:else:
+    <span> No users to display </span>
+:~
 ```
 
 
