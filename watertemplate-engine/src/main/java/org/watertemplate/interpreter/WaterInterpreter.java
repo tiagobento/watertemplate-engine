@@ -10,11 +10,11 @@ import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class WaterInterpreter implements Interpreter {
 
+    private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
     private final TemplateMap.Arguments arguments;
     private final String templateFilePath;
 
@@ -25,27 +25,18 @@ public class WaterInterpreter implements Interpreter {
 
     @Override
     public String interpret(final Locale locale) {
-        final File templateFile = findTemplateFileWith(locale);
+        final String cacheKey = cacheKey(locale);
 
-        final List<Token> tokens = lex(templateFile);
-        final AbstractSyntaxTree abs = parse(tokens);
+        if (cache.containsKey(cacheKey)) {
+            return (String) cache.get(cacheKey).run(arguments);
+        }
 
+        File templateFile = findTemplateFileWith(locale);
+        List<Token> tokens = lex(templateFile);
+        AbstractSyntaxTree abs = parse(tokens);
+
+        cache.put(cacheKey, abs);
         return (String) abs.run(arguments);
-    }
-
-    private AbstractSyntaxTree parse(final List<Token> tokens) {
-        return new Parser(tokens).buildAbstractSyntaxTree();
-    }
-
-    private List<Token> lex(final File templateFile) {
-        final Lexer lexer = new Lexer();
-
-        final Reader reader = new Reader(templateFile);
-        reader.readExecuting(lexer::accept);
-
-        final List<Token> tokens = lexer.getTokens();
-        tokens.add(Token.END_OF_INPUT);
-        return tokens;
     }
 
     private File findTemplateFileWith(final Locale locale) {
@@ -61,5 +52,24 @@ public class WaterInterpreter implements Interpreter {
         }
 
         throw new TemplateFileNotFoundException(templateFilePath);
+    }
+
+    private List<Token> lex(final File templateFile) {
+        final Lexer lexer = new Lexer();
+
+        final Reader reader = new Reader(templateFile);
+        reader.readExecuting(lexer::accept);
+
+        final List<Token> tokens = lexer.getTokens();
+        tokens.add(Token.END_OF_INPUT);
+        return tokens;
+    }
+
+    private AbstractSyntaxTree parse(final List<Token> tokens) {
+        return new Parser(tokens).buildAbstractSyntaxTree();
+    }
+
+    private String cacheKey(final Locale locale) {
+        return templateFilePath + locale;
     }
 }
