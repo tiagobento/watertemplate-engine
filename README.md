@@ -14,7 +14,7 @@ Table of contents
 - [Quick start](#quick-start)
 - [Configuration](#no-configuration)
 - i18n
-- Subtemplating
+- [Nested templates](#nested-templates)
 - Adding arguments
 - JAX-RS
 
@@ -63,7 +63,7 @@ public static void main(String[] args) {
 
 #### See the result:
 ```html
-<h1>Months of 2014</h1>
+<h1>Months of 2015</h1>
 <ul>
     <li>
         <span> january </span>
@@ -86,7 +86,14 @@ public static void main(String[] args) {
     
 </ul>
 ```
-    
+   
+   
+## Nested templates
+Water gives you the possibility to nest templates in many levels. Each template can have one MasterTemplate and many SubTemplates. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
+
+When rendering, Water ensures that each template is atomic. This means you can't create any relation that affects your master- or subtemplates inside your template file.
+
+See an [example](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates).
 _NO_ configuration
 --
 No complex annotations, no xml configuration, no thousands of modules dependency. Adding the maven dependency and extending `Template`
