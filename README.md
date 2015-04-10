@@ -143,7 +143,7 @@ You can also nest `MappedObjects` or add them inside a collection mapping:
 ```java
     addCollection("users", users, (user, userMap) -> {
         userMap.addMappedObject("email", user.getEmail(), (email, emailMap) -> {
-            emailMap("upper", email.toUpperCase());
+            emailMap.add("upper", email.toUpperCase());
         });
     });
     // Will match with
