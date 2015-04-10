@@ -12,14 +12,14 @@ Table of contents
 --
 
 - [Quick start](#quick-start)
-- [Configuration](#no-configuration)
+- [Configuration](#configuration)
 - i18n
 - [Nested templates](#nested-templates)
 - Adding arguments
-- JAX-RS
+- [JAX-RS](#jax-rs)
 
 ## Quick start
-#### Imagine a template:
+##### Imagine a template:
 ```html
 <h1>Months of ~year~</h1>
 <ul>
@@ -32,7 +32,7 @@ Table of contents
 </ul>
 ``` 
 
-#### Represent it in a Java class:
+##### Represent it in a Java class:
 ```java
 class MonthsGrid extends Template {
 
@@ -53,7 +53,7 @@ class MonthsGrid extends Template {
 }
 ```
 
-#### Render it:
+##### Render it:
 ```java
 public static void main(String[] args) {
     MonthsGrid monthsGrid = new MonthsGrid(2015);
@@ -61,7 +61,7 @@ public static void main(String[] args) {
 }
 ```
 
-#### See the result:
+##### See the result:
 ```html
 <h1>Months of 2015</h1>
 <ul>
@@ -86,18 +86,38 @@ public static void main(String[] args) {
     
 </ul>
 ```
-   
-   
+
+
+## Configuration
+--
+Add the [maven dependency]() to your project.
+Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
+
+Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
+
+
+  
 ## Nested templates
+--
 Water gives you the possibility to nest templates in many levels. Each template can have one MasterTemplate and many SubTemplates. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
 
 When rendering, Water ensures that each template is atomic. This means you can't create any relation that affects your master- or subtemplates inside your template file.
 
 See an [example](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates).
-_NO_ configuration
+
+
+## JAX-RS
 --
-No complex annotations, no xml configuration, no thousands of modules dependency. Adding the maven dependency and extending `Template`
-gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
+
+If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency]() to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
+
+```java
+@GET
+@Path("/home")
+public Template getHomePage() {
+    return new HomePage();
+}
+```
 
 _NO_ reflection
 --
