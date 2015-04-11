@@ -125,7 +125,7 @@ See an [example](watertemplate-example/src/main/java/org/watertemplate/example/n
 
 
 ## Adding arguments
-Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. There are three basic methods which let you add arguments:
+Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. There are four basic methods which let you add arguments:
 
 ```java
     add("email", user.getEmail()); 
@@ -145,18 +145,30 @@ Water works with a different approach to arguments. Unlike many other template e
     });
     // Will match with ~for user in users: ~user.email~ :~
 ```
-You can also nest `MappedObjects` or add them inside a collection mapping:
+
+```java
+    addLocaleSensitiveObject("now", new Date(), (now, locale) -> {
+        return DateFormat.getDateInstance(DateFormat.FULL, locale).format(now);
+    });
+    // Will match with ~now~
+```
+
+
+You can also nest `MappedObjects` and `LocaleSensitiveObjects` or add them inside a collection mapping:
 
 ```java
     addCollection("users", users, (user, userMap) -> {
-        userMap.addMappedObject("email", user.getEmail(), (email, emailMap) -> {
-            emailMap.add("upper", email.toUpperCase());
+        userMap.addMappedObject("name", user.getName(), (name, nameMap) -> {
+            nameMap.add("upper", name.toUpperCase());
+        });
+        userMap.addLocaleSensitiveObject("birth_date", user.getBirthDate(), (birthDate, locale) -> {
+            return DateFormat.getDateInstance(DateFormat.FULL, locale).format(birthDate);
         });
     });
     // Will match with
-    //   ~for user in users: ~user.email~ :~
+    //   ~for user in users: ~user.name~ was born in ~user.birth_date~ :~
     // or also with
-    //   ~for user in users: ~user.email.upper~ :~
+    //   ~for user in users: ~user.name.upper~ was born in ~user.birth_date~ :~
 ```
 
 ## Commands
