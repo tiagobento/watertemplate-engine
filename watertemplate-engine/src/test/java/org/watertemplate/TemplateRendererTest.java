@@ -61,7 +61,7 @@ public class TemplateRendererTest {
     }
 
     private String render(final Template template) {
-        return render(template, TemplateRenderer.DEFAULT_LOCALE);
+        return render(template, template.getDefaultLocale());
     }
 
     private String render(final Template template, final Locale locale) {

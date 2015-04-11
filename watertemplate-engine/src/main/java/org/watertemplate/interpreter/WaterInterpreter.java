@@ -15,12 +15,15 @@ import java.util.*;
 public class WaterInterpreter implements Interpreter {
 
     private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
-    private final TemplateMap.Arguments arguments;
-    private final String templateFilePath;
 
-    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments) {
+    private final String templateFilePath;
+    private final TemplateMap.Arguments arguments;
+    private final Locale defaultLocale;
+
+    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments, final Locale defaultLocale) {
         this.templateFilePath = templateFilePath;
         this.arguments = arguments;
+        this.defaultLocale = defaultLocale;
     }
 
     @Override
@@ -47,8 +50,8 @@ public class WaterInterpreter implements Interpreter {
             return new File(url.getFile());
         }
 
-        if (!locale.equals(DEFAULT_LOCALE)) {
-            return findTemplateFileWith(DEFAULT_LOCALE);
+        if (!locale.equals(defaultLocale)) {
+            return findTemplateFileWith(defaultLocale);
         }
 
         throw new TemplateFileNotFoundException(templateFilePath);

@@ -32,7 +32,7 @@ public class TemplateMap<T> {
         }
     }
 
-    public static class TemplateObject<T> extends Mappable<T> {
+    public static final class TemplateObject<T> extends Mappable<T> {
         private final T object;
 
         TemplateObject(final T object, final BiConsumer<T, Arguments> mapper) {
@@ -50,7 +50,7 @@ public class TemplateMap<T> {
         }
     }
 
-    public static class TemplateCollection<T> extends Mappable<T> implements Iterable {
+    public static final class TemplateCollection<T> extends Mappable<T> implements Iterable {
         private final Iterable<T> iterable;
 
         public TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
@@ -71,7 +71,7 @@ public class TemplateMap<T> {
 
     //
 
-    public static class Arguments extends TemplateMap<Object> {
+    public static final class Arguments extends TemplateMap<Object> {
         public final <T> void addCollection(final String key, final Iterable<T> iterable) {
             add(key, new TemplateCollection<>(iterable, (a, b) -> {}));
         }

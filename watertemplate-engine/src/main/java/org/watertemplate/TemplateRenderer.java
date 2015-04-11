@@ -7,8 +7,6 @@ import java.util.Locale;
 
 class TemplateRenderer {
 
-    static final Locale DEFAULT_LOCALE = Locale.US;
-
     private final Template template;
     private final Locale locale;
 
@@ -45,10 +43,12 @@ class TemplateRenderer {
     }
 
     private String renderTemplate() {
-        return getInterpreter().interpret(locale);
+        String filePath = template.getFilePath();
+        TemplateMap.Arguments arguments = template.arguments;
+        Locale defaultLocale = template.getDefaultLocale();
+
+        Interpreter interpreter = new WaterInterpreter(filePath, arguments, defaultLocale);
+        return interpreter.interpret(locale);
     }
 
-    protected Interpreter getInterpreter() {
-        return new WaterInterpreter(template.getFilePath(), template.arguments);
-    }
 }

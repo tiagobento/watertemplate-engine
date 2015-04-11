@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 
 public abstract class Template {
 
+    private static final Locale DEFAULT_LOCALE = Locale.US;
+
     /* Please use me */
     final TemplateMap.Arguments arguments = new TemplateMap.Arguments();
 
@@ -22,15 +24,20 @@ public abstract class Template {
     protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
     }
 
+    /* Override me if you want */
+    protected Locale getDefaultLocale() {
+        return Template.DEFAULT_LOCALE;
+    }
+
     public final String render() {
-        return render(TemplateRenderer.DEFAULT_LOCALE);
+        return render(getDefaultLocale());
     }
 
     public final String render(final Locale locale) {
         return new TemplateRenderer(this, locale).render();
     }
 
-    final Map<String, Template> getSubTemplates() {
+    protected final Map<String, Template> getSubTemplates() {
         TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
         addSubTemplates(subTemplates);
         return subTemplates.map;
