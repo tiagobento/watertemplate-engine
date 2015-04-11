@@ -104,7 +104,7 @@ Since you've done that, extending `Template` gives you full power to build your 
 Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
 
 ##### Where to store your template files?
-Water will always search for your template files under `classpath:templates/[locale]/`, where `[locale]` is any locale of your choice. The default locale is `Locale.US`. It's easy to work this way when you use [Water i18n](#i18n).
+Water will always search for your template files under `classpath:templates/[locale]/`, where `[locale]` is any locale of your choice. The default locale is `Locale.US`. It's easy to work this way when you use [Water i18n](watertemplate-i18n).
 
 ##### How to change the default locale?
 Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagade the change to its child classes.
@@ -197,7 +197,8 @@ Water provides **if** and **for** commands.
 :~
 ```
 
-
+## i18n
+Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) to know how to use it and why it works so good together with the engine.
 
 ## JAX-RS
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency]() to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
