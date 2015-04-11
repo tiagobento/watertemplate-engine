@@ -56,12 +56,12 @@ hi = Oi
 Run `mvn watertemplate-i18n:generate` and you'll have
 
 ```html
-<!--`destinationDir`/en/US/hi.html -->
+<!--`destinationDir`/en_US/hi.html -->
 <span> Hi! :) </span>
 ```
 
 ```html
-<!--`destinationDir`/pt/BR/hi.html -->
+<!--`destinationDir`/pt_BR/hi.html -->
 <span> Oi! :) </span>
 ```
 
