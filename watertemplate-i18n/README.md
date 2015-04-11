@@ -37,34 +37,42 @@ All the properties are **required**.
 
 **Note:** the default maven `phase` is *process-resources*, but you can naturally override it.
 
-Usage
----
-If you have two different bundle files, each for one locale, then your structure will be:
+## Usage
 
-e.g.
-
+```html
+<!--`baseDir`/hi.html -->
+<span> {{i18n}}hi{{/i18n}}! :) </span>
+```
 
 ```properties
-## /en_US.properties
+## `bundlesDir`/en_US.properties
 hi = Hi
 ```
 
 ```properties
-## /pt_BR.properties
+## `bundlesDir`/pt_BR.properties
 hi = Oi
 ```
+Run `mvn watertemplate-i18n:generate` and you'll have
 
-Typing `{{#i18n}}hi{{/i18n}}` in your templates will make this plugin replace this whole string with a value contained in some of your bundle files.
-You can run this plugin with `mvn watertemplate-i18n:generate`
+```html
+<!--`destinationDir`/en/US/hi.html -->
+<span> Hi! :) </span>
+```
 
-This plugin uses the name of files stored in `bundlesDir` to determine which languages it does have to process.
+```html
+<!--`destinationDir`/pt/BR/hi.html -->
+<span> Oi! :) </span>
+```
+
+The name of files stored in `bundlesDir` are used to determine which languages it has to process.
 Symbolic links are encouraged to avoid duplication.
 
 e.g.
 
 ```bash
-src/main/bundles/en.properties -> en_US.properties
-src/main/bundles/en_US.properties
-src/main/bundles/pt.properties -> pt_BR.properties
-src/main/bundles/pt_BR.properties
+`bundlesDir`/en.properties -> en_US.properties
+`bundlesDir`/en_US.properties
+`bundlesDir`/pt.properties -> pt_BR.properties
+`bundlesDir`/pt_BR.properties
 ```
