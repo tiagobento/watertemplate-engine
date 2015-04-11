@@ -2,8 +2,11 @@ package org.watertemplate;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class TemplateMap<T> {
     public final Map<String, T> map = new HashMap<>();
@@ -32,10 +35,24 @@ public class TemplateMap<T> {
         }
     }
 
-    public static final class TemplateObject<T> extends Mappable<T> {
+    public static final class LocaleSensitiveObject<T> {
+        private final BiFunction<T, Locale, Object> consumer;
         private final T object;
 
-        TemplateObject(final T object, final BiConsumer<T, Arguments> mapper) {
+        protected LocaleSensitiveObject(final T object, final BiFunction<T, Locale, Object> consumer) {
+            this.consumer = consumer;
+            this.object = object;
+        }
+
+        public Object apply(final Locale locale) {
+            return consumer.apply(object, locale);
+        }
+    }
+
+    public static final class MappedObject<T> extends Mappable<T> {
+        private final T object;
+
+        MappedObject(final T object, final BiConsumer<T, Arguments> mapper) {
             super(mapper);
             this.object = object;
         }
@@ -50,10 +67,10 @@ public class TemplateMap<T> {
         }
     }
 
-    public static final class TemplateCollection<T> extends Mappable<T> implements Iterable {
+    public static final class CollectionObject<T> extends Mappable<T> implements Iterable {
         private final Iterable<T> iterable;
 
-        public TemplateCollection(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+        public CollectionObject(final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
             super(mapper);
             this.iterable = iterable;
         }
@@ -73,15 +90,19 @@ public class TemplateMap<T> {
 
     public static final class Arguments extends TemplateMap<Object> {
         public final <T> void addCollection(final String key, final Iterable<T> iterable) {
-            add(key, new TemplateCollection<>(iterable, (a, b) -> {}));
+            add(key, new CollectionObject<>(iterable, (a, b) -> {}));
         }
 
         public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateCollection<>(iterable, mapper));
+            add(key, new CollectionObject<>(iterable, mapper));
         }
 
         public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateObject<>(object, mapper));
+            add(key, new MappedObject<>(object, mapper));
+        }
+
+        public <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, Object> function) {
+            add(key, new LocaleSensitiveObject<>(object, function));
         }
 
         public final String get(final String key) {

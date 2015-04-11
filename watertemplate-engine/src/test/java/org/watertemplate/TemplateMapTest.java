@@ -30,7 +30,7 @@ public class TemplateMapTest {
 
         Assert.assertEquals(1, arguments.map.size());
         Assert.assertEquals(value, arguments.get(key));
-        Assert.assertTrue(arguments.map.get(key) instanceof TemplateMap.TemplateObject);
+        Assert.assertTrue(arguments.map.get(key) instanceof TemplateMap.MappedObject);
     }
 
 
@@ -50,19 +50,19 @@ public class TemplateMapTest {
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateMap.TemplateCollection);
+        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateMap.CollectionObject);
     }
 
     @Test
     public void map() {
-        final TemplateMap.TemplateObject<String> templateObject;
-        templateObject = new TemplateMap.TemplateObject<>("foo", (string, stringMap) -> {
+        final TemplateMap.MappedObject<String> mappedObject;
+        mappedObject = new TemplateMap.MappedObject<>("foo", (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
             stringMap.add("size", string.length());
         });
 
-        final TemplateMap.Arguments map = templateObject.map();
+        final TemplateMap.Arguments map = mappedObject.map();
         Assert.assertEquals(map.get("lower"), "foo");
         Assert.assertEquals(map.get("upper"), "FOO");
         Assert.assertEquals(map.get("size"), "3");

@@ -4,10 +4,13 @@ import org.junit.Test;
 import org.watertemplate.TemplateMap;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
 public class AbstractSyntaxTreeStatementsTest {
+
+    private static final Locale locale = Locale.US;
 
     @Test
     public void sequentialStatements() {
@@ -36,7 +39,7 @@ public class AbstractSyntaxTreeStatementsTest {
             map.add("square", Math.round(Math.pow(i, 2)));
         });
 
-        Object result = abs.run(arguments);
+        Object result = abs.run(arguments, locale);
         assertEquals("line 1\nline 2\nrandom text\ncondition was true\n1\n4\n9\n16", result);
     }
 

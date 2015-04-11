@@ -1,9 +1,12 @@
 package org.watertemplate;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class Template {
 
@@ -57,6 +60,10 @@ public abstract class Template {
 
     protected final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
         this.arguments.addCollection(key, iterable, mapper);
+    }
+
+    protected final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, Object> function) {
+        this.arguments.addLocaleSensitiveObject(key, object, function);
     }
 }
 
