@@ -27,4 +27,25 @@
             <version>3.3.2</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.watertemplate</groupId>
+                <artifactId>watertemplate-i18n-maven-plugin</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <configuration>
+                    <bundlesDir>${pom.basedir}/src/main/bundles</bundlesDir>
+                    <baseDir>${pom.basedir}/src/main/i18n-templates</baseDir>
+                    <destinationDir>${pom.basedir}/src/main/i18n-generated-templates</destinationDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
