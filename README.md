@@ -13,10 +13,10 @@ Table of contents
 
 - [Quick start](#quick-start)
 - [Configuration](#configuration)
-- [i18n](#i18n)
 - [Nested templates](#nested-templates)
 - [Adding arguments](#adding-arguments)
 - [Commands](#commands)
+- [i18n](#i18n)
 - [JAX-RS](#jax-rs)
 
 
