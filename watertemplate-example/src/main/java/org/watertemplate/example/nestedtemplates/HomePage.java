@@ -2,7 +2,7 @@ package org.watertemplate.example.nestedtemplates;
 
 import org.watertemplate.Template;
 
-public class HomePage extends Template {
+class HomePage extends Template {
 
     public HomePage() {
     }
