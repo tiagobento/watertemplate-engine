@@ -13,7 +13,7 @@ Table of contents
 
 - [Quick start](#quick-start)
 - [Configuration](#configuration)
-- i18n
+- [i18n](#i18n)
 - [Nested templates](#nested-templates)
 - [Adding arguments](#adding-arguments)
 - [Commands](#commands)
@@ -36,7 +36,8 @@ Table of contents
         </li>
     :~
 </ul>
-``` 
+```
+Save it to `classpath:templates/en_US/months_grid.html`. Read [this](#where-to-store-your-template-files) to know why to save in this specific path.
 
 ##### Represent it in a Java class:
 ```java
@@ -101,6 +102,12 @@ Add the [maven dependency]() to your project.
 Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
 
 Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
+
+##### Where to store your template files?
+Water will always search for your template files under `classpath:templates/[locale]/`, where `[locale]` is any locale of your choice. The default locale is `Locale.US`. It's easy to work this way when you use [Water i18n](#i18n).
+
+##### How to change the default locale?
+Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagade the change to its child classes.
 
 
 
