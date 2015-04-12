@@ -187,9 +187,9 @@ Water provides **if** and **for** commands.
     <span> ~user.name~ </span>
 
     ~if user.is_already_followed:
-        <input type="button"> Unfollow </input>
+        <input type="button" value="Unfollow"/>
     :else:
-        <input type="button"> Follow </input>
+        <input type="button" value="Follow"/>
     :~
     
 :else:
