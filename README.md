@@ -63,7 +63,7 @@ class MonthsGrid extends Template {
 ##### Render it:
 ```java
 public static void main(String[] args) {
-    MonthsGrid monthsGrid = new MonthsGrid(2015);
+    MonthsGrid monthsGrid = new MonthsGrid(Year.of(2015));
     System.out.println(monthsGrid.render());
 }
 ```
