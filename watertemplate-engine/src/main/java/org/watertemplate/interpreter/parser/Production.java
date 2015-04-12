@@ -65,7 +65,7 @@ abstract class Production implements GrammarSymbol {
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
             Id conditionId = (Id) statements.get(1);
             AbstractSyntaxTree ifStatements = statements.get(2);
-            AbstractSyntaxTree elseStatements = statements.get(3);
+            AbstractSyntaxTree elseStatements = statements.get(4);
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements, elseStatements);
         }
