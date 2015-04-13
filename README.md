@@ -176,7 +176,7 @@ Water provides **if** and **for** commands.
 
 
 
-- **_If:_** The if condition _must_ a boolean. Null objects are not a valid condition.
+- **_If:_** The if condition _must_ be a boolean. Null objects are not a valid condition.
 
 - **_For:_** The for collection _must_ be added by the `addCollection` method. The else is triggered when the collection is empty or null.
 
