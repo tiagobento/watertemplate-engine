@@ -209,4 +209,10 @@ If you want to provide your webpages as resources, JAX-RS is a good way to do th
 public Template getHomePage() {
     return new HomePage();
 }
+
+@GET
+@Path("/months/{year}")
+public Template year(@PathParam("year") Long year) {
+    return new MonthsGrid(Year.of(year));
+}
 ```
