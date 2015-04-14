@@ -8,6 +8,7 @@
         <groupId>org.watertemplate</groupId>
         <artifactId>watertemplate</artifactId>
         <version>1.0.0</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>watertemplate-example</artifactId>
