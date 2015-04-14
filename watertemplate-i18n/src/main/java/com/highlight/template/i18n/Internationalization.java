@@ -44,7 +44,7 @@ class Internationalization {
         try {
             long start = System.currentTimeMillis();
             createAndCompileFiles();
-            LOGGER.info("Parsed all locales in {}ms", System.currentTimeMillis() - start);
+            LOGGER.info("All files parsed in {}ms", System.currentTimeMillis() - start);
         } catch (Exception e) {
             LOGGER.error("Deleting i18n directories.");
             deleteFilesOrDirectories(alreadyCompiledDirs);
@@ -56,7 +56,7 @@ class Internationalization {
         for (final Locale locale : locales.keySet()) {
             try {
                 File localeDir = new File(destinationDir, locale.toString());
-                LOGGER.info("Compiling {} at {}", locale, localeDir);
+                LOGGER.info("Parsing {} at {}", locale, localeDir);
 
                 FileUtils.deleteDirectory(localeDir);
                 FileUtils.copyDirectory(baseDir, localeDir);
@@ -87,7 +87,7 @@ class Internationalization {
     }
 
     private void compileFile(Locale locale, File file) throws IOException {
-        LOGGER.debug("Compiling {} at {}", locale, file);
+        LOGGER.debug("Parsing {} at {}", locale, file);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Before: {} ", FileUtils.readFileToString(file).trim());
