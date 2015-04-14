@@ -7,8 +7,24 @@
     <groupId>org.watertemplate</groupId>
     <artifactId>watertemplate</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Water Template</name>
     <packaging>pom</packaging>
+
+    <name>Water Template</name>
+    <description>Water Template Engine base project</description>
+    <url>http://watertemplate.org</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/tiagobento/watertemplate-engine.git</connection>
+        <developerConnection>scm:git:git@github.com:tiagobento/watertemplate-engine.git</developerConnection>
+        <url>https://github.com/tiagobento/watertemplate-engine</url>
+    </scm>
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

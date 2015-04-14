@@ -11,9 +11,25 @@
     </parent>
 
     <artifactId>watertemplate-jaxrs-binding</artifactId>
-    <name>Water Template JAX-RS Binding</name>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <name>Water Template JAX-RS Binding</name>
+    <description>JAX-RS Binding to Water template engine</description>
+    <url>http://watertemplate.org</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/tiagobento/watertemplate-engine.git</connection>
+        <developerConnection>scm:git:git@github.com:tiagobento/watertemplate-engine.git</developerConnection>
+        <url>https://github.com/tiagobento/watertemplate-engine/tree/master/watertemplate-jaxrs-binding</url>
+    </scm>
 
     <dependencies>
         <dependency>
