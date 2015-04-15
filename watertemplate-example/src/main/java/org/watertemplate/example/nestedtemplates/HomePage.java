@@ -2,14 +2,11 @@ package org.watertemplate.example.nestedtemplates;
 
 import org.watertemplate.Template;
 
-class HomePage extends Template {
-
-    public HomePage() {
-    }
+public class HomePage extends Template {
 
     @Override
     protected Template getMasterTemplate() {
-        return new MasterTemplate();
+        return new MasterTemplate("Home");
     }
 
     @Override
