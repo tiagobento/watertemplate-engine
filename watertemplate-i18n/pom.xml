@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.watertemplate</groupId>
         <artifactId>watertemplate</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>watertemplate-i18n-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Water Template i18n Plugin</name>
