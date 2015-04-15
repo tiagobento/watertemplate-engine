@@ -203,6 +203,8 @@ Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) 
 ## JAX-RS
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency]() to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
 
+Run [an example](watertemplate-example/)!
+
 ```java
 @GET
 @Path("/home")
