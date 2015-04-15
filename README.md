@@ -212,7 +212,7 @@ public Template homePage() {
 
 @GET
 @Path("/months/{year}")
-public Template monthsGrid(@PathParam("year") Long year) {
+public Template monthsGrid(@PathParam("year") Integer year) {
     return new MonthsGrid(Year.of(year));
 }
 ```
