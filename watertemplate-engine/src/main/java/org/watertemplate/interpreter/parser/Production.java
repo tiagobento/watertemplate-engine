@@ -36,9 +36,7 @@ abstract class Production implements GrammarSymbol {
         return zip(abstractSyntaxTrees);
     }
 
-    AbstractSyntaxTree zip(List<AbstractSyntaxTree> statements) {
-        return new AbstractSyntaxTree.Statements(statements);
-    }
+    abstract AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements);
 
     static class If extends Production {
 
@@ -122,9 +120,18 @@ abstract class Production implements GrammarSymbol {
         public Statements(final GrammarSymbol... statements) {
             super(statements);
         }
+
+        @Override
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            return new AbstractSyntaxTree.Statements(statements);
+        }
     }
 
     static class Empty extends Production {
+        @Override
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            return new AbstractSyntaxTree.Empty();
+        }
     }
 }
 
