@@ -13,6 +13,6 @@
 .idea
 **.iml
 
-#i18n-generated-templates
-watertemplate-example/src/main/i18n-generated-templates/
-watertemplate-example/src/main/i18n-generated-templates/*
+#i18n-parsed-templates
+watertemplate-example/src/main/i18n/parsed-templates/
+watertemplate-example/src/main/i18n/parsed-templates/*

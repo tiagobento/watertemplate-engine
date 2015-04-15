@@ -28,13 +28,13 @@ git clone https://github.com/tiagobento/watertemplate-engine
 
 **2.** Look the raw template files
 ```bash
-find watertemplate-engine/watertemplate-example/src/main/i18n-templates
+find watertemplate-engine/watertemplate-example/src/main/i18n/raw-templates
 ```
 
 **3.** Build the project and see the parsed template files
 ```bash
 mvn clean install
-find watertemplate-engine/watertemplate-example/src/main/i18n-generated-templates
+find watertemplate-engine/watertemplate-example/src/main/i18n/parsed-templates
 ```
 
 You can see the configuration [here](pom.xml) at the end of the file.

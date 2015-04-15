@@ -81,9 +81,9 @@
                 <artifactId>watertemplate-i18n-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                    <bundlesDir>${pom.basedir}/src/main/bundles</bundlesDir>
-                    <baseDir>${pom.basedir}/src/main/i18n-templates</baseDir>
-                    <destinationDir>${pom.basedir}/src/main/i18n-generated-templates</destinationDir>
+                    <bundlesDir>${pom.basedir}/src/main/i18n/bundles</bundlesDir>
+                    <baseDir>${pom.basedir}/src/main/i18n/raw-templates</baseDir>
+                    <destinationDir>${pom.basedir}/src/main/i18n/parsed-templates</destinationDir>
                 </configuration>
                 <executions>
                     <execution>
