@@ -1,5 +1,7 @@
 package org.watertemplate;
 
+import org.watertemplate.exception.RenderException;
+import org.watertemplate.exception.TemplateException;
 import org.watertemplate.interpreter.Interpreter;
 import org.watertemplate.interpreter.WaterInterpreter;
 
@@ -16,8 +18,12 @@ class TemplateRenderer {
     }
 
     public String render() {
-        final String renderedTemplateWithRenderedSubTemplates = renderTemplateWithSubTemplates();
-        return renderMasterTemplateIfNecessary(renderedTemplateWithRenderedSubTemplates);
+        try {
+            final String renderedTemplateWithRenderedSubTemplates = renderTemplateWithSubTemplates();
+            return renderMasterTemplateIfNecessary(renderedTemplateWithRenderedSubTemplates);
+        } catch (RuntimeException e) {
+            throw new RenderException(template, locale, e);
+        }
     }
 
     private String renderMasterTemplateIfNecessary(final String renderedTemplateWithoutMasterTemplate) {
