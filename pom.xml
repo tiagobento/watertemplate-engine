@@ -26,6 +26,12 @@
         <url>https://github.com/tiagobento/watertemplate-engine</url>
     </scm>
 
+    <developers>
+        <developer>
+            <name>Tiago Bento</name>
+        </developer>
+    </developers>
+
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -4,6 +4,8 @@
 **/.classpath
 **/.settings/*
 
+*.asc
+
 #MAC
 **.DS_Store
 
