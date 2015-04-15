@@ -2,7 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
-import org.watertemplate.interpreter.parser.exception.ObjectNotTemplateCollectionException;
+import org.watertemplate.interpreter.parser.exception.NotCollectionObjectException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public interface AbstractSyntaxTree {
             Object collection = collectionId.run(arguments, locale);
 
             if (!(collection instanceof CollectionObject)) {
-                throw new ObjectNotTemplateCollectionException(collectionId);
+                throw new NotCollectionObjectException(collectionId);
             }
 
             CollectionObject collectionObject = (CollectionObject) collection;
