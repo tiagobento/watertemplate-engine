@@ -16,8 +16,8 @@ mvn jetty:run
 ```
 
 **3.** Open your favorite browser
- - Go to [localhost:8080/home](http://localhost:8080/home) to see [this example](watertemplate-example/src/main/java/org/watertemplate/example/collection)
- - Or to [localhost:8080/months/2015](http://localhost:8080/months/2015) to see [this one](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates)
+ - Go to [localhost:8080/home](http://localhost:8080/home) to see [this example](src/main/java/org/watertemplate/example/collection)
+ - Or to [localhost:8080/months/2015](http://localhost:8080/months/2015) to see [this one](src/main/java/org/watertemplate/example/nestedtemplates)
 
 ## i18n
 
@@ -37,4 +37,4 @@ mvn clean install
 find watertemplate-engine/watertemplate-example/src/main/i18n-generated-templates
 ```
 
-You can see the configuration [here](watertemplate-example/pom.xml) at the end of the file.
+You can see the configuration [here](pom.xml) at the end of the file.
