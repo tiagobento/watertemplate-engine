@@ -1,5 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.Configuration;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 import org.watertemplate.interpreter.parser.exception.NotCollectionObjectException;
@@ -12,7 +13,7 @@ import static org.watertemplate.TemplateMap.*;
 
 public interface AbstractSyntaxTree {
 
-    public Object run(final Arguments arguments, final Locale locale);
+    public Object run(final Arguments arguments, final Locale locale, final Configuration configuration);
 
     static class For implements AbstractSyntaxTree {
 
@@ -33,8 +34,8 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            Object collection = collectionId.run(arguments, locale);
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
+            Object collection = collectionId.run(arguments, locale, configuration);
 
             if (!(collection instanceof CollectionObject)) {
                 throw new NotCollectionObjectException(collectionId);
@@ -43,14 +44,14 @@ public interface AbstractSyntaxTree {
             CollectionObject collectionObject = (CollectionObject) collection;
 
             if (collectionObject.iterator() == null || !collectionObject.iterator().hasNext()) {
-                return elseStatements.run(arguments, locale);
+                return elseStatements.run(arguments, locale, configuration);
             }
 
             StringBuilder sb = new StringBuilder();
 
             for (final Object item : collectionObject) {
                 arguments.addMappedObject(variableName, item, collectionObject.getMapper());
-                sb.append(forStatements.run(arguments, locale));
+                sb.append(forStatements.run(arguments, locale, configuration));
             }
 
             arguments.remove(variableName);
@@ -72,7 +73,7 @@ public interface AbstractSyntaxTree {
             this.nestedId = nestedId;
         }
 
-        public Object run(final Arguments arguments, final Locale locale) {
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
             Object object = arguments.getObject(propertyKey);
 
             if (object == null) {
@@ -82,6 +83,8 @@ public interface AbstractSyntaxTree {
             if (nestedId == null) {
                 if (object instanceof LocaleSensitiveObject) {
                     return ((LocaleSensitiveObject) object).apply(locale);
+                } else if (object instanceof String) {
+                    return configuration.applyTreatment((String) object);
                 } else {
                     return object;
                 }
@@ -92,7 +95,7 @@ public interface AbstractSyntaxTree {
             }
 
             try {
-                return nestedId.run(((MappedObject) object).map(), locale);
+                return nestedId.run(((MappedObject) object).map(), locale, configuration);
             } catch (IdCouldNotBeResolvedException e) {
                 throw new IdCouldNotBeResolvedException(this);
             }
@@ -128,11 +131,11 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            if ((boolean) conditionId.run(arguments, locale)) {
-                return ifStatements.run(arguments, locale);
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
+            if ((boolean) conditionId.run(arguments, locale, configuration)) {
+                return ifStatements.run(arguments, locale, configuration);
             } else {
-                return elseStatements.run(arguments, locale);
+                return elseStatements.run(arguments, locale, configuration);
             }
         }
     }
@@ -150,10 +153,10 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
             StringBuilder sb = new StringBuilder();
             for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
-                sb.append(abstractSyntaxTree.run(arguments, locale));
+                sb.append(abstractSyntaxTree.run(arguments, locale, configuration));
             }
             return sb.toString();
         }
@@ -167,14 +170,14 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
             return value;
         }
     }
 
     static class Empty implements AbstractSyntaxTree {
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
+        public Object run(final Arguments arguments, final Locale locale, final Configuration configuration) {
             return "";
         }
     }

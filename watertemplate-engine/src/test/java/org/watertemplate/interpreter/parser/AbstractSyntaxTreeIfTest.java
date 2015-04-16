@@ -1,6 +1,7 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
+import org.watertemplate.Configuration;
 import org.watertemplate.TemplateMap;
 
 import java.util.Locale;
@@ -24,11 +25,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("else_statements", "condition was false");
         arguments.add("condition", true);
 
-        Object result = abs.run(arguments, locale);
+        Object result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("condition was true", result);
 
         arguments.add("condition", false);
-        result = abs.run(arguments, locale);
+        result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("condition was false", result);
     }
 
@@ -46,11 +47,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("else_statements", "nested condition was false");
 
         arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", true));
-        Object result = abs.run(arguments, locale);
+        Object result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("nested condition was true", result);
 
         arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", false));
-        result = abs.run(arguments, locale);
+        result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("nested condition was false", result);
     }
 
@@ -65,11 +66,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("if_statements", "condition was true");
         arguments.add("condition", true);
 
-        Object result = abs.run(arguments, locale);
+        Object result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("condition was true", result);
 
         arguments.add("condition", false);
-        result = abs.run(arguments, locale);
+        result = abs.run(arguments, locale, Configuration.DEFAULT);
         assertEquals("", result);
     }
 }

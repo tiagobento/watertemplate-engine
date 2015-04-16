@@ -1,5 +1,6 @@
 package org.watertemplate.interpreter;
 
+import org.watertemplate.Configuration;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
 import org.watertemplate.interpreter.lexer.Lexer;
@@ -18,12 +19,12 @@ public class WaterInterpreter implements Interpreter {
 
     private final String templateFilePath;
     private final TemplateMap.Arguments arguments;
-    private final Locale defaultLocale;
+    private final Configuration configuration;
 
-    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments, final Locale defaultLocale) {
+    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments, final Configuration configuration) {
         this.templateFilePath = templateFilePath;
         this.arguments = arguments;
-        this.defaultLocale = defaultLocale;
+        this.configuration = configuration;
     }
 
     @Override
@@ -31,15 +32,15 @@ public class WaterInterpreter implements Interpreter {
         final String cacheKey = cacheKey(locale);
 
         if (cache.containsKey(cacheKey)) {
-            return (String) cache.get(cacheKey).run(arguments, locale);
+            return (String) cache.get(cacheKey).run(arguments, locale, configuration);
         }
 
-        File templateFile = findTemplateFileWith(locale);
-        List<Token> tokens = lex(templateFile);
-        AbstractSyntaxTree abs = parse(tokens);
+        final File templateFile = findTemplateFileWith(locale);
+        final List<Token> tokens = lex(templateFile);
+        final AbstractSyntaxTree ast = parse(tokens);
 
-        cache.put(cacheKey, abs);
-        return (String) abs.run(arguments, locale);
+        cache.put(cacheKey, ast);
+        return (String) ast.run(arguments, locale, configuration);
     }
 
     private File findTemplateFileWith(final Locale locale) {
@@ -49,6 +50,8 @@ public class WaterInterpreter implements Interpreter {
         if (url != null) {
             return new File(url.getFile());
         }
+
+        final Locale defaultLocale = configuration.getDefaultLocale();
 
         if (!locale.equals(defaultLocale)) {
             return findTemplateFileWith(defaultLocale);

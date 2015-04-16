@@ -1,12 +1,10 @@
 package org.watertemplate;
 
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public abstract class Template {
 
@@ -28,12 +26,12 @@ public abstract class Template {
     }
 
     /* Override me if you want */
-    protected Locale getDefaultLocale() {
-        return Template.DEFAULT_LOCALE;
+    protected Configuration getConfiguration() {
+        return Configuration.DEFAULT;
     }
 
     public final String render() {
-        return render(getDefaultLocale());
+        return render(getConfiguration().getDefaultLocale());
     }
 
     public final String render(final Locale locale) {

@@ -51,9 +51,9 @@ class TemplateRenderer {
     private String renderTemplate() {
         String filePath = template.getFilePath();
         TemplateMap.Arguments arguments = template.arguments;
-        Locale defaultLocale = template.getDefaultLocale();
+        Configuration configuration = template.getConfiguration();
 
-        Interpreter interpreter = new WaterInterpreter(filePath, arguments, defaultLocale);
+        Interpreter interpreter = new WaterInterpreter(filePath, arguments, configuration);
         return interpreter.interpret(locale);
     }
 
