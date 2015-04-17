@@ -166,7 +166,7 @@ addCollection("users", users, (user, userMap) -> {
 //   ~for user in users: ~user.name.upper~ was born in ~user.birth_date~ :~
 ```
 
-It is only possible to add Strings and Booleans. Collections and MappedObjects are special types which should never be evaluated. The toString() method is never implicitly called.
+It is only possible to add Strings and Booleans. Collections and MappedObjects are special types which should never be evaluated. **The `toString()` method is never implicitly called.**
 
 ## Nested templates
 Water gives you the possibility to nest templates in many levels. Each `Template` can have one `MasterTemplate` and many `SubTemplates`. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
