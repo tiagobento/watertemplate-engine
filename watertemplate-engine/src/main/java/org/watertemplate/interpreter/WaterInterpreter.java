@@ -10,7 +10,10 @@ import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class WaterInterpreter implements Interpreter {
 

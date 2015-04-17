@@ -42,10 +42,10 @@ public class TemplateMapTest {
         arguments.addCollection("strings", strings, (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
-            stringMap.add("size", string.length()+"");
+            stringMap.add("size", string.length() + "");
 
             stringMap.addCollection("chars", getChars(string), (character, charsMap) ->
-                    charsMap.add("asciiCode", character.toString())
+                            charsMap.add("asciiCode", character.toString())
             );
         });
 
@@ -59,7 +59,7 @@ public class TemplateMapTest {
         mappedObject = new TemplateObject.MappedObject<>("foo", (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
-            stringMap.add("size", string.length()+"");
+            stringMap.add("size", string.length() + "");
         });
 
         final TemplateMap.Arguments map = mappedObject.map();

@@ -10,7 +10,7 @@ public class NonTerminalIdWithNestedPropertiesTest {
     @Test
     public void singlePropertyKey() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x")
+                new TokenFixture.PropertyKey("x")
         );
 
         assertNotNull(NonTerminal.ID.buildAbstractSyntaxTree(tokenStream));
@@ -19,33 +19,33 @@ public class NonTerminalIdWithNestedPropertiesTest {
     @Test
     public void nestedProperties() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x"),
-            new TokenFixture.Accessor(),
-            new TokenFixture.PropertyKey("y")
+                new TokenFixture.PropertyKey("x"),
+                new TokenFixture.Accessor(),
+                new TokenFixture.PropertyKey("y")
         );
 
         assertNotNull(NonTerminal.ID.buildAbstractSyntaxTree(tokenStream));
     }
 
-    @Test (expected = IncorrectLocationForToken.class)
+    @Test(expected = IncorrectLocationForToken.class)
     public void doubleAccessor() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x"),
-            new TokenFixture.Accessor(),
-            new TokenFixture.Accessor(),
-            new TokenFixture.PropertyKey("y")
+                new TokenFixture.PropertyKey("x"),
+                new TokenFixture.Accessor(),
+                new TokenFixture.Accessor(),
+                new TokenFixture.PropertyKey("y")
         );
 
         NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream);
     }
 
-    @Test (expected = IncorrectLocationForToken.class)
+    @Test(expected = IncorrectLocationForToken.class)
     public void extraAccessor() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x"),
-            new TokenFixture.Accessor(),
-            new TokenFixture.PropertyKey("y"),
-            new TokenFixture.Accessor()
+                new TokenFixture.PropertyKey("x"),
+                new TokenFixture.Accessor(),
+                new TokenFixture.PropertyKey("y"),
+                new TokenFixture.Accessor()
         );
 
         NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream);

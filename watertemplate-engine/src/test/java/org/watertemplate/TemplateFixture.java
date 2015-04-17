@@ -3,7 +3,6 @@ package org.watertemplate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TemplateFixture {
     public static class MasterTemplate extends Template {
@@ -91,7 +90,7 @@ public class TemplateFixture {
     }
 
     public static class TemplateWithCollection extends Template {
-        TemplateWithCollection(Integer ... integers) {
+        TemplateWithCollection(Integer... integers) {
             List<String> map = Arrays.asList(integers).stream()
                     .map(Object::toString)
                     .collect(Collectors.toList());

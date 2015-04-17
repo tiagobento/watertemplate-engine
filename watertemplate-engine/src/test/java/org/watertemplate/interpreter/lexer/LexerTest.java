@@ -111,31 +111,31 @@ public class LexerTest {
     @Test
     public void validTemplate() {
         String[] lex = lex(
-            "~if x:\n" +
-                "~y.p~\n" +
-                "~z~\n" +
-                "~if j:\n" +
-                "~for x in z:\n" +
-                "~x.u~\n" +
-                ":~\n" +
-                ":~\n" +
-                ":else:\n" +
-                "~bla~\n" +
-                ":~"
+                "~if x:\n" +
+                        "~y.p~\n" +
+                        "~z~\n" +
+                        "~if j:\n" +
+                        "~for x in z:\n" +
+                        "~x.u~\n" +
+                        ":~\n" +
+                        ":~\n" +
+                        ":else:\n" +
+                        "~bla~\n" +
+                        ":~"
         );
 
         String[] tokens = tokens(
-            "if", "x", "\n",
-            "y", ".", "p", "\n",
-            "z", "\n",
-            "if", "j", "\n",
-            "for", "x", "in", "z", "\n",
-            "x", ".", "u", "\n",
-            "end", "\n",
-            "end", "\n",
-            "else", "\n",
-            "bla", "\n",
-            "end"
+                "if", "x", "\n",
+                "y", ".", "p", "\n",
+                "z", "\n",
+                "if", "j", "\n",
+                "for", "x", "in", "z", "\n",
+                "x", ".", "u", "\n",
+                "end", "\n",
+                "end", "\n",
+                "else", "\n",
+                "bla", "\n",
+                "end"
         );
 
         assertLexEqualsArray(lex, tokens);
@@ -161,9 +161,9 @@ public class LexerTest {
         lexer.accept('\0');
 
         final List<String> tokenValues = lexer.getTokens()
-            .stream()
-            .map(Token::getValue)
-            .collect(Collectors.toList());
+                .stream()
+                .map(Token::getValue)
+                .collect(Collectors.toList());
 
         return tokenValues.toArray(new String[tokenValues.size()]);
     }
@@ -192,8 +192,8 @@ public class LexerTest {
 
         for (int i = 0; i < strings.length; i++) {
             htmlEscapedStrings[i] = strings[i]
-                .replace(LexerSymbol.ENVIRONMENT_CHANGER + "", "&#126;")
-                .replace(LexerSymbol.BLOCK_OPENER + "", "&#58;");
+                    .replace(LexerSymbol.ENVIRONMENT_CHANGER + "", "&#126;")
+                    .replace(LexerSymbol.BLOCK_OPENER + "", "&#58;");
         }
 
         return htmlEscapedStrings;

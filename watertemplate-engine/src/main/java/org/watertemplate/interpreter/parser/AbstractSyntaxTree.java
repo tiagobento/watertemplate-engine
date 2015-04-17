@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
-import static org.watertemplate.TemplateMap.*;
+import static org.watertemplate.TemplateMap.Arguments;
 import static org.watertemplate.TemplateObject.StringObject;
 
 public abstract class AbstractSyntaxTree {
 
-    public String evaluate(final Arguments arguments, final Locale locale) { return run(arguments, locale).evaluate(locale).toString(); }
+    public String evaluate(final Arguments arguments, final Locale locale) {
+        return run(arguments, locale).evaluate(locale).toString();
+    }
 
     abstract TemplateObject run(final Arguments arguments, final Locale locale);
 

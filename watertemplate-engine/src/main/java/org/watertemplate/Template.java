@@ -1,12 +1,9 @@
 package org.watertemplate;
 
-import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public abstract class Template {
 

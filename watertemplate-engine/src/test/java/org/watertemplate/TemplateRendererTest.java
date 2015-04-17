@@ -24,24 +24,24 @@ public class TemplateRendererTest {
     public void templateWithSubTemplatesAndMasterTemplate() {
         String rendered = render(new TemplateFixture.TemplateWithSubTemplatesAndMasterTemplate());
         Assert.assertEquals("master_template_content\n" +
-            "template_with_sub_templates_and_master_template_content\n" +
-            "sub_template_content", rendered);
+                "template_with_sub_templates_and_master_template_content\n" +
+                "sub_template_content", rendered);
     }
 
     @Test
     public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
         String rendered = render(new TemplateFixture.TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate());
         Assert.assertEquals("" +
-                "master_template_content\n" +
-                "template_that_have_sub_templates_that_have_a_master_template_content\n" +
-                "sub_template_master_template_content\n" +
-                "sub_template_content", rendered
+                        "master_template_content\n" +
+                        "template_that_have_sub_templates_that_have_a_master_template_content\n" +
+                        "sub_template_master_template_content\n" +
+                        "sub_template_content", rendered
         );
     }
 
     @Test
     public void templateWithCollection() {
-        String rendered = render(new TemplateFixture.TemplateWithCollection(1,2,3,4));
+        String rendered = render(new TemplateFixture.TemplateWithCollection(1, 2, 3, 4));
         Assert.assertEquals("1\n2\n3\n4\n", rendered);
     }
 
@@ -62,7 +62,7 @@ public class TemplateRendererTest {
 
             @Override
             protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
-            // each time the renderer renders a template this method is called once.
+                // each time the renderer renders a template this method is called once.
                 timesRendered++;
             }
 

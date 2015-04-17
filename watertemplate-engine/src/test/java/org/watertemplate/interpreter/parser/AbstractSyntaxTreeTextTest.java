@@ -5,7 +5,7 @@ import org.watertemplate.TemplateMap;
 
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AbstractSyntaxTreeTextTest {
 

@@ -15,7 +15,7 @@ public class NonTerminalStatementsTest {
     @Test
     public void singleStatement() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x")
+                new TokenFixture.PropertyKey("x")
         );
 
         assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));
@@ -24,12 +24,12 @@ public class NonTerminalStatementsTest {
     @Test
     public void multipleStatements() {
         TokenStream tokenStream = new TokenStream(
-            new TokenFixture.PropertyKey("x"),
-            new TokenFixture.PropertyKey("y"),
-            new TokenFixture.PropertyKey("z"),
-            new TokenFixture.PropertyKey("w"),
-            new TokenFixture.PropertyKey("foo"),
-            new TokenFixture.PropertyKey("bar")
+                new TokenFixture.PropertyKey("x"),
+                new TokenFixture.PropertyKey("y"),
+                new TokenFixture.PropertyKey("z"),
+                new TokenFixture.PropertyKey("w"),
+                new TokenFixture.PropertyKey("foo"),
+                new TokenFixture.PropertyKey("bar")
         );
 
         assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));

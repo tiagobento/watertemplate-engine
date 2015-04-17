@@ -43,7 +43,7 @@ public interface TemplateObject<T> {
             } else {
                 throw new InvalidTemplateObjectEvaluationException(
                         "MappedObjects should not be evaluated. " +
-                        "If you're iterating, make sure your collection contains only Strings.");
+                                "If you're iterating, make sure your collection contains only Strings.");
             }
         }
     }
@@ -123,6 +123,7 @@ public interface TemplateObject<T> {
             mapper.accept(object, arguments);
             return arguments;
         }
+
         public BiConsumer<T, TemplateMap.Arguments> getMapper() {
             return mapper;
         }

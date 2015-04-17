@@ -14,10 +14,10 @@ public class TokenStreamTest {
     @Before
     public void before() {
         tokenStream = new TokenStream(
-            new If(),
-            new PropertyKey("foo"),
-            new Else(),
-            new End());
+                new If(),
+                new PropertyKey("foo"),
+                new Else(),
+                new End());
     }
 
     @Test
