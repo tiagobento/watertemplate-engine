@@ -54,7 +54,7 @@ public abstract class AbstractSyntaxTree {
 
             for (final Object item : collectionObject.getIterable()) {
                 arguments.addMappedObject(variableName, item, collectionObject.getMapper());
-                sb.append(forStatements.evaluate(arguments, locale));
+                sb.append(forStatements.evaluate(arguments, locale)); // toString called
             }
 
             arguments.remove(variableName);
@@ -154,7 +154,7 @@ public abstract class AbstractSyntaxTree {
         TemplateObject run(final Arguments arguments, final Locale locale) {
             StringBuilder sb = new StringBuilder();
             for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
-                sb.append(abstractSyntaxTree.evaluate(arguments, locale));
+                sb.append(abstractSyntaxTree.evaluate(arguments, locale)); // toString called
             }
             return new StringObject(sb.toString());
         }
