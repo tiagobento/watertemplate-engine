@@ -96,9 +96,22 @@ public interface TemplateObject<T> {
         }
     }
 
-    //
+    public class SubTemplateObject implements TemplateObject<String> {
+        private final Template subTemplate;
 
+        public SubTemplateObject(final Template subTemplate) {
+            this.subTemplate = subTemplate;
+        }
+
+        @Override
+        public String evaluate(Locale locale) {
+            return subTemplate.render(locale);
+        }
+    }
+
+    //
     static abstract class Mappable<T> {
+
         private final BiConsumer<T, TemplateMap.Arguments> mapper;
 
         Mappable(final BiConsumer<T, TemplateMap.Arguments> mapper) {
@@ -110,9 +123,9 @@ public interface TemplateObject<T> {
             mapper.accept(object, arguments);
             return arguments;
         }
-
         public BiConsumer<T, TemplateMap.Arguments> getMapper() {
             return mapper;
         }
+
     }
 }

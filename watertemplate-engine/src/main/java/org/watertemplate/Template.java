@@ -40,12 +40,6 @@ public abstract class Template {
         return new TemplateRenderer(this, locale).render();
     }
 
-    protected final Map<String, Template> getSubTemplates() {
-        TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
-        addSubTemplates(subTemplates);
-        return subTemplates.map;
-    }
-
     protected final void add(final String key, final String value) {
         this.arguments.add(key, value);
     }
