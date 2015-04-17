@@ -47,7 +47,7 @@ public class AbstractSyntaxTreeIdTest {
     @Test
     public void localeSensitiveObject() {
         final Date now = new Date();
-        final BiFunction<Date, Locale, Object> localeFormatter = (date, locale) -> DateFormat.getDateInstance(DateFormat.FULL, locale).format(date);
+        final BiFunction<Date, Locale, String> localeFormatter = (date, locale) -> DateFormat.getDateInstance(DateFormat.FULL, locale).format(date);
 
         AbstractSyntaxTree abs = new AbstractSyntaxTree.Id("now");
 

@@ -1,5 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.TemplateObject;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 import org.watertemplate.interpreter.parser.exception.NotCollectionObjectException;
@@ -36,19 +37,19 @@ public interface AbstractSyntaxTree {
         public Object run(final Arguments arguments, final Locale locale) {
             Object collection = collectionId.run(arguments, locale);
 
-            if (!(collection instanceof CollectionObject)) {
+            if (!(collection instanceof TemplateObject.CollectionObject)) {
                 throw new NotCollectionObjectException(collectionId);
             }
 
-            CollectionObject collectionObject = (CollectionObject) collection;
+            TemplateObject.CollectionObject collectionObject = (TemplateObject.CollectionObject) collection;
 
-            if (collectionObject.iterator() == null || !collectionObject.iterator().hasNext()) {
+            if (collectionObject.isEmpty()) {
                 return elseStatements.run(arguments, locale);
             }
 
             StringBuilder sb = new StringBuilder();
 
-            for (final Object item : collectionObject) {
+            for (final Object item : collectionObject.getIterable()) {
                 arguments.addMappedObject(variableName, item, collectionObject.getMapper());
                 sb.append(forStatements.run(arguments, locale));
             }
@@ -73,26 +74,22 @@ public interface AbstractSyntaxTree {
         }
 
         public Object run(final Arguments arguments, final Locale locale) {
-            Object object = arguments.getObject(propertyKey);
+            TemplateObject object = arguments.get(propertyKey);
 
             if (object == null) {
                 throw new IdCouldNotBeResolvedException(this);
             }
 
             if (nestedId == null) {
-                if (object instanceof LocaleSensitiveObject) {
-                    return ((LocaleSensitiveObject) object).apply(locale);
-                } else {
-                    return object;
-                }
+                return object.evaluate(locale);
             }
 
-            if (!(object instanceof MappedObject)) {
+            if (!(object instanceof TemplateObject.MappedObject)) {
                 throw new IdCouldNotBeResolvedException(this);
             }
 
             try {
-                return nestedId.run(((MappedObject) object).map(), locale);
+                return nestedId.run(((TemplateObject.MappedObject) object).map(), locale);
             } catch (IdCouldNotBeResolvedException e) {
                 throw new IdCouldNotBeResolvedException(this);
             }

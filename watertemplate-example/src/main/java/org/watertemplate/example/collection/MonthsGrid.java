@@ -16,10 +16,10 @@ public class MonthsGrid extends Template {
 
     public MonthsGrid(final Year year) {
         this.year = year;
-        add("year", year);
+        add("year", year.toString());
         addCollection("months", months, (month, map) -> {
             map.add("lowerName", month.name().toLowerCase());
-            map.add("daysCount", month.length(year.isLeap()));
+            map.add("daysCount", month.length(year.isLeap()) + "");
         });
     }
 

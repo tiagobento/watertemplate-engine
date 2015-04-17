@@ -46,8 +46,12 @@ public abstract class Template {
         return subTemplates.map;
     }
 
-    protected final void add(final String key, final Object value) {
+    protected final void add(final String key, final String value) {
         this.arguments.add(key, value);
+    }
+
+    protected final void add(final String key, final Boolean someCondition) {
+        this.arguments.add(key, someCondition);
     }
 
     protected final <T> void addMappedObject(final String key, final T object, final Consumer<TemplateMap.Arguments> mapper) {
@@ -62,7 +66,7 @@ public abstract class Template {
         this.arguments.addCollection(key, iterable, mapper);
     }
 
-    protected final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, Object> function) {
+    protected final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, String> function) {
         this.arguments.addLocaleSensitiveObject(key, object, function);
     }
 }

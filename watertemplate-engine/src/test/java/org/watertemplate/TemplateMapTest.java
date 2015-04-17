@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 
 public class TemplateMapTest {
     @Test
@@ -14,7 +15,7 @@ public class TemplateMapTest {
         arguments.add("foo", "bar");
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals("bar", arguments.map.get("foo"));
+        Assert.assertTrue(arguments.map.get("foo") instanceof TemplateObject.StringObject);
     }
 
     @Test
@@ -29,8 +30,8 @@ public class TemplateMapTest {
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals(value, arguments.get(key));
-        Assert.assertTrue(arguments.map.get(key) instanceof TemplateMap.MappedObject);
+        Assert.assertEquals(value, arguments.get(key).evaluate(Locale.US));
+        Assert.assertTrue(arguments.map.get(key) instanceof TemplateObject.MappedObject);
     }
 
 
@@ -42,30 +43,30 @@ public class TemplateMapTest {
         arguments.addCollection("strings", strings, (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
-            stringMap.add("size", string.length());
+            stringMap.add("size", string.length()+"");
 
             stringMap.addCollection("chars", getChars(string), (character, charsMap) ->
-                    charsMap.add("asciiCode", (int) character)
+                    charsMap.add("asciiCode", character.toString())
             );
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateMap.CollectionObject);
+        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateObject.CollectionObject);
     }
 
     @Test
     public void map() {
-        final TemplateMap.MappedObject<String> mappedObject;
-        mappedObject = new TemplateMap.MappedObject<>("foo", (string, stringMap) -> {
+        final TemplateObject.MappedObject<String> mappedObject;
+        mappedObject = new TemplateObject.MappedObject<>("foo", (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
-            stringMap.add("size", string.length());
+            stringMap.add("size", string.length()+"");
         });
 
         final TemplateMap.Arguments map = mappedObject.map();
-        Assert.assertEquals(map.get("lower"), "foo");
-        Assert.assertEquals(map.get("upper"), "FOO");
-        Assert.assertEquals(map.get("size"), "3");
+        Assert.assertEquals(map.get("lower").evaluate(Locale.US), "foo");
+        Assert.assertEquals(map.get("upper").evaluate(Locale.US), "FOO");
+        Assert.assertEquals(map.get("size").evaluate(Locale.US), "3");
 
     }
 

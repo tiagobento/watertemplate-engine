@@ -36,7 +36,7 @@ public class AbstractSyntaxTreeStatementsTest {
         arguments.add("y", "line 2");
         arguments.add("condition", true);
         arguments.addCollection("collection", Arrays.asList(1, 2, 3, 4), (i, map) -> {
-            map.add("square", Math.round(Math.pow(i, 2)));
+            map.add("square", Math.round(Math.pow(i, 2)) + "");
         });
 
         Object result = abs.run(arguments, locale);

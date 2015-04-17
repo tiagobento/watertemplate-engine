@@ -8,7 +8,7 @@ class NewUserMail extends Template {
         addMappedObject("user", user, (userMap) -> {
             userMap.add("email", user.email);
             userMap.add("username", user.username);
-            userMap.add("date_of_birth", user.dateOfBirth);
+            userMap.addLocaleSensitiveObject("date_of_birth", user.dateOfBirth, (date, locale) -> date.toString());
 
             userMap.addMappedObject("name", user.name, (name, nameMap) -> {
                 nameMap.add("capitalized", WordUtils.capitalizeFully(name));
