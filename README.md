@@ -46,10 +46,10 @@ class MonthsGrid extends Template {
     private static final Collection<Month> months = Arrays.asList(Month.values());
 
     MonthsGrid(final Year year) {
-        add("year", year);
+        add("year", year.toString());
         addCollection("months", months, (month, map) -> {
             map.add("lowerName", month.name().toLowerCase());
-            map.add("daysCount", month.length(year.isLeap()));
+            map.add("daysCount", month.length(year.isLeap()) + "");
         });
     }
 
@@ -112,28 +112,23 @@ Every `Template` has a method called `getDefaultLocale` which you can override. 
 
 
 
-  
-## Nested templates
-Water gives you the possibility to nest templates in many levels. Each `Template` can have one `MasterTemplate` and many `SubTemplates`. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
-
-Also, each `Template` has one, and one only, template file associated with it. This 1 to 1 relationship ensures that
-you cannot access other template files within your `Template` and you cannot access other `Templates` within your template files.
-
-See an [example](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates).
-
-
-
-
+ 
 ## Adding arguments
-Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. There are four basic methods which let you add arguments:
+Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. 
+There are five basic methods which let you add arguments:
 
 ```java
-add("email", user.getEmail()); 
+add("email", user.getEmail()); // takes a String
 // Will match with ~email~
 ```
 
 ```java
-addMappedObject("user", user, (userMap) -> {
+add("user_is_popular", user.isPopular()); // takes a Boolean
+// Will match with ~user_is_popular~
+```
+
+```java
+addMappedObject("user", user, (userMap) -> { 
     userMap.add("email", user.getEmail());
 }); 
 // Will match with ~user.email~
@@ -148,7 +143,7 @@ addCollection("users", users, (user, userMap) -> {
 
 ```java
 addLocaleSensitiveObject("now", new Date(), (now, locale) -> {
-    return DateFormat.getDateInstance(DateFormat.FULL, locale).format(now);
+    return DateFormat.getDateInstance(DateFormat.FULL, locale).format(now); // returns a String
 });
 // Will match with ~now~
 ```
@@ -170,6 +165,20 @@ addCollection("users", users, (user, userMap) -> {
 // or also with
 //   ~for user in users: ~user.name.upper~ was born in ~user.birth_date~ :~
 ```
+
+It is only possible to add Strings and Booleans. Collections and MappedObjects are special types which should never be evaluated. The toString() method is never implicitly called.
+
+## Nested templates
+Water gives you the possibility to nest templates in many levels. Each `Template` can have one `MasterTemplate` and many `SubTemplates`. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
+
+Also, each `Template` has one, and one only, template file associated with it. This 1 to 1 relationship ensures that
+you cannot access other template files within your `Template` and you cannot access other `Templates` within your template files.
+
+See an [example](watertemplate-example/src/main/java/org/watertemplate/example/nestedtemplates).
+
+
+
+
 
 ## Commands
 Water provides **if** and **for** commands. 
