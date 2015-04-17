@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.watertemplate</groupId>
         <artifactId>watertemplate</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>watertemplate-i18n-maven-plugin</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Water Template i18n Plugin</name>
@@ -80,7 +80,7 @@
                 <version>3.3</version>
                 <configuration>
                     <goalPrefix>watertemplate-i18n</goalPrefix>
-                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                    <skipErrorNoDescriptorsFound>false</skipErrorNoDescriptorsFound>
                 </configuration>
             </plugin>
         </plugins>
