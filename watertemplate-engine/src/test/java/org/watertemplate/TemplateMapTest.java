@@ -15,7 +15,7 @@ public class TemplateMapTest {
         arguments.add("foo", "bar");
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertTrue(arguments.map.get("foo") instanceof TemplateObject.StringObject);
+        Assert.assertEquals("bar", arguments.map.get("foo").evaluate(Locale.US));
     }
 
     @Test
@@ -31,7 +31,6 @@ public class TemplateMapTest {
 
         Assert.assertEquals(1, arguments.map.size());
         Assert.assertEquals(value, arguments.get(key).evaluate(Locale.US));
-        Assert.assertTrue(arguments.map.get(key) instanceof TemplateObject.MappedObject);
     }
 
 

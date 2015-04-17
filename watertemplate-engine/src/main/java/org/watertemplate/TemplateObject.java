@@ -24,7 +24,7 @@ public interface TemplateObject<T> {
         }
     }
 
-    public final class MappedObject<T> extends Mappable<T> implements TemplateObject<T> {
+    public final class MappedObject<T> extends Mappable<T> implements TemplateObject<String> {
         private final T object;
 
         MappedObject(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
@@ -37,8 +37,14 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public T evaluate(final Locale locale) {
-            return object;
+        public String evaluate(final Locale locale) {
+            if (object instanceof String) {
+                return (String) object;
+            } else {
+                throw new InvalidTemplateObjectEvaluationException(
+                        "MappedObjects should not be evaluated. " +
+                        "If you're iterating, make sure your collection contains only Strings.");
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
+import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +22,9 @@ public class AbstractSyntaxTreeForTest {
                         new AbstractSyntaxTree.Id("x"),
                         new AbstractSyntaxTree.Text("collection has no elements"));
 
-        arguments.addCollection("collection", Arrays.asList(1, 2, 3, 4, 5, 6, 7));
+        arguments.addCollection("collection", Arrays.asList("a", "v", "3", "%", "5", "4", "7"));
         Object result = abs.evaluate(arguments, locale);
-        assertEquals("1234567", result);
+        assertEquals("av3%547", result);
 
         arguments.addCollection("collection", new ArrayList<>());
         result = abs.evaluate(arguments, locale);
@@ -42,7 +43,7 @@ public class AbstractSyntaxTreeForTest {
                         new AbstractSyntaxTree.Id("x")
                 );
 
-        arguments.addCollection("collection", Arrays.asList("a", 'v', 3, "%", 5, "4", 7));
+        arguments.addCollection("collection", Arrays.asList("a", "v", "3", "%", "5", "4", "7"));
         Object result = abs.evaluate(arguments, locale);
         assertEquals("av3%547", result);
 
@@ -89,5 +90,19 @@ public class AbstractSyntaxTreeForTest {
 
         Object result = abs.evaluate(arguments, locale);
         assertEquals("ABCD", result);
+    }
+
+    @Test(expected = InvalidTemplateObjectEvaluationException.class)
+    public void forTryingToEvaluateMappedObjectWhichAreNotStrings() {
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        AbstractSyntaxTree abs =
+                new AbstractSyntaxTree.For("x", new AbstractSyntaxTree.Id("collection"),
+                        new AbstractSyntaxTree.Id("x"));
+
+        arguments.addCollection("collection", Arrays.asList(1, 2, 3, 4), (number, map) -> {
+            map.add("to_string", number.toString());
+        });
+
+        abs.evaluate(arguments, locale);
     }
 }

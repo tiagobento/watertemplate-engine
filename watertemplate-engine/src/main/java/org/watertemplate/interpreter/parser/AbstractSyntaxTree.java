@@ -8,6 +8,7 @@ import org.watertemplate.interpreter.parser.exception.NotCollectionObjectExcepti
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 import static org.watertemplate.TemplateMap.*;
 import static org.watertemplate.TemplateObject.StringObject;
@@ -51,9 +52,10 @@ public abstract class AbstractSyntaxTree {
             }
 
             StringBuilder sb = new StringBuilder();
+            BiConsumer mapper = collectionObject.getMapper();
 
             for (final Object item : collectionObject.getIterable()) {
-                arguments.addMappedObject(variableName, item, collectionObject.getMapper());
+                arguments.addMappedObject(variableName, item, mapper);
                 sb.append(forStatements.evaluate(arguments, locale)); // toString called
             }
 
