@@ -35,7 +35,7 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public T evaluate(Locale locale) {
+        public T evaluate(final Locale locale) {
             return object;
         }
     }
@@ -57,7 +57,7 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public CollectionObject<T> evaluate(Locale locale) {
+        public CollectionObject<T> evaluate(final Locale locale) {
             return this;
         }
     }
@@ -70,7 +70,7 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public Boolean evaluate(Locale locale) {
+        public Boolean evaluate(final Locale locale) {
             return value;
         }
     }
