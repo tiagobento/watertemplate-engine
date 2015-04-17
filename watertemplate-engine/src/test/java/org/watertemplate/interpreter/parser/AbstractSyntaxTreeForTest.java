@@ -22,15 +22,15 @@ public class AbstractSyntaxTreeForTest {
                         new AbstractSyntaxTree.Text("collection has no elements"));
 
         arguments.addCollection("collection", Arrays.asList(1, 2, 3, 4, 5, 6, 7));
-        Object result = abs.run(arguments, locale);
+        Object result = abs.evaluate(arguments, locale);
         assertEquals("1234567", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("collection has no elements", result);
 
         arguments.addCollection("collection", null);
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("collection has no elements", result);
     }
 
@@ -43,15 +43,15 @@ public class AbstractSyntaxTreeForTest {
                 );
 
         arguments.addCollection("collection", Arrays.asList("a", 'v', 3, "%", 5, "4", 7));
-        Object result = abs.run(arguments, locale);
+        Object result = abs.evaluate(arguments, locale);
         assertEquals("av3%547", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("", result);
 
         arguments.addCollection("collection", null);
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("", result);
     }
 
@@ -64,15 +64,15 @@ public class AbstractSyntaxTreeForTest {
                 );
 
         arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"));
-        Object result = abs.run(arguments, locale);
+        Object result = abs.evaluate(arguments, locale);
         assertEquals("abcd", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("", result);
 
         arguments.addCollection("collection", null);
-        result = abs.run(arguments, locale);
+        result = abs.evaluate(arguments, locale);
         assertEquals("", result);
     }
 
@@ -87,7 +87,7 @@ public class AbstractSyntaxTreeForTest {
             map.add("upper", letter.toUpperCase());
         });
 
-        Object result = abs.run(arguments, locale);
+        Object result = abs.evaluate(arguments, locale);
         assertEquals("ABCD", result);
     }
 }

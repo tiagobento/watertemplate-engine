@@ -31,7 +31,7 @@ public class WaterInterpreter implements Interpreter {
         final String cacheKey = cacheKey(locale);
 
         if (cache.containsKey(cacheKey)) {
-            return (String) cache.get(cacheKey).run(arguments, locale);
+            return cache.get(cacheKey).evaluate(arguments, locale);
         }
 
         File templateFile = findTemplateFileWith(locale);
@@ -39,7 +39,7 @@ public class WaterInterpreter implements Interpreter {
         AbstractSyntaxTree abs = parse(tokens);
 
         cache.put(cacheKey, abs);
-        return (String) abs.run(arguments, locale);
+        return abs.evaluate(arguments, locale);
     }
 
     private File findTemplateFileWith(final Locale locale) {

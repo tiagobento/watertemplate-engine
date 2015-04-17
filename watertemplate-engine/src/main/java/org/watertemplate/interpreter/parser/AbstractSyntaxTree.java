@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.watertemplate.TemplateMap.*;
+import static org.watertemplate.TemplateObject.StringObject;
 
-public interface AbstractSyntaxTree {
+public abstract class AbstractSyntaxTree {
 
-    public Object run(final Arguments arguments, final Locale locale);
+    public String evaluate(final Arguments arguments, final Locale locale) { return run(arguments, locale).evaluate(locale).toString(); }
 
-    static class For implements AbstractSyntaxTree {
+    abstract TemplateObject run(final Arguments arguments, final Locale locale);
+
+    public static class For extends AbstractSyntaxTree {
 
         private final String variableName;
         private final Id collectionId;
@@ -34,8 +37,8 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            Object collection = collectionId.run(arguments, locale);
+        TemplateObject run(final Arguments arguments, final Locale locale) {
+            TemplateObject collection = collectionId.run(arguments, locale);
 
             if (!(collection instanceof TemplateObject.CollectionObject)) {
                 throw new NotCollectionObjectException(collectionId);
@@ -51,15 +54,15 @@ public interface AbstractSyntaxTree {
 
             for (final Object item : collectionObject.getIterable()) {
                 arguments.addMappedObject(variableName, item, collectionObject.getMapper());
-                sb.append(forStatements.run(arguments, locale));
+                sb.append(forStatements.evaluate(arguments, locale));
             }
 
             arguments.remove(variableName);
-            return sb.toString();
+            return new StringObject(sb.toString());
         }
     }
 
-    static class Id implements AbstractSyntaxTree {
+    public static class Id extends AbstractSyntaxTree {
 
         private final String propertyKey;
         private final Id nestedId;
@@ -73,7 +76,7 @@ public interface AbstractSyntaxTree {
             this.nestedId = nestedId;
         }
 
-        public Object run(final Arguments arguments, final Locale locale) {
+        TemplateObject run(final Arguments arguments, final Locale locale) {
             TemplateObject object = arguments.get(propertyKey);
 
             if (object == null) {
@@ -81,7 +84,7 @@ public interface AbstractSyntaxTree {
             }
 
             if (nestedId == null) {
-                return object.evaluate(locale);
+                return object;
             }
 
             if (!(object instanceof TemplateObject.MappedObject)) {
@@ -89,7 +92,8 @@ public interface AbstractSyntaxTree {
             }
 
             try {
-                return nestedId.run(((TemplateObject.MappedObject) object).map(), locale);
+                Arguments mappedProperties = ((TemplateObject.MappedObject) object).map();
+                return nestedId.run(mappedProperties, locale);
             } catch (IdCouldNotBeResolvedException e) {
                 throw new IdCouldNotBeResolvedException(this);
             }
@@ -108,7 +112,7 @@ public interface AbstractSyntaxTree {
         }
     }
 
-    static class If implements AbstractSyntaxTree {
+    public static class If extends AbstractSyntaxTree {
 
         private final Id conditionId;
         private final AbstractSyntaxTree ifStatements;
@@ -125,8 +129,8 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            if ((boolean) conditionId.run(arguments, locale)) {
+        TemplateObject run(final Arguments arguments, final Locale locale) {
+            if ((boolean) conditionId.run(arguments, locale).evaluate(locale)) {
                 return ifStatements.run(arguments, locale);
             } else {
                 return elseStatements.run(arguments, locale);
@@ -134,7 +138,7 @@ public interface AbstractSyntaxTree {
         }
     }
 
-    static class Statements implements AbstractSyntaxTree {
+    public static class Statements extends AbstractSyntaxTree {
 
         private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
@@ -147,16 +151,16 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
+        TemplateObject run(final Arguments arguments, final Locale locale) {
             StringBuilder sb = new StringBuilder();
             for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
-                sb.append(abstractSyntaxTree.run(arguments, locale));
+                sb.append(abstractSyntaxTree.evaluate(arguments, locale));
             }
-            return sb.toString();
+            return new StringObject(sb.toString());
         }
     }
 
-    static class Text implements AbstractSyntaxTree {
+    public static class Text extends AbstractSyntaxTree {
         private final String value;
 
         public Text(final String value) {
@@ -164,15 +168,15 @@ public interface AbstractSyntaxTree {
         }
 
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            return value;
+        TemplateObject run(final Arguments arguments, final Locale locale) {
+            return new StringObject(value);
         }
     }
 
-    static class Empty implements AbstractSyntaxTree {
+    public static class Empty extends AbstractSyntaxTree {
         @Override
-        public Object run(final Arguments arguments, final Locale locale) {
-            return "";
+        TemplateObject run(final Arguments arguments, final Locale locale) {
+            return new StringObject("");
         }
     }
 }

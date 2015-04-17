@@ -39,7 +39,7 @@ public class AbstractSyntaxTreeStatementsTest {
             map.add("square", Math.round(Math.pow(i, 2)) + "");
         });
 
-        Object result = abs.run(arguments, locale);
+        Object result = abs.evaluate(arguments, locale);
         assertEquals("line 1\nline 2\nrandom text\ncondition was true\n1\n4\n9\n16", result);
     }
 
