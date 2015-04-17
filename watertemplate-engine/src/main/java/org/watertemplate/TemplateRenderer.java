@@ -38,14 +38,14 @@ class TemplateRenderer {
     }
 
     private String renderTemplateWithSubTemplates() {
-        renderSubTemplatesAddingThemAsTemplateArguments();
+        addSubTemplatesAsArguments();
         return renderTemplate();
     }
 
-    private void renderSubTemplatesAddingThemAsTemplateArguments() {
-        template.getSubTemplates().entrySet().parallelStream().forEach(
-            (subTemplate) -> template.add(subTemplate.getKey(), subTemplate.getValue().render(locale))
-        );
+    private void addSubTemplatesAsArguments() {
+        TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
+        template.addSubTemplates(subTemplates);
+        subTemplates.map.forEach(template.arguments::add);
     }
 
     private String renderTemplate() {
