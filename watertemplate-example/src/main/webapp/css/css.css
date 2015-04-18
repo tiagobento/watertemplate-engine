@@ -1,0 +1,60 @@
+html {
+    position:relative;
+    text-align:center;
+
+    height:100%;
+    box-sizing: border-box;
+    border: 20px solid rgba(255, 255, 255, 0.1);
+
+    font-family: "Georgia, serif";
+    font-size: 1.2em;
+    
+
+    background: url('/assets/grayton-beach-white-sand.png');
+    background-repeat: repeat;
+    background-position: center center;
+}
+
+a {
+    color: rgba(0, 0, 0, 0.65);
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+}
+
+/* home */
+
+#name {
+    margin-top: 90px;
+    font-size: 7.5em;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+#home-menu {
+    font-weight: bold;
+    position: absolute;
+    top: 250px;
+    left: 110px;
+}
+
+
+/* menu */
+
+.menu {
+    font-size: 1em;
+    font-family: Monaco;
+    box-sizing: border-box;
+}
+
+.menu ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+
+.menu ul li {
+    padding: 0px 10px 0px 10px;
+    display: inline;
+}
