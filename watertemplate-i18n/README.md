@@ -17,7 +17,7 @@ Table of contents
 <plugin>
     <groupId>org.watertemplate</groupId>
     <artifactId>watertemplate-i18n-maven-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <configuration>
         <bundlesDir>${pom.basedir}/src/main/bundles</bundlesDir>
         <baseDir>${pom.basedir}/src/main/templates</baseDir>
