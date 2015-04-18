@@ -18,7 +18,7 @@ Table of contents
 - [Commands](#commands)
 - [i18n](#i18n)
 - [JAX-RS](#jax-rs)
-- [Try it yourself!](#try-it-yourself)
+- **[Try it yourself!](#try-it-yourself)**
 
 
 
