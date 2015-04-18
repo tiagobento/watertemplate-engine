@@ -18,6 +18,7 @@ Table of contents
 - [Commands](#commands)
 - [i18n](#i18n)
 - [JAX-RS](#jax-rs)
+- [Try it yourself!](#try-it-yourself)
 
 
 
@@ -212,7 +213,7 @@ Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) 
 ## JAX-RS
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://search.maven.org/#artifactdetails%7Corg.watertemplate%7Cwatertemplate-jaxrs-binding%7C1.1.0%7Cjar) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
 
-Run [an example](watertemplate-example/)!
+**Run an example** following the information below.
 
 ```java
 @GET
@@ -227,3 +228,7 @@ public Template monthsGrid(@PathParam("year") Integer year) {
     return new MonthsGrid(Year.of(year));
 }
 ```
+
+## Try it yourself!
+
+Go to the [examples project](watertemplate-example/) and follow the instructions.
