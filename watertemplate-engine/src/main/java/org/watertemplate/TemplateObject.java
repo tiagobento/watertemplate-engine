@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 public interface TemplateObject {
     String evaluate(final Locale locale);
 
-    public final class LocaleSensitiveObject<T> implements TemplateObject {
+    class LocaleSensitiveObject<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
         private final T object;
 
@@ -88,7 +88,7 @@ public interface TemplateObject {
         }
     }
 
-    public class StringObject implements TemplateObject {
+    class StringObject implements TemplateObject {
         private final String value;
 
         public StringObject(final String value) {
@@ -101,7 +101,7 @@ public interface TemplateObject {
         }
     }
 
-    public class SubTemplateObject implements TemplateObject {
+    class SubTemplateObject implements TemplateObject {
         private final Template subTemplate;
 
         public SubTemplateObject(final Template subTemplate) {
