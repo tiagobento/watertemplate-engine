@@ -33,7 +33,7 @@ enum Terminal implements GrammarSymbol {
     }
 
     AbstractSyntaxTree buildAbstractSyntaxTree(final Token current) {
-        return new AbstractSyntaxTree.Empty();
+        return AbstractSyntaxTree.EMPTY;
     }
 
     private boolean isTokenThisTerminal(final Token currentToken) {

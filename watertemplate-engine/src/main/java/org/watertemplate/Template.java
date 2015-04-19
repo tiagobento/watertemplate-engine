@@ -1,5 +1,6 @@
 package org.watertemplate;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -53,7 +54,7 @@ public abstract class Template {
         this.arguments.addMappedObject(key, object, mapper);
     }
 
-    protected final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+    protected final <T> void addCollection(final String key, final Collection<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
         this.arguments.addCollection(key, iterable, mapper);
     }
 

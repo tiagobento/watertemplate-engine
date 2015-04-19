@@ -130,7 +130,7 @@ abstract class Production implements GrammarSymbol {
     static class Empty extends Production {
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            return new AbstractSyntaxTree.Empty();
+            return AbstractSyntaxTree.EMPTY;
         }
     }
 }

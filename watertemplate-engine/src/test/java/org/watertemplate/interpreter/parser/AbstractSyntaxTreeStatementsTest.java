@@ -16,20 +16,22 @@ public class AbstractSyntaxTreeStatementsTest {
     public void sequentialStatements() {
         AbstractSyntaxTree abs =
                 new AbstractSyntaxTree.Statements(
-                        new AbstractSyntaxTree.Id("x"),
-                        new AbstractSyntaxTree.Text("\n"),
-                        new AbstractSyntaxTree.Id("y"),
-                        new AbstractSyntaxTree.Text("\nrandom text\n"),
-                        new AbstractSyntaxTree.If(new AbstractSyntaxTree.Id("condition"),
-                                new AbstractSyntaxTree.Text("condition was true")
-                        ),
-                        new AbstractSyntaxTree.For("i", new AbstractSyntaxTree.Id("collection"),
-                                new AbstractSyntaxTree.Statements(
-                                        new AbstractSyntaxTree.Text("\n"),
-                                        new AbstractSyntaxTree.Id("i", new AbstractSyntaxTree.Id("square"))
+                        Arrays.asList(
+                                new AbstractSyntaxTree.Id("x"),
+                                new AbstractSyntaxTree.Text("\n"),
+                                new AbstractSyntaxTree.Id("y"),
+                                new AbstractSyntaxTree.Text("\nrandom text\n"),
+                                new AbstractSyntaxTree.If(new AbstractSyntaxTree.Id("condition"),
+                                        new AbstractSyntaxTree.Text("condition was true")
+                                ),
+                                new AbstractSyntaxTree.For("i", new AbstractSyntaxTree.Id("collection"),
+                                        new AbstractSyntaxTree.Statements(
+                                                Arrays.asList(
+                                                        new AbstractSyntaxTree.Text("\n"),
+                                                        new AbstractSyntaxTree.Id("i", new AbstractSyntaxTree.Id("square"))
+                                                ))
                                 )
-                        )
-                );
+                        ));
 
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         arguments.add("x", "line 1");

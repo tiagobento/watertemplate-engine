@@ -2,6 +2,7 @@ package org.watertemplate;
 
 import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -49,19 +50,19 @@ public interface TemplateObject<T> {
     }
 
     public final class CollectionObject<T> extends Mappable<T> implements TemplateObject {
-        private final Iterable<T> iterable;
+        private final Collection<T> collection;
 
-        public CollectionObject(final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        public CollectionObject(final Collection<T> collection, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
-            this.iterable = iterable;
+            this.collection = collection;
         }
 
         public Boolean isEmpty() {
-            return iterable == null || !iterable.iterator().hasNext();
+            return collection == null || !collection.iterator().hasNext();
         }
 
-        public Iterable<T> getIterable() {
-            return iterable;
+        public Collection<T> getCollection() {
+            return collection;
         }
 
         @Override

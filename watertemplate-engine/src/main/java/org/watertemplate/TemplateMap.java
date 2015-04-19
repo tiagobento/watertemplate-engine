@@ -1,5 +1,6 @@
 package org.watertemplate;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -24,12 +25,12 @@ public abstract class TemplateMap<T> {
     }
 
     public static final class Arguments extends TemplateMap<TemplateObject> {
-        public final <T> void addCollection(final String key, final Iterable<T> iterable) {
+        public final <T> void addCollection(final String key, final Collection<T> iterable) {
             add(key, new TemplateObject.CollectionObject<>(iterable, (a, b) -> {
             }));
         }
 
-        public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+        public final <T> void addCollection(final String key, final Collection<T> iterable, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateObject.CollectionObject<>(iterable, mapper));
         }
 
