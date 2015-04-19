@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.watertemplate.TemplateMap.Arguments;
+import static org.watertemplate.TemplateObject.*;
 
 public abstract class AbstractSyntaxTree {
 
@@ -46,27 +47,29 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
+        /* Because it's not possible to retrieve the type from the CollectionObject, the compiler
+        * can't figure out which type to use in 'map'. This results in an warning. */
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            TemplateObject collection = collectionId.templateObject(arguments, locale);
+            final TemplateObject collection = collectionId.templateObject(arguments, locale);
 
-            if (!(collection instanceof TemplateObject.CollectionObject)) {
+            if (!(collection instanceof CollectionObject)) {
                 throw new NotCollectionObjectException(collectionId);
             }
 
-            final TemplateObject.CollectionObject collectionObject = (TemplateObject.CollectionObject) collection;
+            final CollectionObject collectionObject = (CollectionObject) collection;
 
             if (collectionObject.isEmpty()) {
                 return elseStatements.run(arguments, locale);
             }
 
+            final Arguments forArguments = new Arguments(arguments); // Mutable
             final BiConsumer mapper = collectionObject.getMapper();
 
-            return collectionObject.getCollection().stream()
-                    .map(item -> {
-                        arguments.addMappedObject(variableName, item, mapper);
-                        return forStatements.run(arguments, locale);
-                    })
-                    .flatMap((Function) s -> s);
+            return collectionObject.getCollection().stream().map(item -> {
+                forArguments.addMappedObject(variableName, item, mapper);
+                return forStatements.run(forArguments, locale);
+            }).flatMap((Function) s -> s);
         }
     }
 
@@ -84,29 +87,6 @@ public abstract class AbstractSyntaxTree {
             this.nestedId = nestedId;
         }
 
-        TemplateObject templateObject(final Arguments arguments, final Locale locale) {
-            TemplateObject object = arguments.get(propertyKey);
-
-            if (object == null) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-
-            if (nestedId == null) {
-                return object;
-            }
-
-            if (!(object instanceof TemplateObject.MappedObject)) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-
-            try {
-                Arguments mappedProperties = ((TemplateObject.MappedObject) object).map();
-                return nestedId.templateObject(mappedProperties, locale);
-            } catch (IdCouldNotBeResolvedException e) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-        }
-
         public String getPropertyKey() {
             return propertyKey;
         }
@@ -119,9 +99,32 @@ public abstract class AbstractSyntaxTree {
             return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
         }
 
+        TemplateObject templateObject(final Arguments arguments, final Locale locale) {
+            TemplateObject object = arguments.get(propertyKey);
+
+            if (object == null) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+
+            if (nestedId == null) {
+                return object;
+            }
+
+            if (!(object instanceof MappedObject)) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+
+            try {
+                Arguments mappedProperties = ((MappedObject) object).map();
+                return nestedId.templateObject(mappedProperties, locale);
+            } catch (IdCouldNotBeResolvedException e) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+        }
+
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            return Stream.of(() -> this.templateObject(arguments, locale).evaluate(locale).toString());
+            return Stream.of(() -> this.templateObject(arguments, locale).evaluate(locale));
         }
     }
 
@@ -143,7 +146,9 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            if ((boolean) conditionId.templateObject(arguments, locale).evaluate(locale)) {
+            ConditionObject condition = (ConditionObject) conditionId.templateObject(arguments, locale);
+
+            if (condition.isTrue()) {
                 return ifStatements.run(arguments, locale);
             } else {
                 return elseStatements.run(arguments, locale);

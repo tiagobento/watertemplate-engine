@@ -9,9 +9,9 @@ import java.util.function.BiFunction;
 
 public abstract class TemplateMap<T> {
 
-    public final Map<String, T> map = new HashMap<>();
+    final Map<String, T> map = new HashMap<>();
 
-    public final void add(final String key, final T value) {
+    final void add(final String key, final T value) {
         this.map.put(key, value);
     }
 
@@ -25,6 +25,13 @@ public abstract class TemplateMap<T> {
     }
 
     public static final class Arguments extends TemplateMap<TemplateObject> {
+        public Arguments() {
+        }
+
+        public Arguments(final Arguments arguments) {
+            map.putAll(arguments.map);
+        }
+
         public final <T> void addCollection(final String key, final Collection<T> iterable) {
             add(key, new TemplateObject.CollectionObject<>(iterable, (a, b) -> {
             }));
@@ -52,10 +59,6 @@ public abstract class TemplateMap<T> {
 
         public final TemplateObject get(final String key) {
             return map.get(key);
-        }
-
-        public final void remove(final String key) {
-            map.remove(key);
         }
     }
 }

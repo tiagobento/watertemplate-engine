@@ -7,10 +7,10 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-public interface TemplateObject<T> {
-    T evaluate(final Locale locale);
+public interface TemplateObject {
+    String evaluate(final Locale locale);
 
-    public final class LocaleSensitiveObject<T> implements TemplateObject<String> {
+    public final class LocaleSensitiveObject<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
         private final T object;
 
@@ -25,7 +25,7 @@ public interface TemplateObject<T> {
         }
     }
 
-    public final class MappedObject<T> extends Mappable<T> implements TemplateObject<String> {
+    public final class MappedObject<T> extends Mappable<T> implements TemplateObject {
         private final T object;
 
         MappedObject(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
@@ -66,25 +66,29 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public Object evaluate(final Locale locale) {
+        public String evaluate(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Collections should not be evaluated");
         }
     }
 
-    public class ConditionObject implements TemplateObject<Boolean> {
+    public class ConditionObject implements TemplateObject {
         private final Boolean value;
 
         public ConditionObject(final Boolean value) {
             this.value = value;
         }
 
-        @Override
-        public Boolean evaluate(final Locale locale) {
+        public Boolean isTrue() {
             return value;
+        }
+
+        @Override
+        public String evaluate(final Locale locale) {
+            throw new InvalidTemplateObjectEvaluationException("Booleans should not be evaluated");
         }
     }
 
-    public class StringObject implements TemplateObject<String> {
+    public class StringObject implements TemplateObject {
         private final String value;
 
         public StringObject(final String value) {
@@ -97,7 +101,7 @@ public interface TemplateObject<T> {
         }
     }
 
-    public class SubTemplateObject implements TemplateObject<String> {
+    public class SubTemplateObject implements TemplateObject {
         private final Template subTemplate;
 
         public SubTemplateObject(final Template subTemplate) {
@@ -105,12 +109,13 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public String evaluate(Locale locale) {
+        public String evaluate(final Locale locale) {
             return subTemplate.render(locale);
         }
     }
 
     //
+
     static abstract class Mappable<T> {
 
         private final BiConsumer<T, TemplateMap.Arguments> mapper;

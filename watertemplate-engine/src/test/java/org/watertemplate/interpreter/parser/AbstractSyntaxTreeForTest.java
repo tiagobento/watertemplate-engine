@@ -3,6 +3,7 @@ package org.watertemplate.interpreter.parser;
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
+import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,6 +104,20 @@ public class AbstractSyntaxTreeForTest {
             map.add("to_string", number.toString());
         });
 
+        abs.evaluate(arguments, locale);
+    }
+
+    @Test(expected = IdCouldNotBeResolvedException.class)
+    public void forTryingToEvaluateIterationIdentifierOutOfScope() {
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        AbstractSyntaxTree abs = new AbstractSyntaxTree.Statements(Arrays.asList(
+                new AbstractSyntaxTree.For("x", new AbstractSyntaxTree.Id("collection"),
+                        new AbstractSyntaxTree.Id("x")
+                ),
+                new AbstractSyntaxTree.Id("x")
+        ));
+
+        arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"));
         abs.evaluate(arguments, locale);
     }
 }

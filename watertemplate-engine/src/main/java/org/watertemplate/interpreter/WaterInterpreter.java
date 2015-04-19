@@ -37,9 +37,9 @@ public class WaterInterpreter implements Interpreter {
             return cache.get(cacheKey).evaluate(arguments, locale);
         }
 
-        File templateFile = findTemplateFileWith(locale);
-        List<Token> tokens = lex(templateFile);
-        AbstractSyntaxTree abs = parse(tokens);
+        final File templateFile = findTemplateFileWith(locale);
+        final List<Token> tokens = lex(templateFile);
+        final AbstractSyntaxTree abs = parse(tokens);
 
         cache.put(cacheKey, abs);
         return abs.evaluate(arguments, locale);

@@ -58,6 +58,10 @@ public abstract class Template {
         this.arguments.addCollection(key, iterable, mapper);
     }
 
+    protected final <T> void addCollection(final String key, final Collection<T> iterable) {
+        this.arguments.addCollection(key, iterable);
+    }
+
     protected final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, String> function) {
         this.arguments.addLocaleSensitiveObject(key, object, function);
     }
