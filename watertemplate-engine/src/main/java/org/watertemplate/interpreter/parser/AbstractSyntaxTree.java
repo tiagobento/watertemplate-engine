@@ -59,10 +59,10 @@ public abstract class AbstractSyntaxTree {
             final Arguments forArguments = new Arguments(arguments); // Mutable
             final BiConsumer mapper = collection.getMapper();
 
-            return collection.getCollection().stream().map(item -> {
+            return collection.getCollection().stream().flatMap((Function) item -> {
                 forArguments.addMappedObject(variableName, item, mapper);
                 return forStatements.run(forArguments, locale);
-            }).flatMap((Function) s -> s);
+            });
         }
     }
 
@@ -159,9 +159,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            return abstractSyntaxTrees.stream()
-                    .map(ast -> ast.run(arguments, locale))
-                    .flatMap(s -> s);
+            return abstractSyntaxTrees.stream().flatMap(ast -> ast.run(arguments, locale));
         }
     }
 
