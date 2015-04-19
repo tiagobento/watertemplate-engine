@@ -3,7 +3,6 @@ package org.watertemplate.interpreter.parser;
 import org.watertemplate.TemplateObject;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
-import org.watertemplate.interpreter.parser.exception.NotCollectionObjectException;
 
 import java.util.List;
 import java.util.Locale;
@@ -51,22 +50,16 @@ public abstract class AbstractSyntaxTree {
         /* Because it's not possible to retrieve the type from the CollectionObject, the compiler
         * can't figure out which type to use in 'map'. This results in an warning. */
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            final TemplateObject collection = collectionId.templateObject(arguments, locale);
+            final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments, locale);
 
-            if (!(collection instanceof CollectionObject)) {
-                throw new NotCollectionObjectException(collectionId);
-            }
-
-            final CollectionObject collectionObject = (CollectionObject) collection;
-
-            if (collectionObject.isEmpty()) {
+            if (collection.isEmpty()) {
                 return elseStatements.run(arguments, locale);
             }
 
             final Arguments forArguments = new Arguments(arguments); // Mutable
-            final BiConsumer mapper = collectionObject.getMapper();
+            final BiConsumer mapper = collection.getMapper();
 
-            return collectionObject.getCollection().stream().map(item -> {
+            return collection.getCollection().stream().map(item -> {
                 forArguments.addMappedObject(variableName, item, mapper);
                 return forStatements.run(forArguments, locale);
             }).flatMap((Function) s -> s);
