@@ -73,7 +73,9 @@ public class AbstractSyntaxTreeIdTest {
                         )
                 );
 
-        arguments.add("prop_key", "success");
+        arguments.addMappedObject("prop_key", "success", (x, map) -> {
+            map.add("nested1", "foo");
+        });
         abs.evaluate(arguments, locale);
     }
 
