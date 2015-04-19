@@ -50,7 +50,7 @@ public abstract class AbstractSyntaxTree {
         /* Because it's not possible to retrieve the type from the CollectionObject, the compiler
         * can't figure out which type to use in 'map'. This results in an warning. */
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments, locale);
+            final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments);
 
             if (collection.isEmpty()) {
                 return elseStatements.run(arguments, locale);
@@ -92,7 +92,7 @@ public abstract class AbstractSyntaxTree {
             return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
         }
 
-        TemplateObject templateObject(final Arguments arguments, final Locale locale) {
+        TemplateObject templateObject(final Arguments arguments) {
             TemplateObject object = arguments.get(propertyKey);
 
             if (object == null) {
@@ -109,7 +109,7 @@ public abstract class AbstractSyntaxTree {
 
             try {
                 Arguments mappedProperties = ((MappedObject) object).map();
-                return nestedId.templateObject(mappedProperties, locale);
+                return nestedId.templateObject(mappedProperties);
             } catch (IdCouldNotBeResolvedException e) {
                 throw new IdCouldNotBeResolvedException(this);
             }
@@ -117,7 +117,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            return Stream.of(() -> this.templateObject(arguments, locale).evaluate(locale));
+            return Stream.of(() -> this.templateObject(arguments).evaluate(locale));
         }
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            ConditionObject condition = (ConditionObject) conditionId.templateObject(arguments, locale);
+            ConditionObject condition = (ConditionObject) conditionId.templateObject(arguments);
 
             if (condition.isTrue()) {
                 return ifStatements.run(arguments, locale);
