@@ -15,7 +15,7 @@ public class TemplateMapTest {
         arguments.add("foo", "bar");
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals("bar", arguments.map.get("foo").evaluate(Locale.US));
+        Assert.assertEquals("bar", getValue(arguments, "foo"));
     }
 
     @Test
@@ -30,9 +30,8 @@ public class TemplateMapTest {
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals(value, arguments.get(key).evaluate(Locale.US));
+        Assert.assertEquals(value, getValue(arguments, key));
     }
-
 
     @Test
     public void addCollection() {
@@ -53,6 +52,7 @@ public class TemplateMapTest {
         Assert.assertTrue(arguments.map.get("strings") instanceof TemplateObject.CollectionObject);
     }
 
+
     @Test
     public void map() {
         final TemplateObject.MappedObject<String> mappedObject;
@@ -63,9 +63,9 @@ public class TemplateMapTest {
         });
 
         final TemplateMap.Arguments map = mappedObject.map();
-        Assert.assertEquals(map.get("lower").evaluate(Locale.US), "foo");
-        Assert.assertEquals(map.get("upper").evaluate(Locale.US), "FOO");
-        Assert.assertEquals(map.get("size").evaluate(Locale.US), "3");
+        Assert.assertEquals("foo", getValue(map, "lower"));
+        Assert.assertEquals("FOO", getValue(map, "upper"));
+        Assert.assertEquals("3", getValue(map, "size"));
 
     }
 
@@ -77,5 +77,13 @@ public class TemplateMapTest {
         }
 
         return chars;
+    }
+
+    private String getValue(TemplateMap.Arguments arguments, String foo) {
+        return arguments.map.get(foo)
+                .evaluate(Locale.US)
+                .findFirst()
+                .orElse(null)
+                .get();
     }
 }

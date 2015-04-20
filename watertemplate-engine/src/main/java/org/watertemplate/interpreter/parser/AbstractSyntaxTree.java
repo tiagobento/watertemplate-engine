@@ -117,7 +117,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            return Stream.of(() -> this.templateObject(arguments).evaluate(locale));
+            return this.templateObject(arguments).evaluate(locale);
         }
     }
 
