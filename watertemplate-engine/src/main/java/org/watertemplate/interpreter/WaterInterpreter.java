@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class WaterInterpreter implements Interpreter {
+public class WaterInterpreter {
 
     private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
 
@@ -29,7 +29,6 @@ public class WaterInterpreter implements Interpreter {
         this.defaultLocale = defaultLocale;
     }
 
-    @Override
     public String interpret(final Locale locale) {
         final String cacheKey = cacheKey(locale);
 

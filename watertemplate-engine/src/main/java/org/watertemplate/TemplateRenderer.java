@@ -1,7 +1,6 @@
 package org.watertemplate;
 
 import org.watertemplate.exception.RenderException;
-import org.watertemplate.interpreter.Interpreter;
 import org.watertemplate.interpreter.WaterInterpreter;
 
 import java.util.Locale;
@@ -52,8 +51,7 @@ class TemplateRenderer {
         TemplateMap.Arguments arguments = template.arguments;
         Locale defaultLocale = template.getDefaultLocale();
 
-        Interpreter interpreter = new WaterInterpreter(filePath, arguments, defaultLocale);
-        return interpreter.interpret(locale);
+        return new WaterInterpreter(filePath, arguments, defaultLocale).interpret(locale);
     }
 
 }
