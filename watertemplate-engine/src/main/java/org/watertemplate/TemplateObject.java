@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public interface TemplateObject {
-    Stream<Supplier<String>> evaluate(final Locale locale);
+    Stream<Supplier<String>> stream(final Locale locale);
 
     class LocaleSensitiveObject<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
@@ -22,7 +22,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             return Stream.of(() -> function.apply(object, locale));
         }
     }
@@ -40,7 +40,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             if (object instanceof String) {
                 return Stream.of(object::toString);
             } else {
@@ -68,7 +68,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Collections should not be evaluated");
         }
     }
@@ -85,7 +85,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Booleans should not be evaluated");
         }
     }
@@ -98,7 +98,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             return Stream.of(() -> value);
         }
     }
@@ -111,7 +111,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public Stream<Supplier<String>> evaluate(final Locale locale) {
+        public Stream<Supplier<String>> stream(final Locale locale) {
             return subTemplate.stream(locale);
         }
 
@@ -121,7 +121,7 @@ public interface TemplateObject {
             }
 
             @Override
-            public Stream<Supplier<String>> evaluate(final Locale locale) {
+            public Stream<Supplier<String>> stream(final Locale locale) {
                 return subTemplate.streamWithoutMaster(locale);
             }
         }

@@ -81,7 +81,7 @@ public class TemplateMapTest {
 
     private String getValue(TemplateMap.Arguments arguments, String foo) {
         return arguments.map.get(foo)
-                .evaluate(Locale.US)
+                .stream(Locale.US)
                 .findFirst()
                 .orElse(null)
                 .get();
