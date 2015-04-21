@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class WaterInterpreter {
 
@@ -29,19 +31,19 @@ public class WaterInterpreter {
         this.defaultLocale = defaultLocale;
     }
 
-    public String interpret(final Locale locale) {
+    public Stream<Supplier<String>> stream(final Locale locale) {
         final String cacheKey = cacheKey(locale);
 
         if (cache.containsKey(cacheKey)) {
-            return cache.get(cacheKey).evaluate(arguments, locale);
+            return cache.get(cacheKey).stream(arguments, locale);
         }
 
         final File templateFile = findTemplateFileWith(locale);
         final List<Token> tokens = lex(templateFile);
-        final AbstractSyntaxTree abs = parse(tokens);
+        final AbstractSyntaxTree ast = parse(tokens);
 
-        cache.put(cacheKey, abs);
-        return abs.evaluate(arguments, locale);
+        cache.put(cacheKey, ast);
+        return ast.stream(arguments, locale);
     }
 
     private File findTemplateFileWith(final Locale locale) {

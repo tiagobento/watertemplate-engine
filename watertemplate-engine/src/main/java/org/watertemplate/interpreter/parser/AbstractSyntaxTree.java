@@ -1,5 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
+import org.watertemplate.Template;
 import org.watertemplate.TemplateObject;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
@@ -18,14 +19,12 @@ public abstract class AbstractSyntaxTree {
 
     static final AbstractSyntaxTree EMPTY = new Empty();
 
+    @Deprecated
     public final String evaluate(final Arguments arguments, final Locale locale) {
-        return run(arguments, locale)
-                .map(Supplier::get)
-                .reduce(String::concat)
-                .orElse("");
+        return Template.buildString(stream(arguments, locale));
     }
 
-    abstract Stream<Supplier<String>> run(final Arguments arguments, final Locale locale);
+    public abstract Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale);
 
     public static class For extends AbstractSyntaxTree {
 
@@ -38,22 +37,15 @@ public abstract class AbstractSyntaxTree {
             this(variableName, collectionId, forStatements, EMPTY);
         }
 
-        public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
-            this.variableName = variableName;
-            this.collectionId = collectionId;
-            this.forStatements = forStatements;
-            this.elseStatements = elseStatements;
-        }
-
         @Override
         @SuppressWarnings("unchecked")
         /* Because it's not possible to retrieve the type from the CollectionObject, the compiler
         * can't figure out which type to use in 'map'. This results in an warning. */
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
             final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments);
 
             if (collection.isEmpty()) {
-                return elseStatements.run(arguments, locale);
+                return elseStatements.stream(arguments, locale);
             }
 
             final Arguments forArguments = new Arguments(arguments); // Mutable
@@ -61,8 +53,15 @@ public abstract class AbstractSyntaxTree {
 
             return collection.getCollection().stream().flatMap((Function) item -> {
                 forArguments.addMappedObject(variableName, item, mapper);
-                return forStatements.run(forArguments, locale);
+                return forStatements.stream(forArguments, locale);
             });
+        }
+
+        public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
+            this.variableName = variableName;
+            this.collectionId = collectionId;
+            this.forStatements = forStatements;
+            this.elseStatements = elseStatements;
         }
     }
 
@@ -116,7 +115,7 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
             return this.templateObject(arguments).evaluate(locale);
         }
     }
@@ -138,13 +137,13 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
             ConditionObject condition = (ConditionObject) conditionId.templateObject(arguments);
 
             if (condition.isTrue()) {
-                return ifStatements.run(arguments, locale);
+                return ifStatements.stream(arguments, locale);
             } else {
-                return elseStatements.run(arguments, locale);
+                return elseStatements.stream(arguments, locale);
             }
         }
     }
@@ -158,8 +157,8 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
-            return abstractSyntaxTrees.stream().flatMap(ast -> ast.run(arguments, locale));
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
+            return abstractSyntaxTrees.stream().flatMap(ast -> ast.stream(arguments, locale));
         }
     }
 
@@ -171,14 +170,14 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
             return Stream.of(() -> value);
         }
     }
 
     private static class Empty extends AbstractSyntaxTree {
         @Override
-        Stream<Supplier<String>> run(final Arguments arguments, final Locale locale) {
+        public Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale) {
             return Stream.of(() -> "");
         }
     }

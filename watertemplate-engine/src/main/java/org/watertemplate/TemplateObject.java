@@ -112,7 +112,7 @@ public interface TemplateObject {
 
         @Override
         public Stream<Supplier<String>> evaluate(final Locale locale) {
-            return Stream.of(() -> subTemplate.render(locale));
+            return subTemplate.stream(locale);
         }
 
         public static class WithoutMaster extends SubTemplateObject {
@@ -122,7 +122,7 @@ public interface TemplateObject {
 
             @Override
             public Stream<Supplier<String>> evaluate(final Locale locale) {
-                return Stream.of(() -> subTemplate.renderWithoutMaster(locale));
+                return subTemplate.streamWithoutMaster(locale);
             }
         }
     }
@@ -146,6 +146,5 @@ public interface TemplateObject {
         public BiConsumer<T, TemplateMap.Arguments> getMapper() {
             return mapper;
         }
-
     }
 }

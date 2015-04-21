@@ -1,10 +1,15 @@
 package org.watertemplate;
 
+import org.watertemplate.exception.RenderException;
+import org.watertemplate.interpreter.WaterInterpreter;
+
 import java.util.Collection;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public abstract class Template {
 
@@ -58,18 +63,44 @@ public abstract class Template {
         this.arguments.addLocaleSensitiveObject(key, object, function);
     }
 
-    //
+    ////
 
     public final String render() {
         return render(getDefaultLocale());
     }
 
     public final String render(final Locale locale) {
-        return new TemplateRenderer(this, locale).renderWithMaster();
+        return buildString(stream(locale));
     }
 
-    final String renderWithoutMaster(final Locale locale) {
-        return new TemplateRenderer(this, locale).renderWithoutMaster();
+    final Stream<Supplier<String>> stream(final Locale locale) {
+        try {
+            final Template masterTemplate = getMasterTemplate();
+
+            if (masterTemplate == null) {
+                return streamWithoutMaster(locale);
+            }
+
+            masterTemplate.arguments.addTemplateWhichWontRenderItsMasterTemplate("content", this);
+            return masterTemplate.stream(locale);
+        } catch (RuntimeException e) {
+            throw new RenderException(this, locale, e);
+        }
+    }
+
+    final Stream<Supplier<String>> streamWithoutMaster(final Locale locale) {
+        TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
+        addSubTemplates(subTemplates);
+        subTemplates.map.forEach(arguments::add);
+
+        return new WaterInterpreter(getFilePath(), arguments, getDefaultLocale()).stream(locale);
+    }
+
+    public static String buildString(final Stream<Supplier<String>> supplierStream) {
+        return supplierStream
+                .map(Supplier::get)
+                .reduce(String::concat)
+                .orElse("");
     }
 }
 

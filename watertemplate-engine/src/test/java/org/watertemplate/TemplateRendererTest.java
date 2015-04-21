@@ -10,19 +10,22 @@ public class TemplateRendererTest {
 
     @Test
     public void templateOnlyWithMasterTemplate() {
-        String rendered = render(new TemplateFixture.TemplateOnlyWithMasterTemplate());
+        final Template template = new TemplateFixture.TemplateOnlyWithMasterTemplate();
+        String rendered = template.render(template.getDefaultLocale());
         Assert.assertEquals("master_template_content\n" + "template_only_with_master_template_content", rendered);
     }
 
     @Test
     public void templateOnlyWithSubTemplates() {
-        String rendered = render(new TemplateFixture.TemplateOnlyWithSubTemplates());
+        final Template template = new TemplateFixture.TemplateOnlyWithSubTemplates();
+        String rendered = template.render(template.getDefaultLocale());
         Assert.assertEquals("template_only_with_sub_templates_content\n" + "sub_template_content", rendered);
     }
 
     @Test
     public void templateWithSubTemplatesAndMasterTemplate() {
-        String rendered = render(new TemplateFixture.TemplateWithSubTemplatesAndMasterTemplate());
+        final Template template = new TemplateFixture.TemplateWithSubTemplatesAndMasterTemplate();
+        String rendered = template.render(template.getDefaultLocale());
         Assert.assertEquals("master_template_content\n" +
                 "template_with_sub_templates_and_master_template_content\n" +
                 "sub_template_content", rendered);
@@ -30,7 +33,8 @@ public class TemplateRendererTest {
 
     @Test
     public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
-        String rendered = render(new TemplateFixture.TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate());
+        final Template template = new TemplateFixture.TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate();
+        String rendered = template.render(template.getDefaultLocale());
         Assert.assertEquals("" +
                         "master_template_content\n" +
                         "template_that_have_sub_templates_that_have_a_master_template_content\n" +
@@ -41,18 +45,20 @@ public class TemplateRendererTest {
 
     @Test
     public void templateWithCollection() {
-        String rendered = render(new TemplateFixture.TemplateWithCollection(1, 2, 3, 4));
+        final Template template = new TemplateFixture.TemplateWithCollection(1, 2, 3, 4);
+        String rendered = template.render(template.getDefaultLocale());
         Assert.assertEquals("1\n2\n3\n4\n", rendered);
     }
 
     @Test(expected = TemplateException.class)
     public void templateWithInvalidFilePath() {
-        render(new Template() {
+        final Template template = new Template() {
             @Override
             protected String getFilePath() {
                 return "invalid.html";
             }
-        });
+        };
+        template.render(template.getDefaultLocale());
     }
 
     @Test
@@ -104,14 +110,6 @@ public class TemplateRendererTest {
 
     @Test
     public void templateWithNonexistentLocale() {
-        Assert.assertEquals("sub_template_content", render(new TemplateFixture.SubTemplate(), Locale.FRANCE));
-    }
-
-    private String render(final Template template) {
-        return render(template, template.getDefaultLocale());
-    }
-
-    private String render(final Template template, final Locale locale) {
-        return new TemplateRenderer(template, locale).renderWithMaster();
+        Assert.assertEquals("sub_template_content", new TemplateFixture.SubTemplate().render(Locale.FRANCE));
     }
 }
