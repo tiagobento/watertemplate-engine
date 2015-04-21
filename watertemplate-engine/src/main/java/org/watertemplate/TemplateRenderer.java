@@ -15,38 +15,26 @@ class TemplateRenderer {
         this.locale = locale;
     }
 
-    public String render() {
+    public String renderWithMaster() {
         try {
-            final String renderedTemplateWithRenderedSubTemplates = renderTemplateWithSubTemplates();
-            return renderMasterTemplateIfNecessary(renderedTemplateWithRenderedSubTemplates);
+            final Template masterTemplate = template.getMasterTemplate();
+
+            if (masterTemplate == null) {
+                return renderWithoutMaster();
+            }
+
+            masterTemplate.arguments.addTemplateWhichWontRenderItsMasterTemplate("content", template);
+            return masterTemplate.render(locale);
         } catch (RuntimeException e) {
             throw new RenderException(template, locale, e);
         }
     }
 
-    private String renderMasterTemplateIfNecessary(final String renderedTemplateWithoutMasterTemplate) {
-        final Template masterTemplate = template.getMasterTemplate();
-
-        if (masterTemplate == null) {
-            return renderedTemplateWithoutMasterTemplate;
-        }
-
-        masterTemplate.add("content", renderedTemplateWithoutMasterTemplate);
-        return masterTemplate.render(locale);
-    }
-
-    private String renderTemplateWithSubTemplates() {
-        addSubTemplatesAsArguments();
-        return renderTemplate();
-    }
-
-    private void addSubTemplatesAsArguments() {
+    public String renderWithoutMaster() {
         TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
         template.addSubTemplates(subTemplates);
         subTemplates.map.forEach(template.arguments::add);
-    }
 
-    private String renderTemplate() {
         String filePath = template.getFilePath();
         TemplateMap.Arguments arguments = template.arguments;
         Locale defaultLocale = template.getDefaultLocale();

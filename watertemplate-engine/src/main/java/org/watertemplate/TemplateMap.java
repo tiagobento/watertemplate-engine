@@ -60,5 +60,9 @@ public abstract class TemplateMap<T> {
         public final TemplateObject get(final String key) {
             return map.get(key);
         }
+
+        final void addTemplateWhichWontRenderItsMasterTemplate(final String key, final Template subTemplate) {
+            add(key, new TemplateObject.SubTemplateObject.WithoutMaster(subTemplate));
+        }
     }
 }

@@ -104,7 +104,7 @@ public interface TemplateObject {
     }
 
     class SubTemplateObject implements TemplateObject {
-        private final Template subTemplate;
+        final Template subTemplate;
 
         public SubTemplateObject(final Template subTemplate) {
             this.subTemplate = subTemplate;
@@ -113,6 +113,17 @@ public interface TemplateObject {
         @Override
         public Stream<Supplier<String>> evaluate(final Locale locale) {
             return Stream.of(() -> subTemplate.render(locale));
+        }
+
+        public static class WithoutMaster extends SubTemplateObject {
+            public WithoutMaster(Template subTemplate) {
+                super(subTemplate);
+            }
+
+            @Override
+            public Stream<Supplier<String>> evaluate(final Locale locale) {
+                return Stream.of(() -> subTemplate.renderWithoutMaster(locale));
+            }
         }
     }
 

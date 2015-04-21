@@ -112,6 +112,6 @@ public class TemplateRendererTest {
     }
 
     private String render(final Template template, final Locale locale) {
-        return new TemplateRenderer(template, locale).render();
+        return new TemplateRenderer(template, locale).renderWithMaster();
     }
 }

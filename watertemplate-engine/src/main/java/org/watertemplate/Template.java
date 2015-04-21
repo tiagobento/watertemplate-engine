@@ -30,14 +30,6 @@ public abstract class Template {
         return Template.DEFAULT_LOCALE;
     }
 
-    public final String render() {
-        return render(getDefaultLocale());
-    }
-
-    public final String render(final Locale locale) {
-        return new TemplateRenderer(this, locale).render();
-    }
-
     protected final void add(final String key, final String value) {
         this.arguments.add(key, value);
     }
@@ -64,6 +56,20 @@ public abstract class Template {
 
     protected final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, String> function) {
         this.arguments.addLocaleSensitiveObject(key, object, function);
+    }
+
+    //
+
+    public final String render() {
+        return render(getDefaultLocale());
+    }
+
+    public final String render(final Locale locale) {
+        return new TemplateRenderer(this, locale).renderWithMaster();
+    }
+
+    final String renderWithoutMaster(final Locale locale) {
+        return new TemplateRenderer(this, locale).renderWithoutMaster();
     }
 }
 
