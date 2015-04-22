@@ -20,16 +20,14 @@ public class WaterInterpreter {
     private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
 
     private final String templateFilePath;
-    private final TemplateMap.Arguments arguments;
     private final Locale defaultLocale;
 
-    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments, final Locale defaultLocale) {
+    public WaterInterpreter(final String templateFilePath, final Locale defaultLocale) {
         this.templateFilePath = templateFilePath;
-        this.arguments = arguments;
         this.defaultLocale = defaultLocale;
     }
 
-    public String string(final Locale locale) {
+    public String string(final TemplateMap.Arguments arguments, final Locale locale) {
         final String cacheKey = cacheKey(locale);
 
         if (cache.containsKey(cacheKey)) {
