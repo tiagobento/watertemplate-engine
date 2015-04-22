@@ -7,12 +7,9 @@ import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedExcept
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static org.watertemplate.TemplateMap.Arguments;
-import static org.watertemplate.TemplateObject.*;
+
 
 public abstract class AbstractSyntaxTree {
 
@@ -33,7 +30,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         public String string(final Arguments arguments, final Locale locale) {
-            final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments);
+            final TemplateObject.Collection collection = (TemplateObject.Collection) collectionId.templateObject(arguments);
 
             if (collection.isEmpty()) {
                 return elseStatements.string(arguments, locale);
@@ -96,12 +93,12 @@ public abstract class AbstractSyntaxTree {
                 return object;
             }
 
-            if (!(object instanceof MappedObject)) {
+            if (!(object instanceof TemplateObject.Mapped)) {
                 throw new IdCouldNotBeResolvedException(this);
             }
 
             try {
-                Arguments mappedProperties = ((MappedObject) object).map();
+                Arguments mappedProperties = ((TemplateObject.Mapped) object).map();
                 return nestedId.templateObject(mappedProperties);
             } catch (IdCouldNotBeResolvedException e) {
                 throw new IdCouldNotBeResolvedException(this);
@@ -132,7 +129,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         public String string(final Arguments arguments, final Locale locale) {
-            ConditionObject condition = (ConditionObject) conditionId.templateObject(arguments);
+            TemplateObject.Condition condition = (TemplateObject.Condition) conditionId.templateObject(arguments);
 
             if (condition.isTrue()) {
                 return ifStatements.string(arguments, locale);

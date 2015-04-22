@@ -2,20 +2,18 @@ package org.watertemplate;
 
 import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
 
-import java.util.Collection;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.stream.Stream;
 
 public interface TemplateObject {
     String string(final Locale locale);
 
-    class LocaleSensitiveObject<T> implements TemplateObject {
+    class LocaleSensitive<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
         private final T object;
 
-        protected LocaleSensitiveObject(final T object, final BiFunction<T, Locale, String> function) {
+        protected LocaleSensitive(final T object, final BiFunction<T, Locale, String> function) {
             this.function = function;
             this.object = object;
         }
@@ -26,10 +24,10 @@ public interface TemplateObject {
         }
     }
 
-    public final class MappedObject<T> extends Mappable<T> implements TemplateObject {
+    public final class Mapped<T> extends Mappable<T> implements TemplateObject {
         private final T object;
 
-        MappedObject(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        Mapped(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
             this.object = object;
         }
@@ -50,10 +48,10 @@ public interface TemplateObject {
         }
     }
 
-    public final class CollectionObject<T> extends Mappable<T> implements TemplateObject {
-        private final Collection<T> collection;
+    public final class Collection<T> extends Mappable<T> implements TemplateObject {
+        private final java.util.Collection<T> collection;
 
-        public CollectionObject(final Collection<T> collection, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        public Collection(final java.util.Collection<T> collection, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
             this.collection = collection;
         }
@@ -62,7 +60,7 @@ public interface TemplateObject {
             return collection == null || !collection.iterator().hasNext();
         }
 
-        public Collection<T> getCollection() {
+        public java.util.Collection<T> getCollection() {
             return collection;
         }
 
@@ -72,10 +70,10 @@ public interface TemplateObject {
         }
     }
 
-    public class ConditionObject implements TemplateObject {
+    public class Condition implements TemplateObject {
         private final Boolean value;
 
-        public ConditionObject(final Boolean value) {
+        public Condition(final Boolean value) {
             this.value = value;
         }
 
@@ -89,10 +87,10 @@ public interface TemplateObject {
         }
     }
 
-    class StringObject implements TemplateObject {
+    class Value implements TemplateObject {
         private final String value;
 
-        public StringObject(final String value) {
+        public Value(final String value) {
             this.value = value;
         }
 
@@ -102,10 +100,10 @@ public interface TemplateObject {
         }
     }
 
-    class SubTemplateObject implements TemplateObject {
+    class SubTemplate implements TemplateObject {
         final Template subTemplate;
 
-        public SubTemplateObject(final Template subTemplate) {
+        public SubTemplate(final Template subTemplate) {
             this.subTemplate = subTemplate;
         }
 
@@ -114,7 +112,7 @@ public interface TemplateObject {
             return subTemplate.render(locale);
         }
 
-        public static class WithoutMaster extends SubTemplateObject {
+        public static class WithoutMaster extends SubTemplate {
             public WithoutMaster(Template subTemplate) {
                 super(subTemplate);
             }
