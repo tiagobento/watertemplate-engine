@@ -100,7 +100,7 @@ public static void main(String[] args) {
 
 
 ## Configuration
-Add the [maven dependency](http://search.maven.org/#artifactdetails%7Corg.watertemplate%7Cwatertemplate-engine%7C1.1.0%7Cjar) to your project.
+Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.1.0) to your project.
 Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
 
 Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
@@ -212,7 +212,7 @@ Water provides **if** and **for** commands.
 Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) to know how to use it and why it works so good together with the engine.
 
 ## JAX-RS
-If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://search.maven.org/#artifactdetails%7Corg.watertemplate%7Cwatertemplate-jaxrs-binding%7C1.1.0%7Cjar) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
+If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-jaxrs-binding/1.1.0) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
 
 **Run an example** following the information below.
 
