@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 public class TemplateUtils {
     public static String buildString(final Stream<Supplier<String>> supplierStream) {
-        return supplierStream
+        return supplierStream.parallel()
                 .map(Supplier::get)
                 .reduce(String::concat)
                 .orElse("");

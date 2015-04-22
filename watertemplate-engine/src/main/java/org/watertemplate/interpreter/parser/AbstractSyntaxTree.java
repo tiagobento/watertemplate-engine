@@ -43,10 +43,10 @@ public abstract class AbstractSyntaxTree {
                 return elseStatements.stream(arguments, locale);
             }
 
-            final Arguments forArguments = new Arguments(arguments); // Mutable
             final BiConsumer mapper = collection.getMapper();
 
             return collection.getCollection().stream().flatMap((Function) item -> {
+                final Arguments forArguments = new Arguments(arguments); // Immutable
                 forArguments.addMappedObject(variableName, item, mapper);
                 return forStatements.stream(forArguments, locale);
             });
