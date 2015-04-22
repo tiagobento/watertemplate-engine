@@ -38,15 +38,13 @@ public class WaterInterpreter {
             return cache.get(cacheKey).stream(arguments, locale);
         }
 
-        final File templateFile = findTemplateFileWith(locale);
-        final List<Token> tokens = lex(templateFile);
-        final AbstractSyntaxTree ast = parse(tokens);
+        final AbstractSyntaxTree ast = parse(lex(templateFileWith(locale)));
 
         cache.put(cacheKey, ast);
         return ast.stream(arguments, locale);
     }
 
-    private File findTemplateFileWith(final Locale locale) {
+    private File templateFileWith(final Locale locale) {
         final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
         final URL url = getClass().getClassLoader().getResource(templateFileURI);
 
@@ -55,7 +53,7 @@ public class WaterInterpreter {
         }
 
         if (!locale.equals(defaultLocale)) {
-            return findTemplateFileWith(defaultLocale);
+            return templateFileWith(defaultLocale);
         }
 
         throw new TemplateFileNotFoundException(templateFilePath);
