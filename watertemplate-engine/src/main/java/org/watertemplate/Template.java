@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static org.watertemplate.TemplateMap.SubTemplates;
+
 public abstract class Template {
 
     private static final Locale DEFAULT_LOCALE = Locale.US;
@@ -27,7 +29,7 @@ public abstract class Template {
     protected abstract String getFilePath();
 
     /* Please override me */
-    protected void addSubTemplates(final TemplateMap.SubTemplates subTemplates) {
+    protected void addSubTemplates(final SubTemplates subTemplates) {
     }
 
     /* Override me if you want */
@@ -73,23 +75,23 @@ public abstract class Template {
         return buildString(stream(locale));
     }
 
-    final Stream<Supplier<String>> stream(final Locale locale) {
+    final Stream<Supplier<  String>> stream(final Locale locale) {
         try {
             final Template masterTemplate = getMasterTemplate();
 
             if (masterTemplate == null) {
                 return streamWithoutMaster(locale);
+            } else {
+                masterTemplate.arguments.addTemplateWhichWontRenderItsMasterTemplate("content", this);
+                return masterTemplate.stream(locale);
             }
-
-            masterTemplate.arguments.addTemplateWhichWontRenderItsMasterTemplate("content", this);
-            return masterTemplate.stream(locale);
         } catch (RuntimeException e) {
             throw new RenderException(this, locale, e);
         }
     }
 
     final Stream<Supplier<String>> streamWithoutMaster(final Locale locale) {
-        TemplateMap.SubTemplates subTemplates = new TemplateMap.SubTemplates();
+        SubTemplates subTemplates = new SubTemplates();
         addSubTemplates(subTemplates);
         subTemplates.map.forEach(arguments::add);
 
