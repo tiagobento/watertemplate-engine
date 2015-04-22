@@ -2,6 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
+import org.watertemplate.TemplateUtils;
 
 import java.util.Locale;
 
@@ -24,11 +25,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("else_statements", "condition was false");
         arguments.add("condition", true);
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("condition was true", result);
 
         arguments.add("condition", false);
-        result = abs.evaluate(arguments, locale);
+        result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("condition was false", result);
     }
 
@@ -46,11 +47,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("else_statements", "nested condition was false");
 
         arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", true));
-        Object result = abs.evaluate(arguments, locale);
+        Object result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("nested condition was true", result);
 
         arguments.addMappedObject("condition", null, (ignore, map) -> map.add("nested_condition", false));
-        result = abs.evaluate(arguments, locale);
+        result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("nested condition was false", result);
     }
 
@@ -65,11 +66,11 @@ public class AbstractSyntaxTreeIfTest {
         arguments.add("if_statements", "condition was true");
         arguments.add("condition", true);
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("condition was true", result);
 
         arguments.add("condition", false);
-        result = abs.evaluate(arguments, locale);
+        result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("", result);
     }
 }

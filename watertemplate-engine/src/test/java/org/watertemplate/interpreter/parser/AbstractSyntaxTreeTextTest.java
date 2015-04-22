@@ -2,6 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
+import org.watertemplate.TemplateUtils;
 
 import java.util.Locale;
 
@@ -14,7 +15,7 @@ public class AbstractSyntaxTreeTextTest {
     @Test
     public void normalText() {
         AbstractSyntaxTree abstractSyntaxTree = new AbstractSyntaxTree.Text("text");
-        Object result = abstractSyntaxTree.evaluate(new TemplateMap.Arguments(), locale);
+        Object result = TemplateUtils.buildString(abstractSyntaxTree.stream(new TemplateMap.Arguments(), locale));
 
         assertEquals("text", result);
     }

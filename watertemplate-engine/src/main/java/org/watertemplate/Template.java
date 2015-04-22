@@ -72,7 +72,7 @@ public abstract class Template {
     }
 
     public final String render(final Locale locale) {
-        return buildString(stream(locale));
+        return TemplateUtils.buildString(stream(locale));
     }
 
     final Stream<Supplier<  String>> stream(final Locale locale) {
@@ -96,13 +96,6 @@ public abstract class Template {
         subTemplates.map.forEach(arguments::add);
 
         return new WaterInterpreter(getFilePath(), arguments, getDefaultLocale()).stream(locale);
-    }
-
-    public static String buildString(final Stream<Supplier<String>> supplierStream) {
-        return supplierStream
-                .map(Supplier::get)
-                .reduce(String::concat)
-                .orElse("");
     }
 }
 

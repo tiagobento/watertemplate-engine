@@ -19,11 +19,6 @@ public abstract class AbstractSyntaxTree {
 
     static final AbstractSyntaxTree EMPTY = new Empty();
 
-    @Deprecated
-    public final String evaluate(final Arguments arguments, final Locale locale) {
-        return Template.buildString(stream(arguments, locale));
-    }
-
     public abstract Stream<Supplier<String>> stream(final Arguments arguments, final Locale locale);
 
     public static class For extends AbstractSyntaxTree {

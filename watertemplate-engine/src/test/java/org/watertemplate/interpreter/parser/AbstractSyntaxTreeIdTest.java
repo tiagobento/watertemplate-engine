@@ -2,6 +2,7 @@ package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
+import org.watertemplate.TemplateUtils;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import java.text.DateFormat;
@@ -22,7 +23,7 @@ public class AbstractSyntaxTreeIdTest {
 
         arguments.add("prop_key", "success");
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("success", result);
     }
 
@@ -40,7 +41,7 @@ public class AbstractSyntaxTreeIdTest {
             });
         });
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = TemplateUtils.buildString(abs.stream(arguments, locale));
         assertEquals("success", result);
     }
 
@@ -54,10 +55,10 @@ public class AbstractSyntaxTreeIdTest {
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         arguments.addLocaleSensitiveObject("now", now, localeFormatter);
 
-        Object americanDate = abs.evaluate(arguments, Locale.US);
+        Object americanDate = TemplateUtils.buildString(abs.stream(arguments, Locale.US));
         assertEquals(localeFormatter.apply(now, Locale.US), americanDate);
 
-        Object germanDate = abs.evaluate(arguments, Locale.GERMAN);
+        Object germanDate = TemplateUtils.buildString(abs.stream(arguments, Locale.GERMAN));
         assertEquals(localeFormatter.apply(now, Locale.GERMAN), germanDate);
     }
 
@@ -76,14 +77,14 @@ public class AbstractSyntaxTreeIdTest {
         arguments.addMappedObject("prop_key", "success", (x, map) -> {
             map.add("nested1", "foo");
         });
-        abs.evaluate(arguments, locale);
+        TemplateUtils.buildString(abs.stream(arguments, locale));
     }
 
     @Test(expected = IdCouldNotBeResolvedException.class)
     public void propertyNotPresentInArguments() {
         AbstractSyntaxTree abs = new AbstractSyntaxTree.Id("prop_key");
 
-        Object result = abs.evaluate(new TemplateMap.Arguments(), locale);
+        Object result = TemplateUtils.buildString(abs.stream(new TemplateMap.Arguments(), locale));
         assertEquals("prop_key", result);
     }
 }
