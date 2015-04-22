@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class WaterInterpreter {
 
-    private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
+    private final static ConcurrentMap<String, AbstractSyntaxTree> cache = new ConcurrentHashMap<>();
 
     private final String templateFilePath;
     private final Locale defaultLocale;
@@ -28,16 +30,9 @@ public class WaterInterpreter {
     }
 
     public String string(final TemplateMap.Arguments arguments, final Locale locale) {
-        final String cacheKey = cacheKey(locale);
-
-        if (cache.containsKey(cacheKey)) {
-            return cache.get(cacheKey).string(arguments, locale);
-        }
-
-        final AbstractSyntaxTree ast = parse(lex(templateFileWith(locale)));
-
-        cache.put(cacheKey, ast);
-        return ast.string(arguments, locale);
+        return cache.computeIfAbsent(cacheKey(locale), (key) -> {
+            return parse(lex(templateFileWith(locale)));
+        }).string(arguments, locale);
     }
 
     private File templateFileWith(final Locale locale) {
