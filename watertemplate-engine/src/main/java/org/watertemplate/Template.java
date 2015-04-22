@@ -16,7 +16,7 @@ public abstract class Template {
     private static final Locale DEFAULT_LOCALE = Locale.US;
 
     /* Please use me */
-    final TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+    private final TemplateMap.Arguments arguments = new TemplateMap.Arguments();
 
     /* Please override me */
     protected Template getMasterTemplate() {
@@ -84,7 +84,7 @@ public abstract class Template {
         }
     }
 
-    public final String renderWithoutMaster(Locale locale) {
+    public final String renderWithoutMaster(final Locale locale) {
         SubTemplates subTemplates = new SubTemplates();
         addSubTemplates(subTemplates);
         subTemplates.map.forEach(arguments::add);
