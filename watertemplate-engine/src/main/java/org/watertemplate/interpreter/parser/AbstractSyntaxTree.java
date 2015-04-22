@@ -32,9 +32,6 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        /* Because it's not possible to retrieve the type from the CollectionObject, the compiler
-        * can't figure out which type to use in 'map'. This results in an warning. */
         public String string(final Arguments arguments, final Locale locale) {
             final CollectionObject collection = (CollectionObject) collectionId.templateObject(arguments);
 
@@ -155,10 +152,13 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         public String string(final Arguments arguments, final Locale locale) {
-            return abstractSyntaxTrees.stream()
-                    .map(ast -> ast.string(arguments, locale))
-                    .reduce(String::concat)
-                    .orElse("");
+            final StringBuilder sb = new StringBuilder();
+
+            for (AbstractSyntaxTree ast : abstractSyntaxTrees) {
+                sb.append(ast.string(arguments, locale));
+            }
+
+            return sb.toString();
         }
     }
 
