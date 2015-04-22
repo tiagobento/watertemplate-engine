@@ -22,7 +22,7 @@ public class AbstractSyntaxTreeIdTest {
 
         arguments.add("prop_key", "success");
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("success", result);
     }
 
@@ -40,7 +40,7 @@ public class AbstractSyntaxTreeIdTest {
             });
         });
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("success", result);
     }
 
@@ -54,10 +54,10 @@ public class AbstractSyntaxTreeIdTest {
         TemplateMap.Arguments arguments = new TemplateMap.Arguments();
         arguments.addLocaleSensitiveObject("now", now, localeFormatter);
 
-        Object americanDate = abs.evaluate(arguments, Locale.US);
+        Object americanDate = abs.string(arguments, Locale.US);
         assertEquals(localeFormatter.apply(now, Locale.US), americanDate);
 
-        Object germanDate = abs.evaluate(arguments, Locale.GERMAN);
+        Object germanDate = abs.string(arguments, Locale.GERMAN);
         assertEquals(localeFormatter.apply(now, Locale.GERMAN), germanDate);
     }
 
@@ -73,15 +73,17 @@ public class AbstractSyntaxTreeIdTest {
                         )
                 );
 
-        arguments.add("prop_key", "success");
-        abs.evaluate(arguments, locale);
+        arguments.addMappedObject("prop_key", "success", (x, map) -> {
+            map.add("nested1", "foo");
+        });
+        abs.string(arguments, locale);
     }
 
     @Test(expected = IdCouldNotBeResolvedException.class)
     public void propertyNotPresentInArguments() {
         AbstractSyntaxTree abs = new AbstractSyntaxTree.Id("prop_key");
 
-        Object result = abs.evaluate(new TemplateMap.Arguments(), locale);
+        Object result = abs.string(new TemplateMap.Arguments(), locale);
         assertEquals("prop_key", result);
     }
 }

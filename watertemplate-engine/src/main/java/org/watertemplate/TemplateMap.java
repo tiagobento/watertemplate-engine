@@ -1,5 +1,6 @@
 package org.watertemplate;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -8,9 +9,9 @@ import java.util.function.BiFunction;
 
 public abstract class TemplateMap<T> {
 
-    public final Map<String, T> map = new HashMap<>();
+    final Map<String, T> map = new HashMap<>();
 
-    public final void add(final String key, final T value) {
+    final void add(final String key, final T value) {
         this.map.put(key, value);
     }
 
@@ -24,12 +25,19 @@ public abstract class TemplateMap<T> {
     }
 
     public static final class Arguments extends TemplateMap<TemplateObject> {
-        public final <T> void addCollection(final String key, final Iterable<T> iterable) {
+        public Arguments() {
+        }
+
+        public Arguments(final Arguments arguments) {
+            map.putAll(arguments.map);
+        }
+
+        public final <T> void addCollection(final String key, final Collection<T> iterable) {
             add(key, new TemplateObject.CollectionObject<>(iterable, (a, b) -> {
             }));
         }
 
-        public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
+        public final <T> void addCollection(final String key, final Collection<T> iterable, final BiConsumer<T, Arguments> mapper) {
             add(key, new TemplateObject.CollectionObject<>(iterable, mapper));
         }
 
@@ -53,8 +61,8 @@ public abstract class TemplateMap<T> {
             return map.get(key);
         }
 
-        public final void remove(final String key) {
-            map.remove(key);
+        final void addTemplateWhichWontRenderItsMasterTemplate(final String key, final Template subTemplate) {
+            add(key, new TemplateObject.SubTemplateObject.WithoutMaster(subTemplate));
         }
     }
 }

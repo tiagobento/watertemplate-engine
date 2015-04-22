@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-public class WaterInterpreter implements Interpreter {
+public class WaterInterpreter {
 
     private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
 
@@ -29,23 +31,20 @@ public class WaterInterpreter implements Interpreter {
         this.defaultLocale = defaultLocale;
     }
 
-    @Override
-    public String interpret(final Locale locale) {
+    public String string(final Locale locale) {
         final String cacheKey = cacheKey(locale);
 
         if (cache.containsKey(cacheKey)) {
-            return cache.get(cacheKey).evaluate(arguments, locale);
+            return cache.get(cacheKey).string(arguments, locale);
         }
 
-        File templateFile = findTemplateFileWith(locale);
-        List<Token> tokens = lex(templateFile);
-        AbstractSyntaxTree abs = parse(tokens);
+        final AbstractSyntaxTree ast = parse(lex(templateFileWith(locale)));
 
-        cache.put(cacheKey, abs);
-        return abs.evaluate(arguments, locale);
+        cache.put(cacheKey, ast);
+        return ast.string(arguments, locale);
     }
 
-    private File findTemplateFileWith(final Locale locale) {
+    private File templateFileWith(final Locale locale) {
         final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
         final URL url = getClass().getClassLoader().getResource(templateFileURI);
 
@@ -54,7 +53,7 @@ public class WaterInterpreter implements Interpreter {
         }
 
         if (!locale.equals(defaultLocale)) {
-            return findTemplateFileWith(defaultLocale);
+            return templateFileWith(defaultLocale);
         }
 
         throw new TemplateFileNotFoundException(templateFilePath);

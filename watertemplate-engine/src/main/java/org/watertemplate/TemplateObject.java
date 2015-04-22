@@ -2,14 +2,16 @@ package org.watertemplate;
 
 import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
-public interface TemplateObject<T> {
-    T evaluate(final Locale locale);
+public interface TemplateObject {
+    String string(final Locale locale);
 
-    public final class LocaleSensitiveObject<T> implements TemplateObject<String> {
+    class LocaleSensitiveObject<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
         private final T object;
 
@@ -19,12 +21,12 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             return function.apply(object, locale);
         }
     }
 
-    public final class MappedObject<T> extends Mappable<T> implements TemplateObject<String> {
+    public final class MappedObject<T> extends Mappable<T> implements TemplateObject {
         private final T object;
 
         MappedObject(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
@@ -37,7 +39,7 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             if (object instanceof String) {
                 return (String) object;
             } else {
@@ -49,41 +51,45 @@ public interface TemplateObject<T> {
     }
 
     public final class CollectionObject<T> extends Mappable<T> implements TemplateObject {
-        private final Iterable<T> iterable;
+        private final Collection<T> collection;
 
-        public CollectionObject(final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        public CollectionObject(final Collection<T> collection, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
-            this.iterable = iterable;
+            this.collection = collection;
         }
 
         public Boolean isEmpty() {
-            return iterable == null || !iterable.iterator().hasNext();
+            return collection == null || !collection.iterator().hasNext();
         }
 
-        public Iterable<T> getIterable() {
-            return iterable;
+        public Collection<T> getCollection() {
+            return collection;
         }
 
         @Override
-        public Object evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Collections should not be evaluated");
         }
     }
 
-    public class ConditionObject implements TemplateObject<Boolean> {
+    public class ConditionObject implements TemplateObject {
         private final Boolean value;
 
         public ConditionObject(final Boolean value) {
             this.value = value;
         }
 
-        @Override
-        public Boolean evaluate(final Locale locale) {
+        public Boolean isTrue() {
             return value;
+        }
+
+        @Override
+        public String string(final Locale locale) {
+            throw new InvalidTemplateObjectEvaluationException("Booleans should not be evaluated");
         }
     }
 
-    public class StringObject implements TemplateObject<String> {
+    class StringObject implements TemplateObject {
         private final String value;
 
         public StringObject(final String value) {
@@ -91,25 +97,37 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             return value;
         }
     }
 
-    public class SubTemplateObject implements TemplateObject<String> {
-        private final Template subTemplate;
+    class SubTemplateObject implements TemplateObject {
+        final Template subTemplate;
 
         public SubTemplateObject(final Template subTemplate) {
             this.subTemplate = subTemplate;
         }
 
         @Override
-        public String evaluate(Locale locale) {
+        public String string(final Locale locale) {
             return subTemplate.render(locale);
+        }
+
+        public static class WithoutMaster extends SubTemplateObject {
+            public WithoutMaster(Template subTemplate) {
+                super(subTemplate);
+            }
+
+            @Override
+            public String string(final Locale locale) {
+                return subTemplate.renderWithoutMaster(locale);
+            }
         }
     }
 
     //
+
     static abstract class Mappable<T> {
 
         private final BiConsumer<T, TemplateMap.Arguments> mapper;
@@ -127,6 +145,5 @@ public interface TemplateObject<T> {
         public BiConsumer<T, TemplateMap.Arguments> getMapper() {
             return mapper;
         }
-
     }
 }

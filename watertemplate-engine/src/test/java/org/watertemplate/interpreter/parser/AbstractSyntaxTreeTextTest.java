@@ -14,7 +14,7 @@ public class AbstractSyntaxTreeTextTest {
     @Test
     public void normalText() {
         AbstractSyntaxTree abstractSyntaxTree = new AbstractSyntaxTree.Text("text");
-        Object result = abstractSyntaxTree.evaluate(new TemplateMap.Arguments(), locale);
+        Object result = abstractSyntaxTree.string(new TemplateMap.Arguments(), locale);
 
         assertEquals("text", result);
     }

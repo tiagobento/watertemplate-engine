@@ -3,6 +3,7 @@ package org.watertemplate.interpreter.parser;
 import org.junit.Test;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.exception.InvalidTemplateObjectEvaluationException;
+import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,15 +24,15 @@ public class AbstractSyntaxTreeForTest {
                         new AbstractSyntaxTree.Text("collection has no elements"));
 
         arguments.addCollection("collection", Arrays.asList("a", "v", "3", "%", "5", "4", "7"));
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("av3%547", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("collection has no elements", result);
 
         arguments.addCollection("collection", null);
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("collection has no elements", result);
     }
 
@@ -44,15 +45,15 @@ public class AbstractSyntaxTreeForTest {
                 );
 
         arguments.addCollection("collection", Arrays.asList("a", "v", "3", "%", "5", "4", "7"));
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("av3%547", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("", result);
 
         arguments.addCollection("collection", null);
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("", result);
     }
 
@@ -65,15 +66,15 @@ public class AbstractSyntaxTreeForTest {
                 );
 
         arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"));
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("abcd", result);
 
         arguments.addCollection("collection", new ArrayList<>());
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("", result);
 
         arguments.addCollection("collection", null);
-        result = abs.evaluate(arguments, locale);
+        result = abs.string(arguments, locale);
         assertEquals("", result);
     }
 
@@ -88,7 +89,7 @@ public class AbstractSyntaxTreeForTest {
             map.add("upper", letter.toUpperCase());
         });
 
-        Object result = abs.evaluate(arguments, locale);
+        Object result = abs.string(arguments, locale);
         assertEquals("ABCD", result);
     }
 
@@ -103,6 +104,20 @@ public class AbstractSyntaxTreeForTest {
             map.add("to_string", number.toString());
         });
 
-        abs.evaluate(arguments, locale);
+        abs.string(arguments, locale);
+    }
+
+    @Test(expected = IdCouldNotBeResolvedException.class)
+    public void forTryingToEvaluateIterationIdentifierOutOfScope() {
+        TemplateMap.Arguments arguments = new TemplateMap.Arguments();
+        AbstractSyntaxTree abs = new AbstractSyntaxTree.Statements(Arrays.asList(
+                new AbstractSyntaxTree.For("x", new AbstractSyntaxTree.Id("collection"),
+                        new AbstractSyntaxTree.Id("x")
+                ),
+                new AbstractSyntaxTree.Id("x")
+        ));
+
+        arguments.addCollection("collection", Arrays.asList("a", "b", "c", "d"));
+        abs.string(arguments, locale);
     }
 }
