@@ -72,7 +72,7 @@ Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
     :~
 </ul>
 ```
-Save it to `classpath:templates/en_US/months_grid.html`. Read [this](#where-to-store-your-template-files) to know why to save in this specific path.
+Save it to `classpath:templates/en_US/months_grid.html`. Read [the list of conventions](#list-of-conventions) to know why to save in this specific path.
 
 ##### Represent it in a Java class:
 ```java
