@@ -1,7 +1,6 @@
 package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
-import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
@@ -9,58 +8,27 @@ import org.watertemplate.interpreter.parser.Parser;
 import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.function.BiFunction;
 
-public class WaterInterpreter implements Interpreter {
+public abstract class WaterInterpreter {
 
-    private final static Map<String, AbstractSyntaxTree> cache = new HashMap<>();
+    protected final String templateFilePath;
+    protected final Locale defaultLocale;
 
-    private final String templateFilePath;
-    private final TemplateMap.Arguments arguments;
-    private final Locale defaultLocale;
-
-    public WaterInterpreter(final String templateFilePath, final TemplateMap.Arguments arguments, final Locale defaultLocale) {
+    public WaterInterpreter(final String templateFilePath, final Locale defaultLocale) {
         this.templateFilePath = templateFilePath;
-        this.arguments = arguments;
         this.defaultLocale = defaultLocale;
     }
 
-    @Override
-    public String interpret(final Locale locale) {
-        final String cacheKey = cacheKey(locale);
+    public abstract String string(final TemplateMap.Arguments arguments, final Locale locale);
 
-        if (cache.containsKey(cacheKey)) {
-            return cache.get(cacheKey).evaluate(arguments, locale);
-        }
-
-        File templateFile = findTemplateFileWith(locale);
-        List<Token> tokens = lex(templateFile);
-        AbstractSyntaxTree abs = parse(tokens);
-
-        cache.put(cacheKey, abs);
-        return abs.evaluate(arguments, locale);
+    protected AbstractSyntaxTree parse(final List<Token> tokens) {
+        return new Parser(tokens).buildAbstractSyntaxTree();
     }
 
-    private File findTemplateFileWith(final Locale locale) {
-        final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
-        final URL url = getClass().getClassLoader().getResource(templateFileURI);
-
-        if (url != null) {
-            return new File(url.getFile());
-        }
-
-        if (!locale.equals(defaultLocale)) {
-            return findTemplateFileWith(defaultLocale);
-        }
-
-        throw new TemplateFileNotFoundException(templateFilePath);
-    }
-
-    private List<Token> lex(final File templateFile) {
+    protected List<Token> lex(final File templateFile) {
         final Lexer lexer = new Lexer();
 
         final Reader reader = new Reader(templateFile);
@@ -71,11 +39,20 @@ public class WaterInterpreter implements Interpreter {
         return tokens;
     }
 
-    private AbstractSyntaxTree parse(final List<Token> tokens) {
-        return new Parser(tokens).buildAbstractSyntaxTree();
+    //
+
+    public static WaterInterpreter instantiate(final String filePath, final Locale defaultLocale) {
+        return interpreter.apply(filePath, defaultLocale);
     }
 
-    private String cacheKey(final Locale locale) {
-        return templateFilePath + locale;
+    private static WaterInterpreter newDefaultInterpreter(final String filePath, final Locale defaultLocale) {
+        return new DefaultWaterInterpreter(filePath, defaultLocale);
     }
+
+    private static WaterInterpreter newDeveloperInterpreter(final String filePath, final Locale defaultLocale) {
+        return new DeveloperWaterInterpreter(filePath, defaultLocale);
+    }
+
+    private static final BiFunction<String, Locale, WaterInterpreter> interpreter =
+            System.getProperty("dev-mode") != null ? WaterInterpreter::newDeveloperInterpreter : WaterInterpreter::newDefaultInterpreter;
 }

@@ -3,23 +3,19 @@ package org.watertemplate.interpreter.parser;
 import org.watertemplate.TemplateObject;
 import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
-import org.watertemplate.interpreter.parser.exception.NotCollectionObjectException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import static org.watertemplate.TemplateMap.Arguments;
-import static org.watertemplate.TemplateObject.StringObject;
+
 
 public abstract class AbstractSyntaxTree {
 
-    public String evaluate(final Arguments arguments, final Locale locale) {
-        return run(arguments, locale).evaluate(locale).toString();
-    }
+    static final AbstractSyntaxTree EMPTY = new Empty();
 
-    abstract TemplateObject run(final Arguments arguments, final Locale locale);
+    public abstract String string(final Arguments arguments, final Locale locale);
 
     public static class For extends AbstractSyntaxTree {
 
@@ -29,7 +25,27 @@ public abstract class AbstractSyntaxTree {
         private final AbstractSyntaxTree elseStatements;
 
         public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements) {
-            this(variableName, collectionId, forStatements, new Empty());
+            this(variableName, collectionId, forStatements, EMPTY);
+        }
+
+        @Override
+        public String string(final Arguments arguments, final Locale locale) {
+            final TemplateObject.Collection collection = (TemplateObject.Collection) collectionId.templateObject(arguments);
+
+            if (collection.isEmpty()) {
+                return elseStatements.string(arguments, locale);
+            }
+
+            final Arguments forArguments = new Arguments(arguments); // Mutable
+            final BiConsumer mapper = collection.getMapper();
+            final StringBuilder sb = new StringBuilder();
+
+            for (final Object item : collection.getCollection()) {
+                forArguments.addMappedObject(variableName, item, mapper);
+                sb.append(forStatements.string(forArguments, locale));
+            }
+
+            return sb.toString();
         }
 
         public For(final String variableName, final Id collectionId, final AbstractSyntaxTree forStatements, final AbstractSyntaxTree elseStatements) {
@@ -37,32 +53,6 @@ public abstract class AbstractSyntaxTree {
             this.collectionId = collectionId;
             this.forStatements = forStatements;
             this.elseStatements = elseStatements;
-        }
-
-        @Override
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            TemplateObject collection = collectionId.run(arguments, locale);
-
-            if (!(collection instanceof TemplateObject.CollectionObject)) {
-                throw new NotCollectionObjectException(collectionId);
-            }
-
-            TemplateObject.CollectionObject collectionObject = (TemplateObject.CollectionObject) collection;
-
-            if (collectionObject.isEmpty()) {
-                return elseStatements.run(arguments, locale);
-            }
-
-            StringBuilder sb = new StringBuilder();
-            BiConsumer mapper = collectionObject.getMapper();
-
-            for (final Object item : collectionObject.getIterable()) {
-                arguments.addMappedObject(variableName, item, mapper);
-                sb.append(forStatements.evaluate(arguments, locale)); // toString called
-            }
-
-            arguments.remove(variableName);
-            return new StringObject(sb.toString());
         }
     }
 
@@ -80,29 +70,6 @@ public abstract class AbstractSyntaxTree {
             this.nestedId = nestedId;
         }
 
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            TemplateObject object = arguments.get(propertyKey);
-
-            if (object == null) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-
-            if (nestedId == null) {
-                return object;
-            }
-
-            if (!(object instanceof TemplateObject.MappedObject)) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-
-            try {
-                Arguments mappedProperties = ((TemplateObject.MappedObject) object).map();
-                return nestedId.run(mappedProperties, locale);
-            } catch (IdCouldNotBeResolvedException e) {
-                throw new IdCouldNotBeResolvedException(this);
-            }
-        }
-
         public String getPropertyKey() {
             return propertyKey;
         }
@@ -114,6 +81,34 @@ public abstract class AbstractSyntaxTree {
 
             return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
         }
+
+        TemplateObject templateObject(final Arguments arguments) {
+            TemplateObject object = arguments.get(propertyKey);
+
+            if (object == null) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+
+            if (nestedId == null) {
+                return object;
+            }
+
+            if (!(object instanceof TemplateObject.Mapped)) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+
+            try {
+                Arguments mappedProperties = ((TemplateObject.Mapped) object).map();
+                return nestedId.templateObject(mappedProperties);
+            } catch (IdCouldNotBeResolvedException e) {
+                throw new IdCouldNotBeResolvedException(this);
+            }
+        }
+
+        @Override
+        public String string(final Arguments arguments, final Locale locale) {
+            return this.templateObject(arguments).string(locale);
+        }
     }
 
     public static class If extends AbstractSyntaxTree {
@@ -123,7 +118,7 @@ public abstract class AbstractSyntaxTree {
         private final AbstractSyntaxTree elseStatements;
 
         public If(final Id conditionId, final AbstractSyntaxTree ifStatements) {
-            this(conditionId, ifStatements, new Empty());
+            this(conditionId, ifStatements, EMPTY);
         }
 
         public If(final Id conditionId, final AbstractSyntaxTree ifStatements, final AbstractSyntaxTree elseStatements) {
@@ -133,11 +128,13 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            if ((boolean) conditionId.run(arguments, locale).evaluate(locale)) {
-                return ifStatements.run(arguments, locale);
+        public String string(final Arguments arguments, final Locale locale) {
+            TemplateObject.Condition condition = (TemplateObject.Condition) conditionId.templateObject(arguments);
+
+            if (condition.isTrue()) {
+                return ifStatements.string(arguments, locale);
             } else {
-                return elseStatements.run(arguments, locale);
+                return elseStatements.string(arguments, locale);
             }
         }
     }
@@ -150,17 +147,15 @@ public abstract class AbstractSyntaxTree {
             this.abstractSyntaxTrees = abstractSyntaxTrees;
         }
 
-        public Statements(final AbstractSyntaxTree... abstractSyntaxTrees) {
-            this.abstractSyntaxTrees = Arrays.asList(abstractSyntaxTrees);
-        }
-
         @Override
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            StringBuilder sb = new StringBuilder();
-            for (AbstractSyntaxTree abstractSyntaxTree : abstractSyntaxTrees) {
-                sb.append(abstractSyntaxTree.evaluate(arguments, locale)); // toString called
+        public String string(final Arguments arguments, final Locale locale) {
+            final StringBuilder sb = new StringBuilder();
+
+            for (AbstractSyntaxTree ast : abstractSyntaxTrees) {
+                sb.append(ast.string(arguments, locale));
             }
-            return new StringObject(sb.toString());
+
+            return sb.toString();
         }
     }
 
@@ -172,15 +167,15 @@ public abstract class AbstractSyntaxTree {
         }
 
         @Override
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            return new StringObject(value);
+        public String string(final Arguments arguments, final Locale locale) {
+            return value;
         }
     }
 
-    public static class Empty extends AbstractSyntaxTree {
+    private static class Empty extends AbstractSyntaxTree {
         @Override
-        TemplateObject run(final Arguments arguments, final Locale locale) {
-            return new StringObject("");
+        public String string(final Arguments arguments, final Locale locale) {
+            return "";
         }
     }
 }

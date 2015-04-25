@@ -1,5 +1,6 @@
 package org.watertemplate;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -8,53 +9,60 @@ import java.util.function.BiFunction;
 
 public abstract class TemplateMap<T> {
 
-    public final Map<String, T> map = new HashMap<>();
+    final Map<String, T> map = new HashMap<>();
 
-    public final void add(final String key, final T value) {
+    final void add(final String key, final T value) {
         this.map.put(key, value);
     }
 
-    public static class SubTemplates extends TemplateMap<TemplateObject.SubTemplateObject> {
+    public static class SubTemplates extends TemplateMap<TemplateObject.SubTemplate> {
         SubTemplates() {
         }
 
         public final void add(final String key, final Template subTemplate) {
-            add(key, new TemplateObject.SubTemplateObject(subTemplate));
+            add(key, new TemplateObject.SubTemplate(subTemplate));
         }
     }
 
     public static final class Arguments extends TemplateMap<TemplateObject> {
-        public final <T> void addCollection(final String key, final Iterable<T> iterable) {
-            add(key, new TemplateObject.CollectionObject<>(iterable, (a, b) -> {
+        public Arguments() {
+        }
+
+        public Arguments(final Arguments arguments) {
+            map.putAll(arguments.map);
+        }
+
+        public final <T> void addCollection(final String key, final Collection<T> iterable) {
+            add(key, new TemplateObject.Collection<T>(iterable, (a, b) -> {
             }));
         }
 
-        public final <T> void addCollection(final String key, final Iterable<T> iterable, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateObject.CollectionObject<>(iterable, mapper));
+        public final <T> void addCollection(final String key, final Collection<T> iterable, final BiConsumer<T, Arguments> mapper) {
+            add(key, new TemplateObject.Collection<T>(iterable, mapper));
         }
 
         public final <T> void addMappedObject(final String key, final T object, final BiConsumer<T, Arguments> mapper) {
-            add(key, new TemplateObject.MappedObject<>(object, mapper));
+            add(key, new TemplateObject.Mapped<>(object, mapper));
         }
 
         public final <T> void addLocaleSensitiveObject(final String key, final T object, final BiFunction<T, Locale, String> function) {
-            add(key, new TemplateObject.LocaleSensitiveObject<>(object, function));
+            add(key, new TemplateObject.LocaleSensitive<>(object, function));
         }
 
         public final void add(final String key, final String value) {
-            add(key, new TemplateObject.StringObject(value));
+            add(key, new TemplateObject.Value(value));
         }
 
         public final void add(final String key, final Boolean value) {
-            add(key, new TemplateObject.ConditionObject(value));
+            add(key, new TemplateObject.Condition(value));
         }
 
         public final TemplateObject get(final String key) {
             return map.get(key);
         }
 
-        public final void remove(final String key) {
-            map.remove(key);
+        final void addTemplateWhichWontRenderItsMasterTemplate(final String key, final Template subTemplate) {
+            add(key, new TemplateObject.SubTemplate.WithoutMaster(subTemplate));
         }
     }
 }

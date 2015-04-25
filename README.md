@@ -6,7 +6,8 @@ With no external dependencies, it is very lightweight and robust.
 
 Just like [mustache](https://mustache.github.io/), Water is a logic-less template engine, but it takes advantage of statically typed languages features to increase reliability and prevent errors.
 
-[![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine)
+[![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine) [![Coverage Status](https://coveralls.io/repos/tiagobento/watertemplate-engine/badge.svg?branch=master)](https://coveralls.io/r/tiagobento/watertemplate-engine?branch=master)
+
 
 Table of contents
 --
@@ -99,7 +100,7 @@ public static void main(String[] args) {
 
 
 ## Configuration
-Add the [maven dependency](http://search.maven.org/#artifactdetails%7Corg.watertemplate%7Cwatertemplate-engine%7C1.1.0%7Cjar) to your project.
+Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.1.0) to your project.
 Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
 
 Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
@@ -108,7 +109,7 @@ Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
 Water will always search for your template files under `classpath:templates/[locale]/`, where `[locale]` is any locale of your choice. The default locale is `Locale.US`. It's easy to work this way when you use [Water i18n](watertemplate-i18n).
 
 ##### How to change the default locale?
-Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagade the change to its child classes.
+Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagates the change to its child classes.
 
 
 
@@ -211,7 +212,7 @@ Water provides **if** and **for** commands.
 Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) to know how to use it and why it works so good together with the engine.
 
 ## JAX-RS
-If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://search.maven.org/#artifactdetails%7Corg.watertemplate%7Cwatertemplate-jaxrs-binding%7C1.1.0%7Cjar) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
+If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-jaxrs-binding/1.1.0) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
 
 **Run an example** following the information below.
 

@@ -15,7 +15,7 @@ public class TemplateMapTest {
         arguments.add("foo", "bar");
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals("bar", arguments.map.get("foo").evaluate(Locale.US));
+        Assert.assertEquals("bar", getValue(arguments, "foo"));
     }
 
     @Test
@@ -30,9 +30,8 @@ public class TemplateMapTest {
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertEquals(value, arguments.get(key).evaluate(Locale.US));
+        Assert.assertEquals(value, getValue(arguments, key));
     }
-
 
     @Test
     public void addCollection() {
@@ -50,22 +49,23 @@ public class TemplateMapTest {
         });
 
         Assert.assertEquals(1, arguments.map.size());
-        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateObject.CollectionObject);
+        Assert.assertTrue(arguments.map.get("strings") instanceof TemplateObject.Collection);
     }
+
 
     @Test
     public void map() {
-        final TemplateObject.MappedObject<String> mappedObject;
-        mappedObject = new TemplateObject.MappedObject<>("foo", (string, stringMap) -> {
+        final TemplateObject.Mapped<String> mapped;
+        mapped = new TemplateObject.Mapped<>("foo", (string, stringMap) -> {
             stringMap.add("lower", string.toLowerCase());
             stringMap.add("upper", string.toUpperCase());
             stringMap.add("size", string.length() + "");
         });
 
-        final TemplateMap.Arguments map = mappedObject.map();
-        Assert.assertEquals(map.get("lower").evaluate(Locale.US), "foo");
-        Assert.assertEquals(map.get("upper").evaluate(Locale.US), "FOO");
-        Assert.assertEquals(map.get("size").evaluate(Locale.US), "3");
+        final TemplateMap.Arguments map = mapped.map();
+        Assert.assertEquals("foo", getValue(map, "lower"));
+        Assert.assertEquals("FOO", getValue(map, "upper"));
+        Assert.assertEquals("3", getValue(map, "size"));
 
     }
 
@@ -77,5 +77,9 @@ public class TemplateMapTest {
         }
 
         return chars;
+    }
+
+    private String getValue(TemplateMap.Arguments arguments, String foo) {
+        return arguments.map.get(foo).string(Locale.US);
     }
 }

@@ -6,28 +6,28 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-public interface TemplateObject<T> {
-    T evaluate(final Locale locale);
+public interface TemplateObject {
+    String string(final Locale locale);
 
-    public final class LocaleSensitiveObject<T> implements TemplateObject<String> {
+    class LocaleSensitive<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
         private final T object;
 
-        protected LocaleSensitiveObject(final T object, final BiFunction<T, Locale, String> function) {
+        protected LocaleSensitive(final T object, final BiFunction<T, Locale, String> function) {
             this.function = function;
             this.object = object;
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             return function.apply(object, locale);
         }
     }
 
-    public final class MappedObject<T> extends Mappable<T> implements TemplateObject<String> {
+    public final class Mapped<T> extends Mappable<T> implements TemplateObject {
         private final T object;
 
-        MappedObject(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        Mapped(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
             this.object = object;
         }
@@ -37,7 +37,7 @@ public interface TemplateObject<T> {
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             if (object instanceof String) {
                 return (String) object;
             } else {
@@ -48,68 +48,84 @@ public interface TemplateObject<T> {
         }
     }
 
-    public final class CollectionObject<T> extends Mappable<T> implements TemplateObject {
-        private final Iterable<T> iterable;
+    public final class Collection<T> extends Mappable<T> implements TemplateObject {
+        private final java.util.Collection<T> collection;
 
-        public CollectionObject(final Iterable<T> iterable, final BiConsumer<T, TemplateMap.Arguments> mapper) {
+        public Collection(final java.util.Collection<T> collection, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
-            this.iterable = iterable;
+            this.collection = collection;
         }
 
         public Boolean isEmpty() {
-            return iterable == null || !iterable.iterator().hasNext();
+            return collection == null || !collection.iterator().hasNext();
         }
 
-        public Iterable<T> getIterable() {
-            return iterable;
+        public java.util.Collection<T> getCollection() {
+            return collection;
         }
 
         @Override
-        public Object evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Collections should not be evaluated");
         }
     }
 
-    public class ConditionObject implements TemplateObject<Boolean> {
+    public class Condition implements TemplateObject {
         private final Boolean value;
 
-        public ConditionObject(final Boolean value) {
+        public Condition(final Boolean value) {
             this.value = value;
         }
 
-        @Override
-        public Boolean evaluate(final Locale locale) {
+        public Boolean isTrue() {
             return value;
+        }
+
+        @Override
+        public String string(final Locale locale) {
+            throw new InvalidTemplateObjectEvaluationException("Booleans should not be evaluated");
         }
     }
 
-    public class StringObject implements TemplateObject<String> {
+    class Value implements TemplateObject {
         private final String value;
 
-        public StringObject(final String value) {
+        public Value(final String value) {
             this.value = value;
         }
 
         @Override
-        public String evaluate(final Locale locale) {
+        public String string(final Locale locale) {
             return value;
         }
     }
 
-    public class SubTemplateObject implements TemplateObject<String> {
-        private final Template subTemplate;
+    class SubTemplate implements TemplateObject {
+        final Template subTemplate;
 
-        public SubTemplateObject(final Template subTemplate) {
+        public SubTemplate(final Template subTemplate) {
             this.subTemplate = subTemplate;
         }
 
         @Override
-        public String evaluate(Locale locale) {
+        public String string(final Locale locale) {
             return subTemplate.render(locale);
+        }
+
+        public static class WithoutMaster extends SubTemplate {
+            public WithoutMaster(Template subTemplate) {
+                super(subTemplate);
+            }
+
+            @Override
+            public String string(final Locale locale) {
+                return subTemplate.renderWithoutMaster(locale);
+            }
         }
     }
 
     //
+
     static abstract class Mappable<T> {
 
         private final BiConsumer<T, TemplateMap.Arguments> mapper;
@@ -127,6 +143,5 @@ public interface TemplateObject<T> {
         public BiConsumer<T, TemplateMap.Arguments> getMapper() {
             return mapper;
         }
-
     }
 }
