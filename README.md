@@ -13,10 +13,10 @@ Just like [mustache](https://mustache.github.io/), Water is a logic-less templat
 - [Maven](#maven)
 - [Quick start](#quick-start)
 - [Documentation](#documentation)
- - [Conventions](#list-of-conventions)
  - [Nested templates](#nested-templates)
  - [Adding arguments](#adding-arguments)
  - [Commands](#commands)
+ - [Conventions](#list-of-conventions)
 - [i18n](#i18n)
 - [JAX-RS](#jax-rs)
 - **[Try it yourself!](#try-it-yourself)**
@@ -49,19 +49,6 @@ Water relies in very tiny amount of [conventions](#list-of-conventions) instead 
 
 ### _No_ dynamic i18n
 Water provides no dynamic i18n solution. There's no point in querying a .properties file millions of times during the lifecycle of your application. The [i18n project](#i18n) allows you to build your internationalized templates during build time. However, there are values which are _locale sensitive_, such as dates or currency. Water provides an elegant [solution](#adding-arguments) for such cases.
-
-
-## List of conventions
-
-- `~content~` is a reserved identifier. It's where your Template goes inside its Master template.
-
-- Every template file must be placed in `classpath:templates/[locale]/`. The [i18n project ](#i18n) helps you with that.
-
-- The default locale is `Locale.US`. However, you can change it easily. [See how](#how-to-change-the-default-locale).
-
-- When using the [dev-mode]() flag, your templates must be placed in `src/main/resources/templates`
-
-- _[Temporary]_ The characters `:` and `~` cannot be missplaced in your template files. It will lead to unexpected behavior during the compile fase.
 
 
 
@@ -239,6 +226,21 @@ Water provides **if** and **for** commands.
     <span> No users to display </span>
 :~
 ```
+
+
+### List of conventions
+
+- `~content~` is a reserved identifier. It's where your Template goes inside its Master template.
+
+- Every template file must be placed in `classpath:templates/[locale]/`. The [i18n project ](#i18n) helps you with that.
+
+- The default locale is `Locale.US`. However, you can change it easily. [See how](#how-to-change-the-default-locale).
+
+- When using the [dev-mode]() flag, your templates must be placed in `src/main/resources/templates`
+
+- _[Temporary]_ The characters `:` and `~` cannot be missplaced in your template files. It will lead to unexpected behavior during the compile fase.
+
+
 
 ### How to change the default locale?
 Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagates the change to its child classes.
