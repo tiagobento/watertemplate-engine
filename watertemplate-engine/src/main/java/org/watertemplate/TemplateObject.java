@@ -26,14 +26,16 @@ public interface TemplateObject {
 
     public final class Mapped<T> extends Mappable<T> implements TemplateObject {
         private final T object;
+        private final TemplateMap.Arguments mappedProperties;
 
         Mapped(final T object, final BiConsumer<T, TemplateMap.Arguments> mapper) {
             super(mapper);
             this.object = object;
+            this.mappedProperties = map(object);
         }
 
         public TemplateMap.Arguments map() {
-            return map(object);
+            return mappedProperties;
         }
 
         @Override

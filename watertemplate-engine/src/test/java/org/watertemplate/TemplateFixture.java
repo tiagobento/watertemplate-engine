@@ -95,7 +95,7 @@ public class TemplateFixture {
                     .map(Object::toString)
                     .collect(Collectors.toList());
 
-            addCollection("items", map, null);
+            addCollection("items", map, (a, b) -> {});
         }
 
         @Override
