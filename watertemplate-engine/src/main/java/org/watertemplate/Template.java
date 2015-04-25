@@ -84,7 +84,7 @@ public abstract class Template {
         }
     }
 
-    public final String renderWithoutMaster(final Locale locale) {
+    final String renderWithoutMaster(final Locale locale) {
         SubTemplates subTemplates = new SubTemplates();
         addSubTemplates(subTemplates);
         subTemplates.map.forEach(arguments::add);
