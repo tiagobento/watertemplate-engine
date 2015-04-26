@@ -1,6 +1,7 @@
 package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
+import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
 import org.watertemplate.interpreter.lexer.Lexer;
 import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
@@ -8,6 +9,7 @@ import org.watertemplate.interpreter.parser.Parser;
 import org.watertemplate.interpreter.reader.Reader;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -24,11 +26,11 @@ public abstract class WaterInterpreter {
 
     public abstract String string(final TemplateMap.Arguments arguments, final Locale locale);
 
-    protected AbstractSyntaxTree parse(final List<Token> tokens) {
+    AbstractSyntaxTree parse(final List<Token> tokens) {
         return new Parser(tokens).buildAbstractSyntaxTree();
     }
 
-    protected List<Token> lex(final File templateFile) {
+    List<Token> lex(final File templateFile) {
         final Lexer lexer = new Lexer();
 
         final Reader reader = new Reader(templateFile);
@@ -37,6 +39,21 @@ public abstract class WaterInterpreter {
         final List<Token> tokens = lexer.getTokens();
         tokens.add(Token.END_OF_INPUT);
         return tokens;
+    }
+
+    File templateFileWith(final Locale locale) {
+        final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
+        final URL url = getClass().getClassLoader().getResource(templateFileURI);
+
+        if (url != null) {
+            return new File(url.getFile());
+        }
+
+        if (!locale.equals(defaultLocale)) {
+            return templateFileWith(defaultLocale);
+        }
+
+        throw new TemplateFileNotFoundException(templateFilePath);
     }
 
     //

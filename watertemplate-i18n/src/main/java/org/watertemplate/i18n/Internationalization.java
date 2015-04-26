@@ -1,4 +1,4 @@
-package com.highlight.template.i18n;
+package org.watertemplate.i18n;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -40,7 +40,7 @@ class Internationalization {
         }
     }
 
-    public void parse() throws IOException {
+    public void parse() {
         try {
             long start = System.currentTimeMillis();
             createAndCompileFiles();
@@ -48,11 +48,11 @@ class Internationalization {
         } catch (Exception e) {
             LOGGER.error("Deleting i18n directories.");
             deleteFilesOrDirectories(alreadyCompiledDirs);
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
-    private void createAndCompileFiles() throws IOException {
+    private void createAndCompileFiles() {
         for (final Locale locale : locales.keySet()) {
             try {
                 File localeDir = new File(destinationDir, locale.toString());
@@ -65,7 +65,7 @@ class Internationalization {
                 compileFilesAndDirectoriesFor(locale, localeDir);
             } catch (Exception e) {
                 LOGGER.error("Error processing {}", locale);
-                throw e;
+                throw new RuntimeException(e);
             }
         }
     }
@@ -110,10 +110,14 @@ class Internationalization {
 
     ///
 
-    private static void deleteFilesOrDirectories(Collection<File> files) throws IOException {
+    private static void deleteFilesOrDirectories(Collection<File> files) {
         for (File file : files.toArray(new File[files.size()])) {
             if (file.isDirectory()) {
-                FileUtils.deleteDirectory(file);
+                try {
+                    FileUtils.deleteDirectory(file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 file.delete();
             }
