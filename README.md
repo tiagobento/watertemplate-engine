@@ -9,20 +9,53 @@ Just like [mustache](https://mustache.github.io/), Water is a logic-less templat
 [![Travis build on branch master](https://api.travis-ci.org/tiagobento/watertemplate-engine.svg?branch=master)](https://travis-ci.org/tiagobento/watertemplate-engine) [![Coverage Status](https://coveralls.io/repos/tiagobento/watertemplate-engine/badge.svg?branch=master)](https://coveralls.io/r/tiagobento/watertemplate-engine?branch=master)
 
 
-Table of contents
---
-
+- [Why to use Water?](#why-to-use-water)
+- [Maven](#maven)
 - [Quick start](#quick-start)
-- [Configuration](#configuration)
-- [Nested templates](#nested-templates)
-- [Adding arguments](#adding-arguments)
-- [Commands](#commands)
+- [Documentation](#documentation)
+ - [Nested templates](#nested-templates)
+ - [Adding arguments](#adding-arguments)
+ - [Commands](#commands)
+ - [Conventions](#list-of-conventions)
 - [i18n](#i18n)
 - [JAX-RS](#jax-rs)
 - **[Try it yourself!](#try-it-yourself)**
 
 
 
+# Why to use Water?
+
+Water is a not only logic-less, but also **transparent**. It means you see everything you do. It means there are no complex under-the-hood features which try to abstract the problems you are trying to solve.
+
+Everything you do is explicit, and while the other template engines try to help you with reflection solutions or thousands of features which give you flexibility, Water restricts its use to its porpourse.
+
+### _1 to 1_ complex
+Every template class describes one and one only template file. Each of your .html or whatever you're templating are described by an specific class. It gives you a _coupling-free hierarchy_. Every template is independent. The relationships between templates are made inside your classes, not in your template files.
+
+### _Transparent_
+Transparency should be more often present in software artifacts. It is so easy to hide undesired things from its users that many people do it unconsciously. Water hides you nothing. Not even a simple `toString()` method is called without you calling it explicitly.
+
+### _Logic-less_
+Its obvious that no logic should be placed in your template files. But aren't include tags, nesting or parameterization logic? In Water templates, every these things are not possible inside template files. And even though Water provides the handy if command, it makes sure that every logic is still computed in your template classes by accepting only Booleans as conditions.
+
+### _No_ function calls inside templates
+Why enabling function calls inside your template files if you can do it in your Java classes? It may seem a feature less than the other engine templates. But it ensures your template files are actually not becoming programs.
+
+### _No_ reflection
+It's straight forward to say that reflection is either slow and dangerous. Even if it promisses that you're writing less code, it creates a complex environment which hides things from the developers. You end up not knowing exactly wheter functions are used or not.
+
+### _No_ configuration
+Water relies in very tiny amount of [conventions](#list-of-conventions) instead of providing non-obvious configuration. Adding the dependency to your project and extending `Template` give you full power to start building your templates.
+
+### _No_ dynamic i18n
+Water provides no dynamic i18n solution. There's no point in querying a .properties file millions of times during the lifecycle of your application. The [i18n project](#i18n) allows you to build your internationalized templates during build time. However, there are values which are _locale sensitive_, such as dates or currency. Water provides an elegant [solution](#adding-arguments) for such cases.
+
+
+
+## Maven
+Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.1.0) to your project.
+
+Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
 
 
 
@@ -39,7 +72,7 @@ Table of contents
     :~
 </ul>
 ```
-Save it to `classpath:templates/en_US/months_grid.html`. Read [this](#where-to-store-your-template-files) to know why to save in this specific path.
+Save it to `classpath:templates/en_US/months_grid.html`. Read [the list of conventions](#list-of-conventions) to know why to save in this specific path.
 
 ##### Represent it in a Java class:
 ```java
@@ -98,24 +131,10 @@ public static void main(String[] args) {
 
 
 
-
-## Configuration
-Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.1.0) to your project.
-Since you've done that, extending `Template` gives you full power to build your templates. **Take a look at the [examples](watertemplate-example/src/main/java/org/watertemplate/example) and the source code!**
-
-Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
-
-##### Where to store your template files?
-Water will always search for your template files under `classpath:templates/[locale]/`, where `[locale]` is any locale of your choice. The default locale is `Locale.US`. It's easy to work this way when you use [Water i18n](watertemplate-i18n).
-
-##### How to change the default locale?
-Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagates the change to its child classes.
-
-
-
+#Documentation
 
  
-## Adding arguments
+### Adding arguments
 Water works with a different approach to arguments. Unlike many other template engines, Water **uses no reflection at any time** and **doesn't make it possible to call functions within your template files**. Everything you add as an argument must have a key associated with it and can be formatted or manipulated through the mapping mechanism. 
 There are five basic methods which let you add arguments:
 
@@ -170,7 +189,7 @@ addCollection("users", users, (user, userMap) -> {
 
 It is only possible to add Strings and Booleans. Collections and MappedObjects are special types which should never be evaluated. **The `toString()` method is never implicitly called.**
 
-## Nested templates
+### Nested templates
 Water gives you the possibility to nest templates in many levels. Each `Template` can have one `MasterTemplate` and many `SubTemplates`. When creating a `Template`, you can override the `getMasterTemplate` and `getSubTemplates` methods to specify how is your tree going to be.
 
 Also, each `Template` has one, and one only, template file associated with it. This 1 to 1 relationship ensures that
@@ -182,7 +201,7 @@ See an [example](watertemplate-example/src/main/java/org/watertemplate/example/n
 
 
 
-## Commands
+### Commands
 Water provides **if** and **for** commands. 
 
 
@@ -191,7 +210,7 @@ Water provides **if** and **for** commands.
 
 - **_For:_** The for collection _must_ be added by the `addCollection` method. The else is triggered when the collection is empty or null.
 
-##### Syntax
+#### Full syntax
 ```html
 ~for user in users:
     
@@ -207,6 +226,24 @@ Water provides **if** and **for** commands.
     <span> No users to display </span>
 :~
 ```
+
+
+### List of conventions
+
+- `~content~` is a reserved identifier. It's where your Template goes inside its Master template.
+
+- Every template file must be placed in `classpath:templates/[locale]/`. The [i18n project ](#i18n) helps you with that.
+
+- The default locale is `Locale.US`. However, you can change it easily. [See how](#how-to-change-the-default-locale).
+
+- When using the [dev-mode]() flag, your templates must be placed in `src/main/resources/templates`
+
+- _[Temporary]_ The characters `:` and `~` cannot be missplaced in your template files. It will lead to unexpected behavior during the compile fase.
+
+
+
+### How to change the default locale?
+Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagates the change to its child classes.
 
 ## i18n
 Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) to know how to use it and why it works so good together with the engine.

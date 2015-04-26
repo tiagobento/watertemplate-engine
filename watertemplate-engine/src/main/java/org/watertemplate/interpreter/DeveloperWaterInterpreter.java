@@ -13,24 +13,6 @@ class DeveloperWaterInterpreter extends WaterInterpreter {
 
     @Override
     public String string(final TemplateMap.Arguments arguments, final Locale locale) {
-        return parse(lex(templateFile())).string(arguments, locale);
-    }
-
-    private File templateFile() {
-        final String templateFileURI = new File("").getAbsolutePath() + File.separator +
-                "src" + File.separator +
-                "main" + File.separator +
-                "resources" + File.separator +
-                "templates" + File.separator +
-                defaultLocale + File.separator +
-                templateFilePath;
-
-        final File file = new File(templateFileURI);
-
-        if (!file.exists()) {
-            throw new TemplateFileNotFoundException(templateFilePath);
-        }
-
-        return file;
+        return parse(lex(templateFileWith(locale))).string(arguments, locale);
     }
 }

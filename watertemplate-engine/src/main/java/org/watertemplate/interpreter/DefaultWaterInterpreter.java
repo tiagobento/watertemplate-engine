@@ -33,21 +33,6 @@ class DefaultWaterInterpreter extends WaterInterpreter {
         }).string(arguments, locale);
     }
 
-    private File templateFileWith(final Locale locale) {
-        final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
-        final URL url = getClass().getClassLoader().getResource(templateFileURI);
-
-        if (url != null) {
-            return new File(url.getFile());
-        }
-
-        if (!locale.equals(defaultLocale)) {
-            return templateFileWith(defaultLocale);
-        }
-
-        throw new TemplateFileNotFoundException(templateFilePath);
-    }
-
     private String cacheKey(final Locale locale) {
         return templateFilePath + locale;
     }
