@@ -2,7 +2,6 @@ package org.watertemplate.i18n.developer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.watertemplate.i18n.GenerationMojo;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -26,7 +25,10 @@ public class DirectoryWatcher {
             this.watcher = FileSystems.getDefault().newWatchService();
             this.keys = new HashMap<>();
 
-            registerAll(dirs);
+            for (String dir : dirs) {
+                registerAll(Paths.get(dir));
+            }
+
             LOGGER.info("Watching {}", dirs);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -46,37 +48,37 @@ public class DirectoryWatcher {
                             WatchEvent<Path> ev = cast(event);
                             Path child = dir.resolve(ev.context());
 
-                            r.run();
+                            if (child.toFile().isFile()) {
+                                LOGGER.info("Rebuilding..");
 
-                            if (event.kind() == ENTRY_CREATE) {
-                                if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
-                                    registerAll(child);
+                                try {
+                                    r.run();
+                                } catch (Exception e) {
+                                    LOGGER.error("Error..", e);
+                                }
+
+                                if (event.kind() == ENTRY_CREATE) {
+                                    if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
+                                        registerAll(child);
+                                    }
+                                }
+                            }
+
+                            boolean valid = key.reset();
+                            if (!valid) {
+                                keys.remove(key);
+                                if (keys.isEmpty()) {
+                                    break;
                                 }
                             }
                         }
-
-                        boolean valid = key.reset();
-                        if (!valid) {
-                            keys.remove(key);
-                            if (keys.isEmpty()) {
-                                break;
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        LOGGER.error("Error rebuilding templates", e);
+                    } catch (Exception ignored) {
                     }
                 }
             }
         };
 
         thread.start();
-    }
-
-    private void registerAll(final String... dirs) throws IOException {
-        for (String dir : dirs) {
-            registerAll(Paths.get(dir));
-        }
     }
 
     private void registerAll(Path dirPath) throws IOException {
