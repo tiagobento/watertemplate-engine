@@ -19,9 +19,9 @@ public class DirectoryWatcher {
     private final WatchService watcher;
     private final Map<WatchKey, Path> keys;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenerationMojo.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryWatcher.class);
 
-    public DirectoryWatcher(final String ... dirs) {
+    public DirectoryWatcher(final String... dirs) {
         try {
             this.watcher = FileSystems.getDefault().newWatchService();
             this.keys = new HashMap<>();
@@ -37,8 +37,8 @@ public class DirectoryWatcher {
         final Thread thread = new Thread() {
             @Override
             public void run() {
-                try {
-                    while (true) {
+                while (true) {
+                    try {
                         WatchKey key = watcher.take();
                         Path dir = keys.get(key);
 
@@ -46,6 +46,7 @@ public class DirectoryWatcher {
                             WatchEvent<Path> ev = cast(event);
                             Path child = dir.resolve(ev.context());
 
+                            LOGGER.info(event.kind().name());
                             r.run();
 
                             if (event.kind() == ENTRY_CREATE) {
@@ -62,9 +63,10 @@ public class DirectoryWatcher {
                                 break;
                             }
                         }
+
+                    } catch (Exception e) {
+                        LOGGER.error("Error rebuilding templates", e);
                     }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
                 }
             }
         };
@@ -72,7 +74,7 @@ public class DirectoryWatcher {
         thread.start();
     }
 
-    private void registerAll(final String ... dirs) throws IOException {
+    private void registerAll(final String... dirs) throws IOException {
         for (String dir : dirs) {
             registerAll(Paths.get(dir));
         }
