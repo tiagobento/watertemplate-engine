@@ -46,7 +46,6 @@ public class DirectoryWatcher {
                             WatchEvent<Path> ev = cast(event);
                             Path child = dir.resolve(ev.context());
 
-                            LOGGER.info(event.kind().name());
                             r.run();
 
                             if (event.kind() == ENTRY_CREATE) {
