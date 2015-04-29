@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.watertemplate.interpreter.parser.AbstractSyntaxTree.Id;
-import static org.watertemplate.interpreter.parser.NonTerminal.ID;
-import static org.watertemplate.interpreter.parser.NonTerminal.STATEMENTS;
+import static org.watertemplate.interpreter.parser.AbstractSyntaxTree.EMPTY;
+import static org.watertemplate.interpreter.parser.NonTerminal.*;
 import static org.watertemplate.interpreter.parser.Terminal.*;
 
 abstract class Production implements GrammarSymbol {
@@ -41,13 +40,15 @@ abstract class Production implements GrammarSymbol {
     static class If extends Production {
 
         If() {
-            super(IF, ID, STATEMENTS, END);
+            super(WAVE, IF, BLANK, ID, COLON,
+                    STATEMENTS,
+                    END_OF_BLOCK);
         }
 
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            Id conditionId = (Id) statements.get(1);
-            AbstractSyntaxTree ifStatements = statements.get(2);
+            AbstractSyntaxTree.Id conditionId = (AbstractSyntaxTree.Id) statements.get(3);
+            AbstractSyntaxTree ifStatements = statements.get(5);
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements);
         }
@@ -56,14 +57,17 @@ abstract class Production implements GrammarSymbol {
     static class IfElse extends Production {
 
         IfElse() {
-            super(IF, ID, STATEMENTS, ELSE, STATEMENTS, END);
+            super(WAVE, IF, BLANK, ID, COLON,
+                    STATEMENTS,
+                    ELSE,
+                    STATEMENTS, END_OF_BLOCK);
         }
 
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            Id conditionId = (Id) statements.get(1);
-            AbstractSyntaxTree ifStatements = statements.get(2);
-            AbstractSyntaxTree elseStatements = statements.get(4);
+            AbstractSyntaxTree.Id conditionId = (AbstractSyntaxTree.Id) statements.get(3);
+            AbstractSyntaxTree ifStatements = statements.get(5);
+            AbstractSyntaxTree elseStatements = statements.get(7);
 
             return new AbstractSyntaxTree.If(conditionId, ifStatements, elseStatements);
         }
@@ -72,14 +76,16 @@ abstract class Production implements GrammarSymbol {
     static class For extends Production {
 
         For() {
-            super(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, END);
+            super(WAVE, FOR, BLANK, PROPERTY_KEY, BLANK, IN, BLANK, ID, COLON,
+                    STATEMENTS,
+                    END_OF_BLOCK);
         }
 
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            String propertyKey = ((Id) statements.get(1)).getPropertyKey();
-            Id collectionId = (Id) statements.get(3);
-            AbstractSyntaxTree forStatements = statements.get(4);
+            String propertyKey = ((AbstractSyntaxTree.Id) statements.get(3)).getPropertyKey();
+            AbstractSyntaxTree.Id collectionId = (AbstractSyntaxTree.Id) statements.get(7);
+            AbstractSyntaxTree forStatements = statements.get(9);
 
             return new AbstractSyntaxTree.For(propertyKey, collectionId, forStatements);
         }
@@ -88,35 +94,69 @@ abstract class Production implements GrammarSymbol {
     static class ForElse extends Production {
 
         ForElse() {
-            super(FOR, PROPERTY_KEY, IN, ID, STATEMENTS, ELSE, STATEMENTS, END);
+            super(WAVE, FOR, BLANK, PROPERTY_KEY, BLANK, IN, BLANK, ID, COLON,
+                    STATEMENTS,
+                    ELSE,
+                    STATEMENTS,
+                    END_OF_BLOCK);
         }
 
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            String propertyKey = ((Id) statements.get(1)).getPropertyKey();
-            Id collectionId = (Id) statements.get(3);
-            AbstractSyntaxTree forStatements = statements.get(4);
-            AbstractSyntaxTree elseStatements = statements.get(6);
+            String propertyKey = ((AbstractSyntaxTree.Id) statements.get(3)).getPropertyKey();
+            AbstractSyntaxTree.Id collectionId = (AbstractSyntaxTree.Id) statements.get(7);
+            AbstractSyntaxTree forStatements = statements.get(9);
+            AbstractSyntaxTree elseStatements = statements.get(11);
 
             return new AbstractSyntaxTree.For(propertyKey, collectionId, forStatements, elseStatements);
         }
     }
 
-    static class IdWithNestedProperties extends Production {
+    static class Id extends Production {
 
-        IdWithNestedProperties() {
-            super(PROPERTY_KEY, ACCESSOR, ID);
+        Id() {
+            super(PROPERTY_KEY, NESTED_PROP);
         }
 
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
-            String propertyKey = ((Id) statements.get(0)).getPropertyKey();
-            Id nestedId = (Id) statements.get(2);
-            return new Id(propertyKey, nestedId);
+            AbstractSyntaxTree.Id propertyKey = (AbstractSyntaxTree.Id) statements.get(0);
+            AbstractSyntaxTree nested = statements.get(1);
+
+            if (nested == EMPTY) {
+                return propertyKey;
+            } else {
+                return new AbstractSyntaxTree.Id(propertyKey.getPropertyKey(), (AbstractSyntaxTree.Id) nested);
+            }
+        }
+    }
+
+    static class NestedProperty extends Production {
+
+        NestedProperty() {
+            super(ACCESSOR, PROPERTY_KEY);
+        }
+
+        @Override
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            return statements.get(1);
+        }
+    }
+
+    static class Evaluation extends Production {
+
+        Evaluation() {
+            super(WAVE, ID, WAVE);
+        }
+
+        @Override
+        AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
+            return statements.get(1);
         }
     }
 
     static class Statements extends Production {
+
         public Statements(final GrammarSymbol... statements) {
             super(statements);
         }

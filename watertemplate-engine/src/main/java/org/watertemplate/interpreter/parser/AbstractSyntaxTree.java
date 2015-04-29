@@ -1,12 +1,13 @@
 package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.TemplateObject;
-import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.watertemplate.TemplateMap.Arguments;
 
@@ -79,7 +80,7 @@ public abstract class AbstractSyntaxTree {
                 return propertyKey;
             }
 
-            return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
+            return propertyKey + Keywords.ACCESSOR + nestedId.getFullId();
         }
 
         TemplateObject templateObject(final Arguments arguments) {
@@ -144,7 +145,18 @@ public abstract class AbstractSyntaxTree {
         private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
         public Statements(final List<AbstractSyntaxTree> abstractSyntaxTrees) {
-            this.abstractSyntaxTrees = abstractSyntaxTrees;
+            this.abstractSyntaxTrees = abstractSyntaxTrees.stream()
+                    .flatMap(this::flatten).collect(Collectors.toList());
+        }
+
+        private Stream<AbstractSyntaxTree> flatten(final AbstractSyntaxTree ast) {
+            if (ast instanceof Statements) {
+                return ((Statements) ast).abstractSyntaxTrees.stream();
+            } else if (ast != EMPTY) {
+                return Stream.of(ast);
+            } else {
+                return Stream.of();
+            }
         }
 
         @Override

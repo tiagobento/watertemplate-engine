@@ -2,11 +2,10 @@ package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
 import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
-import org.watertemplate.interpreter.lexer.Lexer;
-import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
+import org.watertemplate.interpreter.parser.Lexer;
 import org.watertemplate.interpreter.parser.Parser;
-import org.watertemplate.interpreter.reader.Reader;
+import org.watertemplate.interpreter.parser.Token;
 
 import java.io.File;
 import java.net.URL;
@@ -31,14 +30,7 @@ public abstract class WaterInterpreter {
     }
 
     List<Token> lex(final File templateFile) {
-        final Lexer lexer = new Lexer();
-
-        final Reader reader = new Reader(templateFile);
-        reader.readExecuting(lexer::accept);
-
-        final List<Token> tokens = lexer.getTokens();
-        tokens.add(Token.END_OF_INPUT);
-        return tokens;
+        return new Lexer().lex(templateFile);
     }
 
     File templateFileWith(final Locale locale) {

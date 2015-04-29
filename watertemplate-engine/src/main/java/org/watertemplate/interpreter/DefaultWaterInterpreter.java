@@ -1,22 +1,11 @@
 package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
-import org.watertemplate.interpreter.exception.TemplateFileNotFoundException;
-import org.watertemplate.interpreter.lexer.Lexer;
-import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
-import org.watertemplate.interpreter.parser.Parser;
-import org.watertemplate.interpreter.reader.Reader;
 
-import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.BiFunction;
 
 class DefaultWaterInterpreter extends WaterInterpreter {
 
@@ -28,9 +17,8 @@ class DefaultWaterInterpreter extends WaterInterpreter {
 
     @Override
     public String string(final TemplateMap.Arguments arguments, final Locale locale) {
-        return cache.computeIfAbsent(cacheKey(locale), (key) -> {
-            return parse(lex(templateFileWith(locale)));
-        }).string(arguments, locale);
+        return cache.computeIfAbsent(cacheKey(locale), key ->
+                parse(lex(templateFileWith(locale)))).string(arguments, locale);
     }
 
     private String cacheKey(final Locale locale) {

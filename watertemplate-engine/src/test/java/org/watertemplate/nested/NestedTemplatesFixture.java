@@ -1,19 +1,22 @@
-package org.watertemplate;
+package org.watertemplate.nested;
+
+import org.watertemplate.Template;
+import org.watertemplate.TemplateMap;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TemplateFixture {
+public class NestedTemplatesFixture {
     public static class MasterTemplate extends Template {
         protected String getFilePath() {
-            return "masterTemplate.html";
+            return "nested/masterTemplate.html";
         }
     }
 
     public static class SubTemplate extends Template {
         protected String getFilePath() {
-            return "subTemplate.html";
+            return "nested/subTemplate.html";
         }
     }
 
@@ -25,7 +28,7 @@ public class TemplateFixture {
 
         @Override
         protected String getFilePath() {
-            return "templateOnlyWithMasterTemplate.html";
+            return "nested/templateOnlyWithMasterTemplate.html";
         }
     }
 
@@ -37,7 +40,7 @@ public class TemplateFixture {
 
         @Override
         protected String getFilePath() {
-            return "templateOnlyWithSubTemplates.html";
+            return "nested/templateOnlyWithSubTemplates.html";
         }
     }
 
@@ -54,14 +57,14 @@ public class TemplateFixture {
 
         @Override
         protected String getFilePath() {
-            return "templateWithMasterAndSubTemplates.html";
+            return "nested/templateWithMasterAndSubTemplates.html";
         }
     }
 
     public static class SubTemplateMasterTemplate extends Template {
         @Override
         protected String getFilePath() {
-            return "subTemplateMasterTemplate.html";
+            return "nested/subTemplateMasterTemplate.html";
         }
     }
 
@@ -85,22 +88,7 @@ public class TemplateFixture {
 
         @Override
         protected String getFilePath() {
-            return "templateWithMasterTemplateAndSubTemplatesThatHaveMasterTemplate.html";
-        }
-    }
-
-    public static class TemplateWithCollection extends Template {
-        TemplateWithCollection(Integer... integers) {
-            List<String> map = Arrays.asList(integers).stream()
-                    .map(Object::toString)
-                    .collect(Collectors.toList());
-
-            addCollection("items", map, (a, b) -> {});
-        }
-
-        @Override
-        protected String getFilePath() {
-            return "templateWithCollection.html";
+            return "nested/templateWithMasterTemplateAndSubTemplatesThatHaveMasterTemplate.html";
         }
     }
 }

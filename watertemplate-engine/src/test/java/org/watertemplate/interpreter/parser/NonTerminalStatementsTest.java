@@ -1,9 +1,9 @@
 package org.watertemplate.interpreter.parser;
 
 import org.junit.Test;
-import org.watertemplate.interpreter.lexer.TokenFixture;
 
 import static org.junit.Assert.assertNotNull;
+import static org.watertemplate.interpreter.parser.TokenFixture.PropertyKey;
 
 public class NonTerminalStatementsTest {
 
@@ -15,7 +15,7 @@ public class NonTerminalStatementsTest {
     @Test
     public void singleStatement() {
         TokenStream tokenStream = new TokenStream(
-                new TokenFixture.PropertyKey("x")
+                PropertyKey("x")
         );
 
         assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));
@@ -24,12 +24,12 @@ public class NonTerminalStatementsTest {
     @Test
     public void multipleStatements() {
         TokenStream tokenStream = new TokenStream(
-                new TokenFixture.PropertyKey("x"),
-                new TokenFixture.PropertyKey("y"),
-                new TokenFixture.PropertyKey("z"),
-                new TokenFixture.PropertyKey("w"),
-                new TokenFixture.PropertyKey("foo"),
-                new TokenFixture.PropertyKey("bar")
+                PropertyKey("x"),
+                PropertyKey("y"),
+                PropertyKey("z"),
+                PropertyKey("w"),
+                PropertyKey("foo"),
+                PropertyKey("bar")
         );
 
         assertNotNull(NonTerminal.STATEMENTS.buildAbstractSyntaxTree(tokenStream));

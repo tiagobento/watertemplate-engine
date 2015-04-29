@@ -3,9 +3,9 @@ package org.watertemplate.interpreter.parser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.watertemplate.interpreter.lexer.TokenType;
 
-import static org.watertemplate.interpreter.lexer.TokenFixture.*;
+import static org.watertemplate.interpreter.parser.Terminal.*;
+import static org.watertemplate.interpreter.parser.TokenFixture.*;
 
 public class TokenStreamTest {
 
@@ -14,10 +14,10 @@ public class TokenStreamTest {
     @Before
     public void before() {
         tokenStream = new TokenStream(
-                new If(),
-                new PropertyKey("foo"),
-                new Else(),
-                new End());
+                If(),
+                PropertyKey("foo"),
+                Else(),
+                EndOfBlock());
     }
 
     @Test
@@ -28,23 +28,23 @@ public class TokenStreamTest {
 
     @Test
     public void currentAndShift() {
-        assertCurrentIsOfType(TokenType.IF);
+        assertCurrentIsOfType(IF);
         tokenStream.shift();
-        assertCurrentIsOfType(TokenType.PROPERTY_KEY);
+        assertCurrentIsOfType(PROPERTY_KEY);
         tokenStream.shift();
-        assertCurrentIsOfType(TokenType.ELSE);
+        assertCurrentIsOfType(ELSE);
     }
 
     @Test
     public void saveAndReset() {
         int save = tokenStream.getCurrentTokenPosition();
-        assertCurrentIsOfType(TokenType.IF);
+        assertCurrentIsOfType(IF);
         tokenStream.shift();
         tokenStream.shift();
         tokenStream.shift();
-        assertCurrentIsNotOfType(TokenType.IF);
+        assertCurrentIsNotOfType(IF);
         tokenStream.reset(save);
-        assertCurrentIsOfType(TokenType.IF);
+        assertCurrentIsOfType(IF);
     }
 
     @Test
@@ -58,15 +58,15 @@ public class TokenStreamTest {
         Assert.assertEquals(0, tokenStream.remaining());
     }
 
-    private void assertCurrentIsOfType(final TokenType tokenType) {
-        Assert.assertEquals(tokenType, current());
+    private void assertCurrentIsOfType(final Terminal terminal) {
+        Assert.assertTrue(current().canBe(terminal));
     }
 
-    private void assertCurrentIsNotOfType(final TokenType tokenType) {
-        Assert.assertNotEquals(tokenType, current());
+    private void assertCurrentIsNotOfType(final Terminal terminal) {
+        Assert.assertFalse(current().canBe(terminal));
     }
 
-    private TokenType current() {
-        return tokenStream.current().getType();
+    private Token current() {
+        return tokenStream.current();
     }
 }
