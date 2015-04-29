@@ -1,4 +1,7 @@
-package org.watertemplate;
+package org.watertemplate.nested;
+
+import org.watertemplate.Template;
+import org.watertemplate.TemplateMap;
 
 import java.util.Arrays;
 import java.util.List;

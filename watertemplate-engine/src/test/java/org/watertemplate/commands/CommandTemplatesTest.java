@@ -1,7 +1,8 @@
-package org.watertemplate;
+package org.watertemplate.commands;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.Template;
 
 public class CommandTemplatesTest {
 
@@ -21,5 +22,17 @@ public class CommandTemplatesTest {
 
         Assert.assertEquals(" true ", templateTrue.render());
         Assert.assertEquals(" false ", templateFalse.render());
+    }
+
+    @Test
+    public void templateWithRandomWavesAndColons() {
+        final Template templateTrue = new CommandTemplatesFixture.TemplateWithRandomWavesAndColons(true);
+        final Template templateFalse = new CommandTemplatesFixture.TemplateWithRandomWavesAndColons(false);
+
+        Assert.assertEquals("<link href=\"http://link.water.test.com\" />\n\n~~~~~\n\n\n~\n\n\n:::::",
+                templateTrue.render());
+
+        Assert.assertEquals("<link href=\"http://link.water.test.com\" />\n\n~~~~~\n\n\n:\n\n\n:::::",
+                templateFalse.render());
     }
 }

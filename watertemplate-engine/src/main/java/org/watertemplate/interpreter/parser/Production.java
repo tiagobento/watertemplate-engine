@@ -148,14 +148,15 @@ abstract class Production implements GrammarSymbol {
         Evaluation() {
             super(WAVE, ID, WAVE);
         }
+
         @Override
         AbstractSyntaxTree zip(final List<AbstractSyntaxTree> statements) {
             return statements.get(1);
         }
-
     }
 
     static class Statements extends Production {
+
         public Statements(final GrammarSymbol... statements) {
             super(statements);
         }

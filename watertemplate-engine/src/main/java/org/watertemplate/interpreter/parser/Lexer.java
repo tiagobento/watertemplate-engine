@@ -35,17 +35,17 @@ public class Lexer {
 
     private List<Token> readAmbiguousTokens(final BufferedReader bufferedReader) throws IOException {
         StringBuilder accumulator = new StringBuilder();
-        List<Token> ambiguousTokens = new ArrayList<>();
+        List<Token> tokens = new ArrayList<>();
         int i = 0;
 
         for (int nReadChars; (nReadChars = bufferedReader.read(buffer, 0, BUFFER_SIZE)) != -1; ) {
             i = 0;
             for (;i < nReadChars; i++) {
-                i = process(accumulator, ambiguousTokens, i, buffer[i]);
+                i = process(accumulator, tokens, i, buffer[i]);
             }
         }
-        process(accumulator, ambiguousTokens, i, '\0');
-        return ambiguousTokens;
+        process(accumulator, tokens, i, '\0');
+        return tokens;
     }
 
     private int process(final StringBuilder accumulator, final List<Token> ambiguousTokens, int i, char c) {
@@ -99,25 +99,15 @@ public class Lexer {
     }
 
     // for tests only
-
     List<Token> tokenize(String input) {
         StringBuilder accumulator = new StringBuilder();
-        List<Token> ambiguousTokens = new ArrayList<>();
+        List<Token> tokens = new ArrayList<>();
         input += '\0';
 
         for (int i = 0; i < input.length(); i++) {
-            i = process(accumulator, ambiguousTokens, i, input.charAt(i));
+            i = process(accumulator, tokens, i, input.charAt(i));
         }
 
-        return ambiguousTokens;
-    }
-
-    public static void main(String[] args) {
-        Lexer lexer = new Lexer();
-        List<Token> tokens = lexer.lex(new File("/Users/tiagobento/Desktop/watertemplate-engine/watertemplate-example/src/main/resources/templates/en_US/collection/months_grid.html"));
-
-        System.out.println("LEX\n--\n");
-        tokens.forEach(System.out::println);
-        System.out.println(tokens.size());
+        return tokens;
     }
 }

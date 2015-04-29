@@ -1,7 +1,8 @@
-package org.watertemplate;
+package org.watertemplate.nested;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.watertemplate.Template;
 import org.watertemplate.exception.TemplateException;
 
 import java.util.Locale;
@@ -11,21 +12,21 @@ public class NestedTemplatesTest {
     @Test
     public void templateOnlyWithMasterTemplate() {
         final Template template = new NestedTemplatesFixture.TemplateOnlyWithMasterTemplate();
-        String rendered = template.render(template.getDefaultLocale());
+        String rendered = template.render();
         Assert.assertEquals("master_template_content\n" + "template_only_with_master_template_content", rendered);
     }
 
     @Test
     public void templateOnlyWithSubTemplates() {
         final Template template = new NestedTemplatesFixture.TemplateOnlyWithSubTemplates();
-        String rendered = template.render(template.getDefaultLocale());
+        String rendered = template.render();
         Assert.assertEquals("template_only_with_sub_templates_content\n" + "sub_template_content", rendered);
     }
 
     @Test
     public void templateWithSubTemplatesAndMasterTemplate() {
         final Template template = new NestedTemplatesFixture.TemplateWithSubTemplatesAndMasterTemplate();
-        String rendered = template.render(template.getDefaultLocale());
+        String rendered = template.render();
         Assert.assertEquals("master_template_content\n" +
                 "template_with_sub_templates_and_master_template_content\n" +
                 "sub_template_content", rendered);
@@ -34,7 +35,7 @@ public class NestedTemplatesTest {
     @Test
     public void templateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate() {
         final Template template = new NestedTemplatesFixture.TemplateWithMasterTemplateAndSubTemplatesThatHaveAMasterTemplate();
-        String rendered = template.render(template.getDefaultLocale());
+        String rendered = template.render();
         Assert.assertEquals("" +
                         "master_template_content\n" +
                         "template_that_have_sub_templates_that_have_a_master_template_content\n" +
@@ -51,7 +52,7 @@ public class NestedTemplatesTest {
                 return "invalid.html";
             }
         };
-        template.render(template.getDefaultLocale());
+        template.render();
     }
 
     @Test

@@ -30,7 +30,6 @@ enum NonTerminal implements GrammarSymbol {
             symbols.add(new Production.Empty());
         }
     },
-
     ID {
         @Override
         void addProductions(final List<GrammarSymbol> symbols) {
