@@ -21,6 +21,10 @@ public class Home extends Template {
     protected String getFilePath() {
         return "home/home.html";
     }
+
+    public static void main(String[] args) {
+        System.out.println(new Home().render());
+    }
 }
 
 

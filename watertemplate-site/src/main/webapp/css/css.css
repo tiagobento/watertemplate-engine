@@ -1,60 +1,177 @@
-html {
-    position:relative;
-    text-align:center;
-
-    height:100%;
-    box-sizing: border-box;
-    border: 20px solid rgba(255, 255, 255, 0.1);
-
-    font-family: "Georgia, serif";
-    font-size: 1.2em;
-    
-
-    background: url('/assets/grayton-beach-white-sand.png');
-    background-repeat: repeat;
-    background-position: center center;
+body {
+    color: #777;
+    font-family: Helvetica;
+    padding: 0;
+    margin: 0;
 }
 
-a {
-    color: rgba(0, 0, 0, 0.65);
-    text-decoration: none;
+#menu,
+.menu-link {
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -ms-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
 }
 
-a:hover {
-    color: black;
+.content {
+    margin: 0 auto;
+    padding: 0 2em;
+    max-width: 800px;
+    margin-bottom: 50px;
+    line-height: 1.6em;
+    position: relative;
 }
 
-/* home */
+.header {
+     margin: 0;
+     text-align: center;
+     padding: 2.5em 2em 0;
+ }
+    .header h1 {
+        margin: 0.2em 0;
+        font-size: 4em;
+        font-weight: 300;
+    }
+     .header h2 {
+        font-weight: 300;
+        padding: 0;
+        margin-top: 0;
+    }
 
-#name {
-    margin-top: 90px;
-    font-size: 7.5em;
-    color: rgba(0, 0, 0, 0.75);
+.content-subhead {
+    margin: 50px 0 20px 0;
+    font-weight: 300;
+    color: #333;
 }
 
-#home-menu {
-    font-weight: bold;
-    position: absolute;
-    top: 250px;
-    left: 110px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.015);
+    font-weight: lighter;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
+     #menu .water-menu,
+     #menu .water-menu ul {
+        padding-left: 0px;
+        text-align: center;
+        border: none;
+        list-style-type: none;
+        background: transparent;
+    }
+
+    #menu .water-menu ul li {
+        display: inline;
+    }
+
+        #menu .water-menu ul li a {
+            cursor: pointer;
+            color: black;
+            border: none;
+            text-decoration: none;
+            padding: 0em 0.6em 0em 0.6em;
+        }
+
+        #menu .water-menu li a:hover,
+        #menu .water-menu li a:focus {
+            text-decoration: underline;
+        }
 
 
-/* menu */
 
-.menu {
-    font-size: 1em;
-    font-family: Monaco;
-    box-sizing: border-box;
-}
 
-.menu ul {
-    margin: 0px;
-    padding: 0px;
-    list-style-type: none;
-}
 
-.menu ul li {
-    padding: 0px 10px 0px 10px;
-    display: inline;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* //////////////////////////////////////////////////////// */
+
+.banner {
+    background: url('/assets/grayton-beach-white-sand.png') 0 0 no-repeat fixed;
+    background-size: cover;
+    background-clip: 500px 0px;
+    color: #222;
+    padding-top: 12.5em;
+    height: 15em;
+    position: relative;
+    min-width: 45em;
+    width: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
 }
