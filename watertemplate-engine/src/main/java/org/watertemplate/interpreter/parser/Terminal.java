@@ -26,7 +26,7 @@ enum Terminal implements GrammarSymbol {
         }
     },
 
-    TEXT(s -> s.length() == 1 || (!s.endsWith(Keywords.COLON) && !s.endsWith(Keywords.WAVE)), s -> true) {
+    TEXT(s -> s.length() == 1 || (!s.endsWith(Keywords.COLON) && !s.endsWith(Keywords.WAVE))) {
         @Override
         public AbstractSyntaxTree buildAbstractSyntaxTree(final Token token) {
             return new AbstractSyntaxTree.Text(token.getValue());

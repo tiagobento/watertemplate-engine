@@ -17,9 +17,8 @@ class DefaultWaterInterpreter extends WaterInterpreter {
 
     @Override
     public String string(final TemplateMap.Arguments arguments, final Locale locale) {
-        return cache.computeIfAbsent(cacheKey(locale), (key) -> {
-            return parse(lex(templateFileWith(locale)));
-        }).string(arguments, locale);
+        return cache.computeIfAbsent(cacheKey(locale), key ->
+                parse(lex(templateFileWith(locale)))).string(arguments, locale);
     }
 
     private String cacheKey(final Locale locale) {

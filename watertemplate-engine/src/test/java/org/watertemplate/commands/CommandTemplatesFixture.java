@@ -46,4 +46,18 @@ public class CommandTemplatesFixture {
             return "commands/templateWithRandomWavesAndColons.html";
         }
     }
+
+    public static class TemplateWithNestedCommands extends Template {
+
+        public TemplateWithNestedCommands(final Boolean c1, final Boolean c2, final List<String> xs) {
+            add("condition1", c1);
+            add("condition2", c2);
+            addCollection("xs", xs);
+        }
+
+        @Override
+        protected String getFilePath() {
+            return "commands/templateWithNestedCommands.html";
+        }
+    }
 }

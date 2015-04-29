@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.watertemplate.Template;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class CommandTemplatesTest {
 
     @Test
@@ -34,5 +37,21 @@ public class CommandTemplatesTest {
 
         Assert.assertEquals("<link href=\"http://link.water.test.com\" />\n\n~~~~~\n\n\n:\n\n\n:::::",
                 templateFalse.render());
+    }
+
+
+    @Test
+    public void templateWithNestedCommands() {
+        final Template template1 = new CommandTemplatesFixture.TemplateWithNestedCommands(true, true, new ArrayList<>());
+        Assert.assertEquals("true-true", template1.render().trim());
+
+        final Template template2 = new CommandTemplatesFixture.TemplateWithNestedCommands(true, false, new ArrayList<>());
+        Assert.assertEquals("true-false", template2.render().trim());
+
+        final Template template3 = new CommandTemplatesFixture.TemplateWithNestedCommands(false, true, Arrays.asList("a", "b", "c"));
+        Assert.assertEquals("a\n\nb\n\nc", template3.render().trim());
+
+        final Template template4 = new CommandTemplatesFixture.TemplateWithNestedCommands(false, true, new ArrayList<>());
+        Assert.assertEquals("No xs.", template4.render().trim());
     }
 }
