@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Token {
-    public static final Token END_OF_INPUT = new Token("\0", Collections.singletonList(Terminal.END_OF_INPUT));
+    public static final Token END_OF_INPUT = new Token("\0", Terminal.END_OF_INPUT);
 
     private final String value;
     private final List<Terminal> possibleTerminals;

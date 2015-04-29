@@ -24,7 +24,7 @@ public class Lexer {
 
         try (final BufferedReader bufferedReader = new BufferedReader(new FileReader(templateFile))) {
 
-            List<Token> tokens = readAmbiguousTokens(bufferedReader);
+            List<Token> tokens = tokenize(bufferedReader);
             tokens.add(Token.END_OF_INPUT);
             return tokens;
 
@@ -33,7 +33,7 @@ public class Lexer {
         }
     }
 
-    private List<Token> readAmbiguousTokens(final BufferedReader bufferedReader) throws IOException {
+    private List<Token> tokenize(final BufferedReader bufferedReader) throws IOException {
         StringBuilder accumulator = new StringBuilder();
         List<Token> tokens = new ArrayList<>();
         int i = 0;
@@ -44,6 +44,7 @@ public class Lexer {
                 i = process(accumulator, tokens, i, buffer[i]);
             }
         }
+
         process(accumulator, tokens, i, '\0');
         return tokens;
     }
@@ -74,7 +75,7 @@ public class Lexer {
         }
 
         if (currentCandidates.isEmpty() && previousCandidates.isEmpty()) {
-            return new Token(previous, Collections.singletonList(TEXT));
+            return new Token(previous, TEXT);
         }
 
         if ((currentCandidates.isEmpty() || containsOnly(TEXT, currentCandidates)) && !previousCandidates.isEmpty()) {

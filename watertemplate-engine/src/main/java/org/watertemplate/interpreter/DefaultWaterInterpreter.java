@@ -2,10 +2,7 @@ package org.watertemplate.interpreter;
 
 import org.watertemplate.TemplateMap;
 import org.watertemplate.interpreter.parser.AbstractSyntaxTree;
-import org.watertemplate.interpreter.parser.Token;
 
-import java.io.File;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -21,9 +18,7 @@ class DefaultWaterInterpreter extends WaterInterpreter {
     @Override
     public String string(final TemplateMap.Arguments arguments, final Locale locale) {
         return cache.computeIfAbsent(cacheKey(locale), (key) -> {
-            File templateFile = templateFileWith(locale);
-            List<Token> lex = lex(templateFile);
-            return parse(lex);
+            return parse(lex(templateFileWith(locale)));
         }).string(arguments, locale);
     }
 
