@@ -23,20 +23,34 @@ enum NonTerminal implements GrammarSymbol {
             symbols.add(new Production.ForElse());
         }
     },
+    NESTED_PROP {
+        @Override
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.NestedProperty());
+            symbols.add(new Production.Empty());
+        }
+    },
+
     ID {
         @Override
         void addProductions(final List<GrammarSymbol> symbols) {
-            symbols.add(new Production.IdWithNestedProperties());
+            symbols.add(new Production.Id());
             symbols.add(PROPERTY_KEY);
+        }
+    },
+    EVALUATION {
+        @Override
+        void addProductions(final List<GrammarSymbol> symbols) {
+            symbols.add(new Production.Evaluation());
         }
     },
     STATEMENT {
         @Override
         void addProductions(final List<GrammarSymbol> symbols) {
-            symbols.add(ID);
-            symbols.add(TEXT);
             symbols.add(FOR_COMMAND);
             symbols.add(IF_COMMAND);
+            symbols.add(EVALUATION);
+            symbols.add(TEXT);
         }
     },
     STATEMENTS {
@@ -46,7 +60,7 @@ enum NonTerminal implements GrammarSymbol {
             symbols.add(new Production.Empty());
         }
     },
-    START_SYMBOL {
+    TEMPLATE {
         @Override
         void addProductions(final List<GrammarSymbol> symbols) {
             symbols.add(new Production.Statements(STATEMENTS, END_OF_INPUT));

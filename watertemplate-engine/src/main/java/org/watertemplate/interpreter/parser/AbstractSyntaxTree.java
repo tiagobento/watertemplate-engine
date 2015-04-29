@@ -1,7 +1,6 @@
 package org.watertemplate.interpreter.parser;
 
 import org.watertemplate.TemplateObject;
-import org.watertemplate.interpreter.lexer.LexerSymbol;
 import org.watertemplate.interpreter.parser.exception.IdCouldNotBeResolvedException;
 
 import java.util.List;
@@ -79,7 +78,7 @@ public abstract class AbstractSyntaxTree {
                 return propertyKey;
             }
 
-            return propertyKey + LexerSymbol.ACCESSOR + nestedId.getFullId();
+            return propertyKey + Keywords.ACCESSOR + nestedId.getFullId();
         }
 
         TemplateObject templateObject(final Arguments arguments) {

@@ -1,6 +1,5 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.interpreter.lexer.Token;
 import org.watertemplate.interpreter.parser.exception.NoMoreTokensOnStreamException;
 
 import java.util.Arrays;

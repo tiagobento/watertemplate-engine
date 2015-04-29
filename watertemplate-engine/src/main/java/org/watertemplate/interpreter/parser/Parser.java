@@ -1,7 +1,5 @@
 package org.watertemplate.interpreter.parser;
 
-import org.watertemplate.interpreter.lexer.Token;
-
 import java.util.List;
 
 public class Parser {
@@ -13,6 +11,6 @@ public class Parser {
     }
 
     public AbstractSyntaxTree buildAbstractSyntaxTree() {
-        return NonTerminal.START_SYMBOL.buildAbstractSyntaxTree(tokenStream);
+        return NonTerminal.TEMPLATE.buildAbstractSyntaxTree(tokenStream);
     }
 }

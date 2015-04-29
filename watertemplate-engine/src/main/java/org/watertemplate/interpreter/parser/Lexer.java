@@ -1,4 +1,4 @@
-package org.watertemplate.interpreter.lexer2;
+package org.watertemplate.interpreter.parser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,22 +10,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.watertemplate.interpreter.lexer2.TerminalV2.END_OF_INPUT;
-import static org.watertemplate.interpreter.lexer2.TerminalV2.TEXT;
+import static org.watertemplate.interpreter.parser.Terminal.TEXT;
 
 
-class LexerV2 {
+public class Lexer {
     private static final int BUFFER_SIZE = 8192;
+
     private final char[] buffer = new char[BUFFER_SIZE];
-    private List<TerminalV2> previousCandidates = new ArrayList<>();
+    private List<Terminal> previousCandidates = new ArrayList<>();
 
 
-    public List<TokenV2> lex(final File templateFile) {
+    public List<Token> lex(final File templateFile) {
 
         try (final BufferedReader bufferedReader = new BufferedReader(new FileReader(templateFile))) {
 
-            List<TokenV2> tokens = readAmbiguousTokens(bufferedReader);
-            tokens.add(TokenV2.END_OF_INPUT);
+            List<Token> tokens = readAmbiguousTokens(bufferedReader);
+            tokens.add(Token.END_OF_INPUT);
             return tokens;
 
         } catch (Exception e) {
@@ -33,9 +33,9 @@ class LexerV2 {
         }
     }
 
-    private List<TokenV2> readAmbiguousTokens(final BufferedReader bufferedReader) throws IOException {
+    private List<Token> readAmbiguousTokens(final BufferedReader bufferedReader) throws IOException {
         StringBuilder accumulator = new StringBuilder();
-        List<TokenV2> ambiguousTokens = new ArrayList<>();
+        List<Token> ambiguousTokens = new ArrayList<>();
         int i = 0;
 
         for (int nReadChars; (nReadChars = bufferedReader.read(buffer, 0, BUFFER_SIZE)) != -1; ) {
@@ -48,11 +48,11 @@ class LexerV2 {
         return ambiguousTokens;
     }
 
-    private int process(final StringBuilder accumulator, final List<TokenV2> ambiguousTokens, int i, char c) {
+    private int process(final StringBuilder accumulator, final List<Token> ambiguousTokens, int i, char c) {
         String previous = accumulator.toString();
         String current = accumulator.append(c).toString();
 
-        TokenV2 accepted = tryToAcceptFrom(previous, current);
+        Token accepted = tryToAcceptFrom(previous, current);
 
         if (accepted != null) {
             ambiguousTokens.add(accepted);
@@ -63,9 +63,9 @@ class LexerV2 {
         return i;
     }
 
-    private TokenV2 tryToAcceptFrom(final String previous, final String current) {
+    private Token tryToAcceptFrom(final String previous, final String current) {
 
-        final List<TerminalV2> currentCandidates = Arrays.asList(TerminalV2.values()).stream()
+        final List<Terminal> currentCandidates = Arrays.asList(Terminal.values()).stream()
                 .filter(terminal -> terminal.isCandidateFrom(current))
                 .collect(Collectors.toList());
 
@@ -74,7 +74,7 @@ class LexerV2 {
         }
 
         if (currentCandidates.isEmpty() && previousCandidates.isEmpty()) {
-            return new TokenV2(previous, Collections.singletonList(TEXT));
+            return new Token(previous, Collections.singletonList(TEXT));
         }
 
         if ((currentCandidates.isEmpty() || containsOnly(TEXT, currentCandidates)) && !previousCandidates.isEmpty()) {
@@ -85,37 +85,36 @@ class LexerV2 {
         return null;
     }
 
-    private TokenV2 acceptFrom(final String string) {
-        List<TerminalV2> allAcceptable = previousCandidates.stream()
+    private Token acceptFrom(final String string) {
+        List<Terminal> allAcceptable = previousCandidates.stream()
                 .filter(terminal -> terminal.isAcceptableFrom(string))
                 .collect(Collectors.toList());
 
         previousCandidates.clear();
-        return new TokenV2(string, allAcceptable);
+        return new Token(string, allAcceptable);
     }
 
-    private Boolean containsOnly(final TerminalV2 terminal, final List<TerminalV2> list) {
+    private Boolean containsOnly(final Terminal terminal, final List<Terminal> list) {
         return list.size() == 1 && list.contains(terminal);
     }
 
     // for tests only
 
-    List<TokenV2> tokenize(String input) {
+    List<Token> tokenize(String input) {
         StringBuilder accumulator = new StringBuilder();
-        List<TokenV2> ambiguousTokens = new ArrayList<>();
+        List<Token> ambiguousTokens = new ArrayList<>();
         input += '\0';
 
         for (int i = 0; i < input.length(); i++) {
             i = process(accumulator, ambiguousTokens, i, input.charAt(i));
         }
 
-        ambiguousTokens.forEach(System.out::println);
         return ambiguousTokens;
     }
 
     public static void main(String[] args) {
-        LexerV2 lexer = new LexerV2();
-        List<TokenV2> tokens = lexer.lex(new File("/Users/tiagobento/Desktop/watertemplate-engine/watertemplate-example/src/main/resources/templates/en_US/collection/months_grid.html"));
+        Lexer lexer = new Lexer();
+        List<Token> tokens = lexer.lex(new File("/Users/tiagobento/Desktop/watertemplate-engine/watertemplate-example/src/main/resources/templates/en_US/collection/months_grid.html"));
 
         System.out.println("LEX\n--\n");
         tokens.forEach(System.out::println);
