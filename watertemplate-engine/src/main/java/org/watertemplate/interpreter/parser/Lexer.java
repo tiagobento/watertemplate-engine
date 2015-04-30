@@ -36,16 +36,14 @@ public class Lexer {
     private List<Token> tokenize(final BufferedReader bufferedReader) throws IOException {
         StringBuilder accumulator = new StringBuilder();
         List<Token> tokens = new ArrayList<>();
-        int i = 0;
 
         for (int nReadChars; (nReadChars = bufferedReader.read(buffer, 0, BUFFER_SIZE)) != -1; ) {
-            i = 0;
-            for (;i < nReadChars; i++) {
+            for (int i = 0; i < nReadChars; i++) {
                 i = process(accumulator, tokens, i, buffer[i]);
             }
         }
 
-        process(accumulator, tokens, i, '\0');
+        process(accumulator, tokens, 0, '\0');
         return tokens;
     }
 
