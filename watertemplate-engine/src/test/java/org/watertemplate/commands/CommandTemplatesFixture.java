@@ -60,4 +60,11 @@ public class CommandTemplatesFixture {
             return "commands/templateWithNestedCommands.html";
         }
     }
+
+    public static class TemplateWithOnlyText extends Template {
+        @Override
+        protected String getFilePath() {
+            return "commands/templateWithOnlyText.html";
+        }
+    }
 }

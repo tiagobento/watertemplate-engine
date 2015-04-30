@@ -39,7 +39,6 @@ public class CommandTemplatesTest {
                 templateFalse.render());
     }
 
-
     @Test
     public void templateWithNestedCommands() {
         final Template template1 = new CommandTemplatesFixture.TemplateWithNestedCommands(true, true, new ArrayList<>());
@@ -53,5 +52,11 @@ public class CommandTemplatesTest {
 
         final Template template4 = new CommandTemplatesFixture.TemplateWithNestedCommands(false, true, new ArrayList<>());
         Assert.assertEquals("No xs.", template4.render().trim());
+    }
+
+    @Test
+    public void templateWithOnlyText() {
+        final Template template = new CommandTemplatesFixture.TemplateWithOnlyText();
+        Assert.assertEquals("!text", template.render());
     }
 }
