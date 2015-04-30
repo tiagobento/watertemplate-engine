@@ -236,10 +236,6 @@ Water provides **if** and **for** commands.
 
 - The default locale is `Locale.US`. However, you can change it easily. [See how](#how-to-change-the-default-locale).
 
-- When using the [dev-mode]() flag, your templates must be placed in `src/main/resources/templates`
-
-- _[Temporary]_ The characters `:` and `~` cannot be missplaced in your template files. It will lead to unexpected behavior during the compile fase.
-
 
 
 ### How to change the default locale?
