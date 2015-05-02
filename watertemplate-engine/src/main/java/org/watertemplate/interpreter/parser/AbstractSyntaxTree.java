@@ -108,7 +108,7 @@ public abstract class AbstractSyntaxTree {
 
         @Override
         public String string(final Arguments arguments, final Locale locale) {
-            return this.templateObject(arguments).string(locale);
+            return this.templateObject(arguments).evaluate(locale);
         }
     }
 
