@@ -79,7 +79,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.015);
+    background: rgba(255, 255, 255, 0.1);
     font-weight: lighter;
     width: 100%;
     overflow-y: auto;
@@ -175,3 +175,62 @@ body {
     top: 0;
     left: 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.highlights {
+    margin: 10px;
+    text-align: center;
+}
+
+
+.highlight-box {
+    text-decoration: none;
+    font-weight: lighter;
+    box-sizing: border-box;
+    border: 1px solid #797874;
+    border-radius: 3px;
+    margin: 10px;
+    display: inline-block;
+    width: 17.5em;
+    height: 12em;
+    overflow: hidden;
+}
+
+.highlight-box:hover {
+    box-shadow: #555 0px 0px 5px;
+}
+
+    .highlight-box .highlight-box-title {
+        font-weight: lighter;
+        font-size: 1.2em;
+        color: rgba(0,0,0, 0.9);
+        padding: 20px 10px 10px 10px;
+    }
+
+    .highlight-box .highlight-box-content {
+        line-height: 1.3em;
+        text-align: justify;
+        color: black;
+        padding: 10px 20px 10px 20px;
+
+    }
