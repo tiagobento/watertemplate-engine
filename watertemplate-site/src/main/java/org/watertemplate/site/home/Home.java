@@ -2,14 +2,21 @@ package org.watertemplate.site.home;
 
 import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
-import org.watertemplate.site.master.Master;
 import org.watertemplate.site.menu.Menu;
+import org.watertemplate.site.pages.Documentation;
+import org.watertemplate.site.pages.Examples;
+import org.watertemplate.site.pages.Installation;
+import org.watertemplate.site.pages.QuickStart;
 
 public class Home extends Template {
 
-    @Override
-    protected Template getMasterTemplate() {
-        return new Master();
+    public static final String PATH = "/home";
+
+    public Home() {
+        add("quick_start_path", QuickStart.PATH);
+        add("installation_path", Installation.PATH);
+        add("documentation_path", Documentation.PATH);
+        add("examples_path", Examples.PATH);
     }
 
     @Override

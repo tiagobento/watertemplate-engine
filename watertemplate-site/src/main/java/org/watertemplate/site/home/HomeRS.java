@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 public class HomeRS {
 
     @GET
-    @Path("/home")
+    @Path(Home.PATH)
     public Home home() {
         return new Home();
     }

@@ -1,7 +1,6 @@
-package org.watertemplate.site.master;
+package org.watertemplate.site.pages.master;
 
 import org.watertemplate.Template;
-import org.watertemplate.TemplateMap;
 
 public class Master extends Template {
     @Override
