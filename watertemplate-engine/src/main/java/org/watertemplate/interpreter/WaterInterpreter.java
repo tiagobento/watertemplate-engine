@@ -18,7 +18,7 @@ public abstract class WaterInterpreter {
     protected final String templateFilePath;
     protected final Locale defaultLocale;
 
-    public WaterInterpreter(final String templateFilePath, final Locale defaultLocale) {
+    WaterInterpreter(final String templateFilePath, final Locale defaultLocale) {
         this.templateFilePath = templateFilePath;
         this.defaultLocale = defaultLocale;
     }
@@ -26,7 +26,7 @@ public abstract class WaterInterpreter {
     public abstract String string(final TemplateMap.Arguments arguments, final Locale locale);
 
     AbstractSyntaxTree parse(final List<Token> tokens) {
-        return new Parser(tokens).buildAbstractSyntaxTree();
+        return new Parser().parse(tokens);
     }
 
     List<Token> lex(final File templateFile) {

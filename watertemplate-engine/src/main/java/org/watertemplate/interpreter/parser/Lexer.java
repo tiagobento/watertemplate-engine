@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,14 +46,14 @@ public class Lexer {
         return tokens;
     }
 
-    private int process(final StringBuilder accumulator, final List<Token> ambiguousTokens, int i, char c) {
+    private int process(final StringBuilder accumulator, final List<Token> tokens, int i, char c) {
         String previous = accumulator.toString();
         String current = accumulator.append(c).toString();
 
         Token accepted = tryToAcceptFrom(previous, current);
 
         if (accepted != null) {
-            ambiguousTokens.add(accepted);
+            tokens.add(accepted);
             accumulator.setLength(0);
             return i - 1;
         }
@@ -97,7 +96,8 @@ public class Lexer {
         return list.size() == 1 && list.contains(terminal);
     }
 
-    // for tests only
+    //
+    // tests only
     List<Token> tokenize(String input) {
         StringBuilder accumulator = new StringBuilder();
         List<Token> tokens = new ArrayList<>();

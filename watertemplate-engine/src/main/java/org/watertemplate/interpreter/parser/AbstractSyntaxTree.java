@@ -18,7 +18,7 @@ public abstract class AbstractSyntaxTree {
 
     public abstract String string(final Arguments arguments, final Locale locale);
 
-    public static class For extends AbstractSyntaxTree {
+    static class For extends AbstractSyntaxTree {
 
         private final String variableName;
         private final Id collectionId;
@@ -57,7 +57,7 @@ public abstract class AbstractSyntaxTree {
         }
     }
 
-    public static class Id extends AbstractSyntaxTree {
+    static class Id extends AbstractSyntaxTree {
 
         private final String propertyKey;
         private final Id nestedId;
@@ -75,7 +75,7 @@ public abstract class AbstractSyntaxTree {
             return propertyKey;
         }
 
-        public String getFullId() {
+        private String getFullId() {
             if (nestedId == null) {
                 return propertyKey;
             }
@@ -87,7 +87,7 @@ public abstract class AbstractSyntaxTree {
             TemplateObject object = arguments.get(propertyKey);
 
             if (object == null) {
-                throw new IdCouldNotBeResolvedException(this);
+                throw new IdCouldNotBeResolvedException(this.getFullId());
             }
 
             if (nestedId == null) {
@@ -95,14 +95,14 @@ public abstract class AbstractSyntaxTree {
             }
 
             if (!(object instanceof TemplateObject.Mapped)) {
-                throw new IdCouldNotBeResolvedException(this);
+                throw new IdCouldNotBeResolvedException(this.getFullId());
             }
 
             try {
                 Arguments mappedProperties = ((TemplateObject.Mapped) object).map();
                 return nestedId.templateObject(mappedProperties);
             } catch (IdCouldNotBeResolvedException e) {
-                throw new IdCouldNotBeResolvedException(this);
+                throw new IdCouldNotBeResolvedException(this.getFullId());
             }
         }
 
@@ -112,7 +112,7 @@ public abstract class AbstractSyntaxTree {
         }
     }
 
-    public static class If extends AbstractSyntaxTree {
+    static class If extends AbstractSyntaxTree {
 
         private final Id conditionId;
         private final AbstractSyntaxTree ifStatements;
@@ -140,7 +140,7 @@ public abstract class AbstractSyntaxTree {
         }
     }
 
-    public static class Statements extends AbstractSyntaxTree {
+    static class Statements extends AbstractSyntaxTree {
 
         private final List<AbstractSyntaxTree> abstractSyntaxTrees;
 
@@ -171,7 +171,7 @@ public abstract class AbstractSyntaxTree {
         }
     }
 
-    public static class Text extends AbstractSyntaxTree {
+    static class Text extends AbstractSyntaxTree {
         private final String value;
 
         public Text(final String value) {
