@@ -185,6 +185,9 @@ public abstract class AbstractSyntaxTree {
     }
 
     private static class Empty extends AbstractSyntaxTree {
+        private Empty() {
+        }
+
         @Override
         public String string(final Arguments arguments, final Locale locale) {
             return "";
