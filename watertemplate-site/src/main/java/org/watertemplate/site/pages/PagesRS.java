@@ -1,6 +1,9 @@
 package org.watertemplate.site.pages;
 
 import org.watertemplate.Template;
+import org.watertemplate.site.pages.tutorials.Documentation;
+import org.watertemplate.site.pages.tutorials.Installation;
+import org.watertemplate.site.pages.tutorials.QuickStart;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

@@ -2,10 +2,10 @@ package org.watertemplate.site.menu;
 
 import org.watertemplate.Template;
 import org.watertemplate.site.home.Home;
-import org.watertemplate.site.pages.Documentation;
+import org.watertemplate.site.pages.tutorials.Documentation;
 import org.watertemplate.site.pages.Examples;
-import org.watertemplate.site.pages.Installation;
-import org.watertemplate.site.pages.QuickStart;
+import org.watertemplate.site.pages.tutorials.Installation;
+import org.watertemplate.site.pages.tutorials.QuickStart;
 
 public class Menu extends Template {
 

@@ -3,10 +3,10 @@ package org.watertemplate.site.home;
 import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.site.menu.Menu;
-import org.watertemplate.site.pages.Documentation;
+import org.watertemplate.site.pages.tutorials.Documentation;
 import org.watertemplate.site.pages.Examples;
-import org.watertemplate.site.pages.Installation;
-import org.watertemplate.site.pages.QuickStart;
+import org.watertemplate.site.pages.tutorials.Installation;
+import org.watertemplate.site.pages.tutorials.QuickStart;
 
 public class Home extends Template {
 
@@ -27,10 +27,6 @@ public class Home extends Template {
     @Override
     protected String getFilePath() {
         return "home/home.html";
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new Home().render());
     }
 }
 

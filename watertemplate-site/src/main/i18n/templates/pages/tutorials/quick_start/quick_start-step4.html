@@ -1,0 +1,28 @@
+<a name="step2" class="step-title">{{#i18n}}quick-start.step4{{/i18n}}</a>
+<div class="step-content">
+    <p>{{#i18n}}quick-start.step4.text{{/i18n}}</p>
+<pre>
+<code class="java darkula">
+    class MonthsGrid extends Template {
+
+        private static final Collection<Month> months = Arrays.asList(Month.values());
+
+        MonthsGrid(final Year year) {
+            add("year", year.toString());
+
+            addCollection("months", months, (month, map) -> {
+                map.add("lower_name", month.name().toLowerCase());
+                map.add("days_count", month.length(year.isLeap()) + "");
+            });
+        }
+
+        @Override
+        protected String getFilePath() {
+            return "months_grid.html";
+        }
+    }
+
+</code>
+</pre>
+<p>{{#i18n}}quick-start-step4.text2{{/i18n}}</p>
+</div>
