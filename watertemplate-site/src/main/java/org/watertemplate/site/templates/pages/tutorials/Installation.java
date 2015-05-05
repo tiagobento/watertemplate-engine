@@ -19,7 +19,7 @@ public class Installation extends Tutorial {
 
     private static class Header extends Master.Header {
         @Override
-        String getTitlePath() {
+        String getHeaderContinuationPath() {
             return "pages/tutorials/installation/title.html";
         }
     }

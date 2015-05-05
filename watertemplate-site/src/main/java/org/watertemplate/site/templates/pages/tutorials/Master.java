@@ -2,7 +2,6 @@ package org.watertemplate.site.templates.pages.tutorials;
 
 import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
-import org.watertemplate.site.templates.menu.Menu;
 import org.watertemplate.site.templates.WaterSiteMasterPage;
 
 class Master extends Template {
@@ -38,7 +37,7 @@ class Master extends Template {
     private static class DefaultHeader extends Header {
 
         @Override
-        String getTitlePath() {
+        String getHeaderContinuationPath() {
             return "pages/tutorials/title.html";
         }
     }
@@ -53,14 +52,14 @@ class Master extends Template {
 
     static abstract class Header extends Template {
 
-        abstract String getTitlePath();
+        abstract String getHeaderContinuationPath();
 
         @Override
         protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
-            subTemplates.add("title", new Template() {
+            subTemplates.add("header_continuation", new Template() {
                 @Override
                 protected String getFilePath() {
-                    return getTitlePath();
+                    return getHeaderContinuationPath();
                 }
             });
         }
