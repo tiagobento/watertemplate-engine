@@ -1,12 +1,12 @@
 package org.watertemplate.site.templates.pages.examples;
 
 import org.watertemplate.Template;
-import org.watertemplate.site.templates.WaterSiteMasterPage;
+import org.watertemplate.site.templates.GlobalMaster;
 
 class Master extends Template {
     @Override
     protected Template getMasterTemplate() {
-        return new WaterSiteMasterPage();
+        return new GlobalMaster();
     }
 
     @Override

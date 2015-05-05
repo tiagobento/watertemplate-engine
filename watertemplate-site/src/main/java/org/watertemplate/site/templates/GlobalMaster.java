@@ -4,15 +4,15 @@ import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
 import org.watertemplate.site.templates.menu.Menu;
 
-public class WaterSiteMasterPage extends Template {
+public class GlobalMaster extends Template {
 
     private final Template header;
 
-    public WaterSiteMasterPage() {
+    public GlobalMaster() {
         this.header = new Header();
     }
 
-    public WaterSiteMasterPage(final Template header) {
+    public GlobalMaster(final Template header) {
         this.header = header;
     }
 

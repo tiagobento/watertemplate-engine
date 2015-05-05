@@ -1,9 +1,7 @@
 package org.watertemplate.site.templates.pages.home;
 
 import org.watertemplate.Template;
-import org.watertemplate.TemplateMap;
-import org.watertemplate.site.templates.WaterSiteMasterPage;
-import org.watertemplate.site.templates.menu.Menu;
+import org.watertemplate.site.templates.GlobalMaster;
 import org.watertemplate.site.templates.pages.tutorials.Documentation;
 import org.watertemplate.site.templates.pages.examples.Examples;
 import org.watertemplate.site.templates.pages.tutorials.Installation;
@@ -22,7 +20,7 @@ public class Home extends Template {
 
     @Override
     protected Template getMasterTemplate() {
-        return new WaterSiteMasterPage();
+        return new GlobalMaster();
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.watertemplate.site.templates.pages.tutorials;
 
 import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
-import org.watertemplate.site.templates.WaterSiteMasterPage;
+import org.watertemplate.site.templates.GlobalMaster;
 
 class Master extends Template {
 
@@ -18,7 +18,7 @@ class Master extends Template {
 
     @Override
     protected Template getMasterTemplate() {
-        return new WaterSiteMasterPage(this.header);
+        return new GlobalMaster(this.header);
     }
 
     @Override
