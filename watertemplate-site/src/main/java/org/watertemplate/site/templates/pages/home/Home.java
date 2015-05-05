@@ -26,11 +26,6 @@ public class Home extends Template {
     }
 
     @Override
-    protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
-        subTemplates.add("menu", new Menu());
-    }
-
-    @Override
     protected String getFilePath() {
         return "pages/home/home.html";
     }
