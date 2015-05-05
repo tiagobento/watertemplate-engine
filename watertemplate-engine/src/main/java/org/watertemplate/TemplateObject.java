@@ -42,9 +42,11 @@ public interface TemplateObject {
         public String evaluate(final Locale locale) {
             if (object instanceof String) {
                 return (String) object;
+            } else if (object instanceof SubTemplate) {
+                return ((SubTemplate) object).evaluate(locale);
             } else {
                 throw new InvalidTemplateObjectEvaluationException(
-                        "MappedObjects should not be evaluated. " +
+                        "Mapped objects should not be evaluated. " +
                                 "If you're iterating, make sure your collection contains only Strings.");
             }
         }

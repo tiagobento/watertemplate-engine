@@ -1,11 +1,10 @@
 package org.watertemplate;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+
+import static org.watertemplate.TemplateObject.SubTemplate;
 
 public abstract class TemplateMap<T> {
 
@@ -15,12 +14,16 @@ public abstract class TemplateMap<T> {
         this.map.put(key, value);
     }
 
-    public static class SubTemplates extends TemplateMap<TemplateObject.SubTemplate> {
+    public static class SubTemplates extends TemplateMap<SubTemplate> {
+        List<SubTemplate> list = new ArrayList<>();
+
         SubTemplates() {
         }
 
         public final void add(final String key, final Template subTemplate) {
-            add(key, new TemplateObject.SubTemplate(subTemplate));
+            SubTemplate templateObject = new SubTemplate(subTemplate);
+            add(key, templateObject);
+            list.add(templateObject);
         }
     }
 
@@ -62,7 +65,7 @@ public abstract class TemplateMap<T> {
         }
 
         final void addTemplateWhichWontRenderItsMasterTemplate(final String key, final Template subTemplate) {
-            add(key, new TemplateObject.SubTemplate.WithoutMaster(subTemplate));
+            add(key, new SubTemplate.WithoutMaster(subTemplate));
         }
     }
 }
