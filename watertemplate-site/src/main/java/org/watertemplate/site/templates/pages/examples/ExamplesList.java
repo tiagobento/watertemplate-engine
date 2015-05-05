@@ -1,4 +1,4 @@
-package org.watertemplate.site.pages.examples;
+package org.watertemplate.site.templates.pages.examples;
 
 import org.watertemplate.Template;
 

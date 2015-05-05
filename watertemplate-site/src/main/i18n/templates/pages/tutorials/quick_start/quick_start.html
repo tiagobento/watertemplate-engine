@@ -13,33 +13,11 @@
 
 <div class="steps-wrapper">
     <ol class="steps">
+        ~for step in subtemplates:
         <li>
-            ~tutorial_step1~
+            ~step~
         </li>
-
-        <li>
-            ~tutorial_step2~
-        </li>
-
-        <li>
-            ~tutorial_step3~
-        </li>
-
-        <li>
-            ~tutorial_step4~
-        </li>
-
-        <li>
-            ~tutorial_step5~
-        </li>
-
-        <li>
-            <a name="step6" class="step-title">{{#i18n}}quick-start.step6{{/i18n}}</a>
-            <div class="step-content">
-                <p>{{#i18n}}quick-start.step6.text{{/i18n}}</p>
-                <p>~examples_list~</p>
-            </div>
-        </li>
+        :~
     </ol>
 </div>
 

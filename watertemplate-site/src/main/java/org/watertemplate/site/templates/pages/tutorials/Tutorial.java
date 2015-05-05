@@ -1,4 +1,4 @@
-package org.watertemplate.site.pages.tutorials;
+package org.watertemplate.site.templates.pages.tutorials;
 
 import org.watertemplate.Template;
 import org.watertemplate.TemplateMap;
@@ -15,7 +15,7 @@ abstract class Tutorial extends Template {
 
     @Override
     protected Template getMasterTemplate() {
-        return new MasterPage();
+        return new Master(getHeader());
     }
 
     @Override
@@ -34,4 +34,6 @@ abstract class Tutorial extends Template {
             });
         }
     }
+
+    public abstract Master.Header getHeader();
 }

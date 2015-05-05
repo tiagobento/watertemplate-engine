@@ -1,11 +1,11 @@
-package org.watertemplate.site.menu;
+package org.watertemplate.site.templates.menu;
 
 import org.watertemplate.Template;
-import org.watertemplate.site.home.Home;
-import org.watertemplate.site.pages.tutorials.Documentation;
-import org.watertemplate.site.pages.Examples;
-import org.watertemplate.site.pages.tutorials.Installation;
-import org.watertemplate.site.pages.tutorials.QuickStart;
+import org.watertemplate.site.templates.pages.home.Home;
+import org.watertemplate.site.templates.pages.tutorials.Documentation;
+import org.watertemplate.site.templates.pages.examples.Examples;
+import org.watertemplate.site.templates.pages.tutorials.Installation;
+import org.watertemplate.site.templates.pages.tutorials.QuickStart;
 
 public class Menu extends Template {
 

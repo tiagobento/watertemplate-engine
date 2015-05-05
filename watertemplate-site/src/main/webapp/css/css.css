@@ -282,17 +282,9 @@ ul {
 
 
 
-    #tutorial-main {
-        background: url('/assets/grayton-beach-white-sand.png') 0 0 no-repeat fixed;
-        background-size: cover;
+    #tutorial {
+        text-align: left;
     }
-
-
-
-
-
-
-
 
 
 
@@ -397,4 +389,11 @@ ul {
 
 .examples-list li {
     margin: 5px;
+}
+
+#select-one-example {
+    margin: 40px 0px 20px 4em;
+    padding: 40px;
+    font-size: 4em;
+    color: #ddd;
 }

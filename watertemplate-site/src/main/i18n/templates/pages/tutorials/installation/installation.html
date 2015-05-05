@@ -8,21 +8,15 @@
 </div>
 
 
+
 <div class="steps-wrapper">
     <ol class="steps">
+        ~for step in subtemplates:
         <li>
-            ~tutorial_step1~
+            ~step~
         </li>
-
-        <li>
-            ~tutorial_step2~
-        </li>
-
-        <li>
-            ~tutorial_step3~
-        </li>
+        :~
     </ol>
 </div>
-
 
 <script>hljs.initHighlightingOnLoad();</script>
