@@ -39,7 +39,7 @@
 
     <modules>
         <module>watertemplate-engine</module>
-        <module>watertemplate-i18n</module>
+        <module>watertemplate-i18n-maven-plugin</module>
         <module>watertemplate-jaxrs-binding</module>
         <module>watertemplate-example</module>
         <module>watertemplate-site</module>

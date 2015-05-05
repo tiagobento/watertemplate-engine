@@ -80,6 +80,6 @@ public class TemplateMapTest {
     }
 
     private String getValue(TemplateMap.Arguments arguments, String foo) {
-        return arguments.map.get(foo).string(Locale.US);
+        return arguments.map.get(foo).evaluate(Locale.US);
     }
 }

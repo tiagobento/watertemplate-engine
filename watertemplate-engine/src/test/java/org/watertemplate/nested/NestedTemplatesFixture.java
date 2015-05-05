@@ -91,5 +91,18 @@ public class NestedTemplatesFixture {
             return "nested/templateWithMasterTemplateAndSubTemplatesThatHaveMasterTemplate.html";
         }
     }
+
+    static class TemplateWithSubtemplatesListIteration extends Template {
+        @Override
+        protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
+            subTemplates.add("sub1", new SubTemplate());
+            subTemplates.add("sub2", new SubTemplate());
+        }
+
+        @Override
+        protected String getFilePath() {
+            return "nested/templateWithSubtemplatesListIteration.html";
+        }
+    }
 }
 

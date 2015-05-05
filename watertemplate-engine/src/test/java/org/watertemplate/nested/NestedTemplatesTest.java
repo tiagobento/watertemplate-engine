@@ -59,4 +59,9 @@ public class NestedTemplatesTest {
     public void templateWithNonexistentLocale() {
         Assert.assertEquals("sub_template_content", new NestedTemplatesFixture.SubTemplate().render(Locale.FRANCE));
     }
+
+    @Test
+    public void templateWithSubtemplatesListIteration() {
+        Assert.assertEquals("\nsub_template_content\n\nsub_template_content\n", new NestedTemplatesFixture.TemplateWithSubtemplatesListIteration().render());
+    }
 }

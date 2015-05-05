@@ -236,17 +236,13 @@ Water provides **if** and **for** commands.
 
 - The default locale is `Locale.US`. However, you can change it easily. [See how](#how-to-change-the-default-locale).
 
-- When using the [dev-mode]() flag, your templates must be placed in `src/main/resources/templates`
-
-- _[Temporary]_ The characters `:` and `~` cannot be missplaced in your template files. It will lead to unexpected behavior during the compile fase.
-
 
 
 ### How to change the default locale?
 Every `Template` has a method called `getDefaultLocale` which you can override. If you want to change the default locale for every template it's recommended that you create a class in the middle of `Template` and your `Templates` which overrides this method and propagates the change to its child classes.
 
 ## i18n
-Water provides an i18n solution too. See the [i18n project](watertemplate-i18n) to know how to use it and why it works so good together with the engine.
+Water provides an i18n solution too. See the [i18n project](watertemplate-i18n-maven-plugin) to know how to use it and why it works so good together with the engine.
 
 ## JAX-RS
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-jaxrs-binding/1.1.0) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.

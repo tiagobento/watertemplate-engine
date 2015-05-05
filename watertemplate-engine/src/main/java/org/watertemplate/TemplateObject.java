@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public interface TemplateObject {
-    String string(final Locale locale);
+    String evaluate(final Locale locale);
 
     class LocaleSensitive<T> implements TemplateObject {
         private final BiFunction<T, Locale, String> function;
@@ -19,7 +19,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             return function.apply(object, locale);
         }
     }
@@ -39,12 +39,14 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             if (object instanceof String) {
                 return (String) object;
+            } else if (object instanceof SubTemplate) {
+                return ((SubTemplate) object).evaluate(locale);
             } else {
                 throw new InvalidTemplateObjectEvaluationException(
-                        "MappedObjects should not be evaluated. " +
+                        "Mapped objects should not be evaluated. " +
                                 "If you're iterating, make sure your collection contains only Strings.");
             }
         }
@@ -67,7 +69,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Collections should not be evaluated");
         }
     }
@@ -84,7 +86,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             throw new InvalidTemplateObjectEvaluationException("Booleans should not be evaluated");
         }
     }
@@ -97,7 +99,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             return value;
         }
     }
@@ -110,7 +112,7 @@ public interface TemplateObject {
         }
 
         @Override
-        public String string(final Locale locale) {
+        public String evaluate(final Locale locale) {
             return subTemplate.render(locale);
         }
 
@@ -120,7 +122,7 @@ public interface TemplateObject {
             }
 
             @Override
-            public String string(final Locale locale) {
+            public String evaluate(final Locale locale) {
                 return subTemplate.renderWithoutMaster(locale);
             }
         }

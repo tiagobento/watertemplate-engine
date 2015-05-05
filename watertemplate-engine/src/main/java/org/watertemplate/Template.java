@@ -88,6 +88,7 @@ public abstract class Template {
         SubTemplates subTemplates = new SubTemplates();
         addSubTemplates(subTemplates);
         subTemplates.map.forEach(arguments::add);
+        addCollection("subtemplates", subTemplates.list);
 
         return WaterInterpreter.instantiate(getFilePath(), getDefaultLocale()).string(arguments, locale);
     }
