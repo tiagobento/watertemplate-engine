@@ -20,12 +20,28 @@ public class Home extends Template {
 
     @Override
     protected Template getMasterTemplate() {
-        return new GlobalMaster();
+        return new GlobalMaster(new Header());
     }
 
     @Override
     protected String getFilePath() {
         return "pages/home/home.html";
+    }
+
+
+    //
+
+
+    private static class Header extends Template {
+        @Override
+        protected Template getMasterTemplate() {
+            return new GlobalMaster.Header();
+        }
+
+        @Override
+        protected String getFilePath() {
+            return "pages/home/header.html";
+        }
     }
 }
 

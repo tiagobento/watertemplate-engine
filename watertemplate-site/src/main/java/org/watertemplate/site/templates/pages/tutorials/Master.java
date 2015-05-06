@@ -6,13 +6,9 @@ import org.watertemplate.site.templates.GlobalMaster;
 
 class Master extends Template {
 
-    private final Header header;
+    private final Template header;
 
-    Master() {
-        this.header = new DefaultHeader();
-    }
-
-    Master(final Header header) {
+    Master(final Template header) {
         this.header = header;
     }
 
@@ -27,46 +23,18 @@ class Master extends Template {
     }
 
 
-
-
-
-
     //
 
 
-    private static class DefaultHeader extends Header {
-
-        @Override
-        String getHeaderContinuationPath() {
-            return "pages/tutorials/title.html";
-        }
-    }
-
-
-
-
-
-
-    //
-
-
-    static abstract class Header extends Template {
-
-        abstract String getHeaderContinuationPath();
-
-        @Override
-        protected void addSubTemplates(TemplateMap.SubTemplates subTemplates) {
-            subTemplates.add("header_continuation", new Template() {
-                @Override
-                protected String getFilePath() {
-                    return getHeaderContinuationPath();
-                }
-            });
-        }
-
+    static final class Header extends Template {
         @Override
         protected String getFilePath() {
             return "pages/tutorials/header.html";
+        }
+
+        @Override
+        protected Template getMasterTemplate() {
+            return new GlobalMaster.Header();
         }
     }
 }

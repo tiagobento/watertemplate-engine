@@ -13,6 +13,8 @@ abstract class Tutorial extends Template {
         this.numberOfSteps = numberOfSteps;
     }
 
+    public abstract Template getHeader();
+
     @Override
     protected Template getMasterTemplate() {
         return new Master(getHeader());
@@ -34,6 +36,4 @@ abstract class Tutorial extends Template {
             });
         }
     }
-
-    public abstract Master.Header getHeader();
 }

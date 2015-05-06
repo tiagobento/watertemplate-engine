@@ -1,5 +1,7 @@
 package org.watertemplate.site.templates.pages.tutorials;
 
+import org.watertemplate.Template;
+
 public class Documentation extends Tutorial {
     public static final String PATH = "/documentation";
 
@@ -13,14 +15,23 @@ public class Documentation extends Tutorial {
     }
 
     @Override
-    public Master.Header getHeader() {
+    public Template getHeader() {
         return new Header();
     }
 
-    private static class Header extends Master.Header {
+
+    //
+
+
+    private static class Header extends Template {
         @Override
-        String getHeaderContinuationPath() {
-            return "pages/tutorials/documentation/title.html";
+        protected Template getMasterTemplate() {
+            return new Master.Header();
+        }
+
+        @Override
+        public String getFilePath() {
+            return "pages/tutorials/documentation/header.html";
         }
     }
 }

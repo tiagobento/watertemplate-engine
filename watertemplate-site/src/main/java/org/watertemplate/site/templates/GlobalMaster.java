@@ -8,10 +8,6 @@ public class GlobalMaster extends Template {
 
     private final Template header;
 
-    public GlobalMaster() {
-        this.header = new Header();
-    }
-
     public GlobalMaster(final Template header) {
         this.header = header;
     }
@@ -27,7 +23,11 @@ public class GlobalMaster extends Template {
         return "master/master.html";
     }
 
-    private static class Header extends Template {
+
+    //
+
+
+    public static final class Header extends Template {
         @Override
         protected String getFilePath() {
             return "master/header.html";

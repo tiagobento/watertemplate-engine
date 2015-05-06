@@ -23,11 +23,13 @@ public class QuickStart extends Tutorial {
     }
 
     @Override
-    public Master.Header getHeader() {
+    public Template getHeader() {
         return new Header();
     }
 
+
     //
+
 
     private static class FurtherReading extends Template {
 
@@ -43,10 +45,15 @@ public class QuickStart extends Tutorial {
     }
 
 
-    private static class Header extends Master.Header {
+    private static class Header extends Template {
         @Override
-        String getHeaderContinuationPath() {
-            return "pages/tutorials/quick_start/title.html";
+        public Template getMasterTemplate() {
+            return new Master.Header();
+        }
+
+        @Override
+        protected String getFilePath() {
+            return "pages/tutorials/quick_start/header.html";
         }
     }
 }
