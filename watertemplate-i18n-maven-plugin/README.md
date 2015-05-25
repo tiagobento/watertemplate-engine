@@ -41,7 +41,7 @@ All the properties are **required**.
 
 ```html
 <!--`baseDir`/hi.html -->
-<span> {{i18n}}hi{{/i18n}}! :) </span>
+<span> {{#i18n}}hi{{/i18n}}! :) </span>
 ```
 
 ```properties
