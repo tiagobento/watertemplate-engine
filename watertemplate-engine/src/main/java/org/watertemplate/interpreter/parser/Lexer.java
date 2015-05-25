@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +21,9 @@ public class Lexer {
     private List<Terminal> previousCandidates = new ArrayList<>();
 
 
-    public List<Token> lex(final File templateFile) {
+    public List<Token> lex(final InputStream stream) {
 
-        try (final BufferedReader bufferedReader = new BufferedReader(new FileReader(templateFile))) {
+        try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream))) {
 
             List<Token> tokens = tokenize(bufferedReader);
             tokens.add(Token.END_OF_INPUT);
