@@ -8,7 +8,7 @@ import org.watertemplate.interpreter.parser.Parser;
 import org.watertemplate.interpreter.parser.Token;
 
 import java.io.File;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -29,23 +29,23 @@ public abstract class WaterInterpreter {
         return new Parser().parse(tokens);
     }
 
-    List<Token> lex(final File templateFile) {
-        return new Lexer().lex(templateFile);
+    List<Token> lex(final InputStream stream) {
+        return new Lexer().lex(stream);
     }
 
-    File templateFileWith(final Locale locale) {
+    InputStream templateFileWith(final Locale locale) {
         final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
-        final URL url = getClass().getClassLoader().getResource(templateFileURI);
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(templateFileURI);
 
-        if (url != null) {
-            return new File(url.getFile());
+        if (stream == null && !locale.equals(defaultLocale)) {
+            stream = templateFileWith(defaultLocale);
         }
 
-        if (!locale.equals(defaultLocale)) {
-            return templateFileWith(defaultLocale);
+        if (stream == null) {
+            throw new TemplateFileNotFoundException(templateFilePath);
         }
 
-        throw new TemplateFileNotFoundException(templateFilePath);
+        return stream;
     }
 
     //
