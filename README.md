@@ -18,6 +18,7 @@ Just like [mustache](https://mustache.github.io/), Water is a logic-less templat
  - [Commands](#commands)
  - [Conventions](#list-of-conventions)
 - [i18n](#i18n)
+- [Developer mode](#developer-mode)
 - [JAX-RS](#jax-rs)
 - **[Try it yourself!](#try-it-yourself)**
 
@@ -243,6 +244,11 @@ Every `Template` has a method called `getDefaultLocale` which you can override. 
 
 ## i18n
 Water provides an i18n solution too. See the [i18n project](watertemplate-i18n-maven-plugin) to know how to use it and why it works so good together with the engine.
+
+
+## Developer mode
+During development you'll want to reload your template files several times. To save time, you can run your server in developer mode by setting the "dev-mode" system property. If you're using maven to start your development server you can add the -Ddev-mode parameter to use it. For exemple: **__mvn jetty:run -Ddev-mode__**
+
 
 ## JAX-RS
 If you want to provide your webpages as resources, JAX-RS is a good way to do that. Adding [this dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-jaxrs-binding/1.1.0) to your project lets you return a `Template` object directly. The locale will be injected during the rendering of each call, so your i18n is safe.
