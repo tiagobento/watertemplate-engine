@@ -23,6 +23,8 @@ public class NonTerminalIdWithNestedPropertiesTest {
                 PropertyKey("x"),
                 Accessor(),
                 PropertyKey("y"),
+                Accessor(),
+                PropertyKey("z"),
                 Wave()
         );
 

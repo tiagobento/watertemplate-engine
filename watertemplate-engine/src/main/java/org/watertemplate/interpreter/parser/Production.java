@@ -134,7 +134,7 @@ abstract class Production implements GrammarSymbol {
     static class NestedProperty extends Production {
 
         NestedProperty() {
-            super(ACCESSOR, PROPERTY_KEY);
+            super(ACCESSOR, ID);
         }
 
         @Override
