@@ -7,7 +7,6 @@ import org.watertemplate.interpreter.parser.Lexer;
 import org.watertemplate.interpreter.parser.Parser;
 import org.watertemplate.interpreter.parser.Token;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
@@ -34,7 +33,7 @@ public abstract class WaterInterpreter {
     }
 
     InputStream templateFileWith(final Locale locale) {
-        final String templateFileURI = "templates" + File.separator + locale + File.separator + templateFilePath;
+        final String templateFileURI = "templates/" + locale + "/" + templateFilePath;
         InputStream stream = getClass().getClassLoader().getResourceAsStream(templateFileURI);
 
         if (stream == null && !locale.equals(defaultLocale)) {
