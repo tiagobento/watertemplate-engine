@@ -54,7 +54,7 @@ Water provides no dynamic i18n solution. There's no point in querying a .propert
 
 
 ## Maven
-Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.2.1) to your project.
+Add the [maven dependency](http://mavenrepository.com/artifact/org.watertemplate/watertemplate-engine/1.2.2) to your project.
 
 Read [this](#jax-rs) if you use RestEasy, Jersey or any JAX-RS implementation.
 
